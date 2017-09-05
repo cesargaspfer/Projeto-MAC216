@@ -9,45 +9,67 @@ Uso:
 """
 from sys import stdin
 
-l = stdin.readline()    #lendo a linha da entrada padrão
-ip = 0                  #ip (int) inicializado com valor zero
-
-tabsim = {}             #criação de uma lista vazia?
-print('#include <stdio.h>\n#include"maq.h"\n'); #acrescentei essa linha para importar as bibliotecas em c no programa resultante
-print("INSTR prog[] = {") #cabeçalho de uma instrução chamada prog em C
-while l:  #ler linha a linha
-    label = op = "" #inicialização das strings que conterão o label da instrução e seu Opcode
+l = stdin.readline()
+ip = 0
+tabsim = {}
+print('#include <stdio.h>')
+print('#include"maq.h"')
+print("INSTR prog[] = {")
+while l:
+    label = op = ""
     arg   = 0
-    try: #try e except é como o try catch do java. tenta fazer o que tá dentro do try, se não der, executa o except
-        #acho que é porque nem toda de um código como o fibo tem o # no final
-        # nos códigos a serem enviados pro montador, o # é comentário
-        l = l[:l.index('#')] #remover o caracter # da linha lida (entendi que é para isso que serve o : em python)
+    try:
+        l = l[:l.index('#')]
     except:
         pass
-    keys = l.split() #sem nenhum argumento, o split separa pelos /n keys é uma lista.
-    if len(keys) > 0 and keys[0].endswith(":"): #só é verdadeiro em linha que tem label (como LOOP:)
-        label = keys[0][:-1]              #jogando fora o ':'
+    keys = l.split()
+    if len(keys) > 0 and keys[0].endswith(":"):
+        label = keys[0][:-1]           #jogando fora o ':'
         tabsim[label]=ip
         #print('***'+str(tabsim[label])+'***') esse tamsim[label] vale 7.
         #quando chegar no ENDIF, esse tabsim vai ser o argumento
-        keys.pop(0) #remove e retorna o primeiro elemento da "pilha" keys. é pra isso que serve o pop
+        keys.pop(0)
     if len(keys) > 0:
-        op = keys.pop(0) #tira e retorna em op o argumento de indice 0 (o op code)
-    if len(keys) > 0: #é if e não else if (elif) porque o número de itens em keys muda entre os ifs (por causa dos pops)
+        op = keys.pop(0)
+    if len(keys) > 0:
         arg = keys.pop(0)
         if arg in tabsim: #no caso do fibo, quando chegar o endif, esse arg será o de tabsim (em tabsim há o valor 7)
             arg = tabsim[arg]
     if op != "":
-        print(" {%s, %s},"%(op,arg)) #imprime a instrução, caso não seja tudo uma linha vazia
+        print(" {%s, %s},"%(op,arg))
     else:
-        print('') #mudei esse print para não imprimir aqueles parenteses vazios, colocando um ''
-    l = stdin.readline() #ler a proxima linha
+        print('')
+    l = stdin.readline()
     ip += 1 #avançar a instrução
 print("};")
- #falta colocar o método main, então o programa em c ainda não é compilável
- # será que a gente precisa colocar todas as instruções do main numa string aqui e printar ela?
 
+"""
+Comments:
 
+1 - Falta colocar o método main,
+então o programa em c ainda não é compilável
+2 - será que a gente precisa colocar todas as instruções do main
+numa string aqui e printar ela?
+3 - teste.c tem todo o trace;
+
+Changes:
+1 - Incluido libs de C nos print;
+2 - Linha 38 -> print('');
+
+Notes:
+1 - tabsim é um set;
+  -> http://www.python-course.eu/sets_frozensets.php
+2 - INSTR prog[] cabeçalho de um instr. chamada prog
+3 - try and except: semelhante a try catch java;
+    : remove o caractere # de l
+4 - nos códigos que vão pro montador, # é comentario
+5 - keys é uma lista (modificável)
+  -> pop remove da lista, append coloca;
+  -> tamanho de keys muda (por isso dois ifs)
+  -> keys le a linha e divide
+6 - label e op vao contar os labels e os opscodes
+
+"""
 
 
 # Local variables:
