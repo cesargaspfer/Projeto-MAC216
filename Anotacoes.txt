@@ -1,0 +1,84 @@
+Anotações da Aula do Gubi - MAC216
+__________________________________
+
+15/08/17
+
+(Slides - aula 5)
+- Estruturas de um programa: .text, .data, etc;
+- Declaração de variáveis;
+O endereço de uma variavel é uma constante, seu valor é o conteudo daquilo.
+O valor de uma variavel é o conteudo do endereco pontado.
+
+Exemplo: var1: .word 0x0f17 // Indica o valor de var1;
+         mov $var1, %eax // copia em eax o endereço de memória associado a var1;
+         mov var1, %eax  // copia em eax o valor de var1;
+
+Exemplos de programas...
+
+Pilhas:
+- Definição: Estrutura de dados;"o último item a entrar será o primeiro a sair";
+- EBP, ESP;
+- push = manipula pilha (põe no seu topo); pop = remove o valor do topo da pilha
+- pushf = empilha flags, popf = tira as flags; pusha = empilha todos, popa =
+tira todos;
+- call = salva na pilha o endereco da instrução seguinte e depois transfere a
+exec. p/ o endereco especif.
+- ret = recupera da pilha o end. da instr. a ser exec. na seq. e depois trans-
+fere a exec. para esse endereço.
+
+-FLAGS: Registrador de 32 bits de flags da Intel;
+
+
+------------- PROJETO -----------------
+Projeto em C, com parte gráfica em Python.
+Campo de matrizes hexagonais. Blocos de chão com características (velocidade,
+etc). Bases dos exércitos. Lugares com cristais no meio do mapa. Estilo Age of
+Empire. Cada robô é uma máquina virtual. O cliente é o próprio robô. (Calcula-
+dora RPN, funciona a base de pilha e sem registradores, não usa parênteses, por
+conta da pilha)
+
+______________________________________________________________________________
+
+18/8/17
+
+Revisão a ponteiros e processadores;
+Questão de prova: O que ocorre pulando para o meio da instrução?
+
+Diferenças de tamanho dos registradores:
+Pode usar um registrador menor, para gastar menos espaço, dependendo do tamanho
+necessário para armazenar.
+Comeca com R: 64 bits, com E: 32 bits
+RAX, RBX, RCX, RDX -> maiores
+RDI, RSI 
+RSP, RBP -> Base e topo da pilha
+DI, EDI, RDI -> Mantem ponteiros
+R08 .. R16 -> Mexem com ponteiros
+
+Formatos ELF 32 ou 64 (Unix)
+Formatos EXE (Windows)
+
+cache = cópia do que está sendo usado; memória mais rápida; nível L1, L2 E L3;
+estrutura de memória mais cara;
+
+ESP = stack pointer (ponteiro do topo da pilha)
+EBP = base pointer (ponteiro da base da pilha)
+
+push = armazena o valor do operando no topo da pilha;
+pop = remove o valor do topo da pilha e o armazena no operando;
+
+pushf = empilha o valor das flags
+popf = desempilha o valor das flags
+
+recursão e chamada de funções se dá a base de pilhas;
+
+Implementação de funções:
+- Implementada por subrotinas (call e ret)
+- passagem de parametros é feita pela pilha
+- pilha tambe é usada para armazenar as variaveis locais
+- pode retornar a pilha ou a EAX
+
+- frame = espaço da função;
+          O EBP utiliza disso para chamar a função;
+          
+______________________________________________________________________________
+
