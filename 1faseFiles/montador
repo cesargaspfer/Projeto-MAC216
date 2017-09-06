@@ -12,6 +12,7 @@ from sys import stdin
 l = stdin.readline()
 ip = 0
 tabsim = {}
+
 print('#include <stdio.h>')
 print('#include"maq.h"')
 print("INSTR prog[] = {")
@@ -39,6 +40,7 @@ while l:
         print(" {%s, %s},"%(op,arg))
     else:
         print('')
+        ip -= 1
     l = stdin.readline()
     ip += 1 #avançar a instrução
 print("};")
