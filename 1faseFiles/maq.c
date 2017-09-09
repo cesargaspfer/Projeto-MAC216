@@ -67,6 +67,7 @@ void destroi_maquina(Maquina *m) {
 void exec_maquina(Maquina *m, int n) {
   int i;
   int rbp = 0;
+  int rsp = 0;
 
   for (i = 0; i < n; i++) {
 	OpCode   opc = prg[ip].instr;
@@ -118,10 +119,14 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	case CALL:
 	  empilha(exec, ip);
+    empilha(exec, rbp);
+    rsp += 2;
+    rbp = rsp;
 	  ip = arg;
 	  continue;
 	case RET: //Verificar com o Prof!!!!!!
-    //empilha(pil, arg);
+    rsp = rbp - 2;
+    rbp = desempilha(exec);
 	  ip = desempilha(exec);
 	  break;
 	case EQ:
@@ -163,19 +168,18 @@ void exec_maquina(Maquina *m, int n) {
 	case STO:
 	  m->Mem[arg] = desempilha(pil);
 	  break;
-	case RCL:
-	  empilha(pil,m->Mem[arg]);
-	  break;
 	case END:
 	  return;
 	case PRN:
 	  printf("%d\n", desempilha(pil));
 	  break;
   case STL:
-    m->Mem[arg + rbp] = desempilha(exec);
+    m->Mem[arg + rbp] = desempilha(pil);
+    rsp--;
     break;
   case RCL: //Esperar a resposta do prof no paca!!!
-	  empilha(exec, m->Mem[arg + rbp]);
+	  empilha(pil, m->Mem[arg + rbp]);
+    rsp++;
 	  break;
 	}
 	D(imprime(pil,5));
