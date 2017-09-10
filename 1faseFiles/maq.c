@@ -31,7 +31,8 @@ char *CODES[] = {
   "RCL",
   "END",
   "PRN",
-  "STL"
+  "STL",
+  "RCE"
 };
 #else
 #  define D(X)
@@ -125,6 +126,10 @@ void exec_maquina(Maquina *m, int n) {
 	  ip = arg;
 	  continue;
 	case RET: //Verificar com o Prof!!!!!!
+    while(rsp != rbp){
+      int temp = desempilha(exec);
+      rsp--;
+    }
     rsp = rbp - 2;
     rbp = desempilha(exec);
 	  ip = desempilha(exec);
@@ -168,17 +173,20 @@ void exec_maquina(Maquina *m, int n) {
 	case STO:
 	  m->Mem[arg] = desempilha(pil);
 	  break;
+  case RCL:
+	  empilha(pil,m->Mem[arg]);
+	  break;
 	case END:
 	  return;
 	case PRN:
 	  printf("%d\n", desempilha(pil));
 	  break;
   case STL:
-    m->Mem[arg + rbp] = desempilha(pil);
+    m->Mem[arg + rbp] = desempilha(exec);
     rsp--;
     break;
-  case RCL: //Esperar a resposta do prof no paca!!!
-	  empilha(pil, m->Mem[arg + rbp]);
+  case RCE: //Esperar a resposta do prof no paca!!!
+	  empilha(exec, m->Mem[arg + rbp]);
     rsp++;
 	  break;
 	}
