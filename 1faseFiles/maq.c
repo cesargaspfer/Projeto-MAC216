@@ -174,6 +174,7 @@ void exec_maquina(Maquina *m, int n) {
 	  printf("%d\n", desempilha(pil));
 	  break;
   case STL:
+    arg++;
     temp = desempilha(pil); //
     empilha(pil, temp);
     al = 0;
@@ -191,6 +192,7 @@ void exec_maquina(Maquina *m, int n) {
     break;
   case RCE: //Copia na pilha de dados o valor dado por args da pilha de exec
     al = 0;
+    arg++;
     while(al != arg){
       empilha(pil, desempilha(exec));
       al++;
