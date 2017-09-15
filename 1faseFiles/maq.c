@@ -32,7 +32,9 @@ char *CODES[] = {
   "END",
   "PRN",
   "STL",
-  "RCE"
+  "RCE",
+  "ALC",
+  "FRE"
 };
 #else
 #  define D(X)
@@ -67,12 +69,11 @@ void destroi_maquina(Maquina *m) {
 
 void exec_maquina(Maquina *m, int n) {
   int i;
-  int rbp = 0;
-  int rsp = 0;
-
+  int al = 0;
+  int temp = 0;
   for (i = 0; i < n; i++) {
-	OpCode   opc = prg[ip].instr;
-	OPERANDO arg = prg[ip].op;
+	   OpCode   opc = prg[ip].instr;
+	    OPERANDO arg = prg[ip].op;
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
 
@@ -120,19 +121,9 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	case CALL:
 	  empilha(exec, ip);
-    // CALL já possui a função do SAVE (citado no PACA)
-    empilha(exec, rbp);
-    rsp += 2;
-    rbp = rsp;
 	  ip = arg;
 	  continue;
-	case RET: //Verificar com o Prof!!!!!!
-    while(rsp != rbp){
-      int temp = desempilha(exec);
-      rsp--;
-    }
-    rsp = rbp - 2;
-    rbp = desempilha(exec);
+	case RET:
 	  ip = desempilha(exec);
 	  break;
 	case EQ:
@@ -183,13 +174,53 @@ void exec_maquina(Maquina *m, int n) {
 	  printf("%d\n", desempilha(pil));
 	  break;
   case STL:
-    empilha(exec, desempilha(pil));
-    rsp--;
+    temp = desempilha(pil); //
+    empilha(pil, temp);
+    al = 0;
+    while (al != arg +1){
+      empilha(pil, desempilha(exec));
+      al++;
+    }
+    empilha(exec, temp);
+    temp = desempilha(pil);
+    al = 0;
+    while(al != arg){
+      empilha(exec, desempilha(pil));
+      al++;
+    }
     break;
-  case RCE: //Esperar a resposta do prof no paca!!!
-	  empilha(pil, desempilha(exec));
-    rsp++;
-	  break;
+  case RCE: //Copia na pilha de dados o valor dado por args da pilha de exec
+    al = 0;
+    while(al != arg){
+      empilha(pil, desempilha(exec));
+      al++;
+    }
+    temp = desempilha(exec); //
+    empilha(exec, temp);
+    al = 0;
+    while (al != arg){
+      empilha(exec, desempilha(pil));
+      al++;
+    }
+    empilha(pil, temp);
+    break;
+  case ALC:
+    al = 0;
+    while (al != arg)
+    {
+      empilha(exec, 0);
+        al++;
+    }
+    empilha(exec, arg);
+    break;
+  case FRE:
+    al = desempilha(exec);
+    while (al != 0)
+    {
+      temp = desempilha(exec);
+      al--;
+    }
+    break;
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));
