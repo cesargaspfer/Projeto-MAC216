@@ -120,6 +120,7 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	case CALL:
 	  empilha(exec, ip);
+    // CALL já possui a função do SAVE (citado no PACA)
     empilha(exec, rbp);
     rsp += 2;
     rbp = rsp;
@@ -182,11 +183,11 @@ void exec_maquina(Maquina *m, int n) {
 	  printf("%d\n", desempilha(pil));
 	  break;
   case STL:
-    m->Mem[arg + rbp] = desempilha(exec);
+    empilha(exec, desempilha(pil));
     rsp--;
     break;
   case RCE: //Esperar a resposta do prof no paca!!!
-	  empilha(exec, m->Mem[arg + rbp]);
+	  empilha(pil, desempilha(exec));
     rsp++;
 	  break;
 	}
