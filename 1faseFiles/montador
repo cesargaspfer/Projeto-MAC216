@@ -14,7 +14,7 @@ ip = 0
 tabsim = {}
 
 print('#include <stdio.h>')
-print('#include"maq.h"')
+print('#include "maq.h"')
 print("INSTR prog[] = {")
 while l:
     label = op = ""
