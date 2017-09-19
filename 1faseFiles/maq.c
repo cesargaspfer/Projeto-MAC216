@@ -61,7 +61,6 @@ void destroi_maquina(Maquina *m) {
   free(m);
 }
 
-/* Alguns macros para facilitar a leitura do código */
 #define ip (m->ip)
 #define pil (&m->pil)
 #define exec (&m->exec)
@@ -69,7 +68,7 @@ void destroi_maquina(Maquina *m) {
 
 void exec_maquina(Maquina *m, int n) {
   int i;
-  int al = 0;
+  int indexALC = 0;
   int temp = 0;
   for (i = 0; i < n; i++) {
 	   OpCode   opc = prg[ip].instr;
@@ -176,49 +175,49 @@ void exec_maquina(Maquina *m, int n) {
   case STL:
     temp = desempilha(pil); //
     empilha(pil, temp);
-    al = 0;
-    while (al != arg + 1){
+    indexALC = 0;
+    while (indexALC != arg + 1){
       empilha(pil, desempilha(exec));
-      al++;
+      indexALC++;
     }
     empilha(exec, temp);
     temp = desempilha(pil);
-    al = 0;
-    while(al != arg){
+    indexALC = 0;
+    while(indexALC != arg){
       empilha(exec, desempilha(pil));
-      al++;
+      indexALC++;
     }
     break;
   case RCE: //Copia na pilha de dados o valor dado por args da pilha de exec
-    al = 0;
-    while(al != arg){
+    indexALC = 0;
+    while(indexALC != arg){
       empilha(pil, desempilha(exec));
-      al++;
+      indexALC++;
     }
     temp = desempilha(exec); //
     empilha(exec, temp);
-    al = 0;
-    while (al != arg){
+    indexALC = 0;
+    while (indexALC != arg){
       empilha(exec, desempilha(pil));
-      al++;
+      indexALC++;
     }
     empilha(pil, temp);
     break;
   case ALC:
-    al = 0;
-    while (al != arg)
+    indexALC = 0;
+    while (indexALC != arg)
     {
       empilha(exec, 0);
-        al++;
+        indexALC++;
     }
     empilha(exec, arg);
     break;
   case FRE:
-    al = desempilha(exec);
-    while (al != 0)
+    indexALC = desempilha(exec);
+    while (indexALC != 0)
     {
       temp = desempilha(exec);
-      al--;
+      indexALC--;
     }
     break;
 	}
@@ -228,17 +227,3 @@ void exec_maquina(Maquina *m, int n) {
 	ip++;
   }
 }
-/*
-Alteracoes
-  1- Adicionado o novo registrador de base (rbp)
-  2- Adicionado o STL
-  3- Adicionado o RCL (Temporario)
-  4- Alteracao no RET (verificar)
-
-Notas:
-  1- O RCL esta duplicado no enunciado, esperar resp do prof no paca
-  2- O RET, no enunciado, fala que empilha um valor, mas nao eh pedido para alterarmos isso
-  3- Verificar como tem que "acertar" o registrador de base (rbp) no RET
-
-
-*/

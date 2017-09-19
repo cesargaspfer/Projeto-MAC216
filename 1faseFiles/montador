@@ -54,36 +54,6 @@ print("	destroi_maquina(maq);");
 print("	return 0;");
 print("}");
 
-"""
-Comments:
-
-1 - Coloquei o main, mas nao deve estar completo,
-então o programa em c ainda não é compilável
-2 - será que a gente precisa colocar todas as instruções do main
-numa string aqui e printar ela?
-3 - teste.c tem todo o trace;
-
-Changes:
-1 - Incluido libs de C nos print;
-2 - Linha 38 -> print('');
-3 - Incluido o Main, mas precisamos rever
-
-Notes:
-1 - tabsim é um set;
-  -> http://www.python-course.eu/sets_frozensets.php
-2 - INSTR prog[] cabeçalho de um instr. chamada prog
-3 - try and except: semelhante a try catch java;
-    : remove o caractere # de l
-4 - nos códigos que vão pro montador, # é comentario
-5 - keys é uma lista (modificável)
-  -> pop remove da lista, append coloca;
-  -> tamanho de keys muda (por isso dois ifs)
-  -> keys le a linha e divide
-6 - label e op vao contar os labels e os opscodes
-
-"""
-
-
 # Local variables:
 # mode: python
 # End:
