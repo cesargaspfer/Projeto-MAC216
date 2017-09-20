@@ -27,14 +27,12 @@ while l:
     if len(keys) > 0 and keys[0].endswith(":"):
         label = keys[0][:-1]           #jogando fora o ':'
         tabsim[label]=ip
-        #print('***'+str(tabsim[label])+'***') esse tamsim[label] vale 7.
-        #quando chegar no ENDIF, esse tabsim vai ser o argumento
         keys.pop(0)
     if len(keys) > 0:
         op = keys.pop(0)
     if len(keys) > 0:
         arg = keys.pop(0)
-        if arg in tabsim: #no caso do fibo, quando chegar o endif, esse arg será o de tabsim (em tabsim há o valor 7)
+        if arg in tabsim: 
             arg = tabsim[arg]
     if op != "":
         print(" {%s, %s},"%(op,arg))
