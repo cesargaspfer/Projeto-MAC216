@@ -8,6 +8,9 @@ typedef struct {
   OPERANDO Mem[MAXMEM];
   INSTR *prog;
   int ip;
+  int px;
+  int py;
+  int nCrystal;
 } Maquina;
 
 Maquina *cria_maquina(INSTR *p);
