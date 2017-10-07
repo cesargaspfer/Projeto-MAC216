@@ -1,7 +1,14 @@
-#include "util.h"
 typedef struct {
   int terreno,
-  Boolean vazia,
+  int vazia,
   int nCristais,
   int base
 } Celula;
+
+typedef struct {
+  int posx,
+  int posy,
+  int vida,
+  int crist,
+  int time
+} Robo;
