@@ -1,3 +1,4 @@
+#include "arena.h"
 /* Códigos das instruções */
 typedef enum {
   PUSH,
@@ -27,7 +28,8 @@ typedef enum {
   STL,
   RCE,
   ALC,
-  FRE
+  FRE,
+  ATR
 } OpCode;
 
 /* Tipos dos operandos */
