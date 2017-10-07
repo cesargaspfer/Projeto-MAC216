@@ -35,28 +35,19 @@ typedef enum {
 typedef enum {
   NUM,
   ACAO,
-  VAR,
-  CELL,
-  BOOL
+  VAR
 } Tipo;
 
-typedef enum {
-  false,
-  true
-} Boolean;
-
-/* Operando, agora com o atributo Tipo */
-typedef struct {
-   Tipo t;
-  union {
- 	  int n;
- 	  int ac;
- 	  int v;
-    Celula c;
-    Boolean b;
-  };
- } OPERANDO;
-/*typedef int OPERANDO;*/
+/* Operando */
+/* typedef struct { */
+/*   Tipo t; */
+/*   union { */
+/* 	int n; */
+/* 	int ac; */
+/* 	int v; */
+/*   }; */
+/* } OPERANDO; */
+typedef int OPERANDO;
 
 /* Instrução */
 typedef struct {

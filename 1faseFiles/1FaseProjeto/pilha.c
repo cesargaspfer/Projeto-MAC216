@@ -25,7 +25,7 @@ void destroi_pilha(Pilha *p) {
 
 void empilha(Pilha *p, OPERANDO op) {
   if (p->topo < PILMAX)
-	 p->val[p->topo++] = op;
+	p->val[p->topo++] = op;
   else Erro("Pilha cheia");
 }
 
@@ -39,7 +39,7 @@ void imprime(Pilha *p, int n) {
   int t = p->topo-1;
   int i;
   printf("[");
-  for (i = t; i >= 0 && i > p->topo-n; i--)
+  for (i = t; i >= 0 && i > p->topo-n; i--) 
 	printf("%4d, ", p->val[i]);
   printf("]");
   return;
