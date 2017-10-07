@@ -1,4 +1,5 @@
 #include "arena.h"
+#include "util.h"
 /* Códigos das instruções */
 typedef enum {
   PUSH,
@@ -33,7 +34,6 @@ typedef enum {
 } OpCode;
 
 /* Tipos dos operandos */
-/* no momento, são todos inteiros */
 typedef enum {
   NUM,
   ACAO,
@@ -41,12 +41,6 @@ typedef enum {
   CELL,
   BOOL
 } Tipo;
-
-typedef enum {
-  false,
-  true
-} Boolean;
-
 /* Operando, agora com o atributo Tipo */
 typedef struct {
    Tipo t;
