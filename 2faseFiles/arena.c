@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<arena.h>
+#include<time.h>
 
 // Duas variáveis locais: a arena e os robos
 Celula arena[20][20];
@@ -18,7 +19,7 @@ int main () {
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 void Sistema(int op) {
-
+  clock_t begin = clock();
   int movX = 0;
   int movY = 0;
 
@@ -112,8 +113,9 @@ void Sistema(int op) {
 //                                        Fim                                          //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-void Fim () {
-  
+void Fim (clock_t begin) {
+  clock_t end = clock();
+  double currentTime = (double) (end - begin)/ CLOCKS_PER_SEC;
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -123,6 +125,11 @@ void Fim () {
 /*-------------------------------------------------------------------------------------*/
 void Atualiza (){
   // Tempo trasncorrido - nao esquecer
+  /*
+  for (int i = 0; i < 10; i++) {
+      move(robo[i],)
+  }
+  */
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -184,7 +191,7 @@ static int move(int robo, int time, int posTmpX, int posTmpY){
     return 0;
   }
   else {
-    // Muda estado da arna
+    // Muda estado da arena
     arena[robos[time-1][robo]->posx][robos[time-1][robo]->posy]->vazia = 0;
     arena[posTmpX][posTmpY]->vazia = time;
     // Muda estado do robo
@@ -262,8 +269,8 @@ static int CriaArena(int tamanho, int times, int cristais, int robos){
 
   int cristaisRestantes [cristais];
   int pontosTotais [times];
-  
-  
+
+
   // Gera a Base do terreno
   for(int i = 0; i < 20; i++){
     for(int j = 0; j < 20; j++){
