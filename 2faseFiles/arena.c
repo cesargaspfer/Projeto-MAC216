@@ -5,6 +5,8 @@
 // Duas variáveis locais: a arena e os robos
 Celula arena[20][20];
 Robo robos[2][5];
+int cristaisRestantes [20];
+int pontosTotais [2];
 
 int main () {
   CriaArena(20, 2, 10, 5);
@@ -87,7 +89,15 @@ void Sistema(int op) {
     }
     Se Depositar {
       if(robos[time-1][robo]->crist) {
-        arena[posTmpX][posTmpY]->nCristais--;
+        if(arena[posTmpX][posTmpY]->base){
+          pontosTotais[arena[posTmpX][posTmpY]->base -1]++;
+          cristaisRestantes--;
+          if(cristaisRestantes == 0)
+            Fim();
+        }
+        else {
+           arena[posTmpX][posTmpY]->nCristais++;
+        }
         robos[time-1][robo]->crist--;
       }
       else
@@ -95,6 +105,15 @@ void Sistema(int op) {
     }
     */
   }
+}
+
+/*-------------------------------------------------------------------------------------*/
+//                                                                                     //
+//                                        Fim                                          //
+//                                                                                     //
+/*-------------------------------------------------------------------------------------*/
+void Fim () {
+  
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -241,6 +260,10 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
 /*-------------------------------------------------------------------------------------*/
 static int CriaArena(int tamanho, int times, int cristais, int robos){
 
+  int cristaisRestantes [cristais];
+  int pontosTotais [times];
+  
+  
   // Gera a Base do terreno
   for(int i = 0; i < 20; i++){
     for(int j = 0; j < 20; j++){
@@ -277,7 +300,7 @@ static int CriaArena(int tamanho, int times, int cristais, int robos){
   for(int i = 1; i <= times; i++){
     int localX = rand() % 20;
     int localY = rand() % 20;
-    if(arena[localX][localY]->base){
+    if(arena[localX][localY]->base || arena[localX][localY]->nCristais){
       i--;
     }
     else{
