@@ -44,13 +44,13 @@ typedef enum {
 /* Operando, agora com o atributo Tipo */
 typedef struct {
    Tipo t;
-  union {
+  union Valor {
  	  int n;
  	  int ac;
  	  int v;
     Celula c;
     Boolean b;
-  };
+  } Valor;
  } OPERANDO;
 /*typedef int OPERANDO;*/
 
