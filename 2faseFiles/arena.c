@@ -127,7 +127,7 @@ void Atualiza (){
   // Tempo trasncorrido - nao esquecer
   /*
   for (int i = 0; i < 10; i++) {
-      move(robo[i],)
+      move(robo[i],time, posTmpX, posTmpY);
   }
   */
 }
