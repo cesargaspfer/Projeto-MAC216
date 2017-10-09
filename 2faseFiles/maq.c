@@ -53,6 +53,7 @@ Maquina *cria_maquina(INSTR *p) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
+  p->values = malloc(20);
   m->prog = p;
   return m;
 }
@@ -72,7 +73,29 @@ void exec_maquina(Maquina *m, int n) {
   int temp = 0;
   for (i = 0; i < n; i++) {
 	   OpCode   opc = prg[ip].instr;
-	    OPERANDO arg = prg[ip].op;
+     //construir OPERANDO
+	    Tipo t = prg[ip].t;
+      //int* arrv = prg[ip].values;
+      OPERANDO arg;
+      arg.t = t;
+      /* Qual tipo está chegando aqui? (Tipos são enum, e enums são números com nomes. Então no nosso código, NUM = 0 (...) )
+      switch (t)
+      {
+        case 0:
+          printf("NUM ");
+          break;
+        case 1:
+          printf("ACAO ");
+          break;
+        case 3:
+          printf("CELL ");
+          break;
+        default:
+          printf("Outro tipo não definido no switch ");
+          break;
+      }*/
+      //arg.Valor.n = arrv[0];
+
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
 
@@ -82,14 +105,14 @@ void exec_maquina(Maquina *m, int n) {
 	  empilha(pil, arg);
 	  break;
 	case POP:
-	  desempilha(pil);
+	  //desempilha(pil);
 	  break;
 	case DUP:
-	  tmp = desempilha(pil);
+	  /*tmp = desempilha(pil);
 	  empilha(pil, tmp);
-	  empilha(pil, tmp);
+	  empilha(pil, tmp);*/
 	  break;
-	case ADD:
+	/*case ADD:
 	  empilha(pil, desempilha(pil)+desempilha(pil));
 	  break;
 	case SUB:
@@ -167,12 +190,12 @@ void exec_maquina(Maquina *m, int n) {
   case RCL:
 	  empilha(pil,m->Mem[arg]);
 	  break;
-	case END:
+	*/case END:
 	  return;
 	case PRN:
-	  printf("%d\n", desempilha(pil));
+	  printf("%d\n", desempilha(pil).Valor);
 	  break;
-  case STL:
+  /*case STL:
     temp = desempilha(pil); //
     empilha(pil, temp);
     indexALC = 0;
@@ -219,7 +242,7 @@ void exec_maquina(Maquina *m, int n) {
       temp = desempilha(exec);
       indexALC--;
     }
-    break;
+    break;*/
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));

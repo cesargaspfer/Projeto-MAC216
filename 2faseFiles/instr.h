@@ -39,7 +39,8 @@ typedef enum {
   ACAO,
   VAR,
   CELL,
-  BOOL
+  BOOL,
+  NONE
 } Tipo;
 /* Operando, agora com o atributo Tipo */
 typedef struct {
@@ -57,5 +58,6 @@ typedef struct {
 /* Instrução */
 typedef struct {
   OpCode instr;
-  OPERANDO op;
+  Tipo t;
+  int* values;
 } INSTR;
