@@ -111,7 +111,7 @@ void exec_maquina(Maquina *m, int n) {
 	  /*tmp = desempilha(pil);
 	  empilha(pil, tmp);
 	  empilha(pil, tmp);*/
-	  break;
+	  //break;
 	/*case ADD:
 	  empilha(pil, desempilha(pil)+desempilha(pil));
 	  break;
