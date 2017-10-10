@@ -109,21 +109,23 @@ void exec_maquina(Maquina *m, int n) {
       //arg.Valor.n = arrv[0];
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
-
+  /*
+  MOV, ATK, INF estão prontos
+  */
 	switch (opc) {
 	  OPERANDO tmp;
 	case PUSH:
 	  empilha(pil, arg);
 	  break;
 	case POP:
-	  //desempilha(pil);
+	  desempilha(pil);
 	  break;
 	case DUP:
-	  /*tmp = desempilha(pil);
+	  tmp = desempilha(pil);
 	  empilha(pil, tmp);
-	  empilha(pil, tmp);*/
+	  empilha(pil, tmp);
 	  //break;
-	/*case ADD:
+	case ADD:
 	  empilha(pil, desempilha(pil)+desempilha(pil));
 	  break;
 	case SUB:
@@ -138,23 +140,23 @@ void exec_maquina(Maquina *m, int n) {
 	  empilha(pil, desempilha(pil)/tmp);
 	  break;
 	case JMP:
-	  ip = arg;
+	  ip = arg.Valor.n;
 	  continue;
 	case JIT:
 	  if (desempilha(pil) != 0) {
-		ip = arg;
+		ip = arg.Valor.n;
 		continue;
 	  }
 	  break;
 	case JIF:
 	  if (desempilha(pil) == 0) {
-		ip = arg;
+		ip = arg.Valor.n;
 		continue;
 	  }
 	  break;
 	case CALL:
 	  empilha(exec, ip);
-	  ip = arg;
+	  ip = arg.Valor.n;
 	  continue;
 	case RET:
 	  ip = desempilha(exec);
@@ -196,17 +198,17 @@ void exec_maquina(Maquina *m, int n) {
 		empilha(pil, 0);
 	  break;
 	case STO:
-	  m->Mem[arg] = desempilha(pil);
+	  m->Mem[arg.Valor.n] = desempilha(pil);
 	  break;
   case RCL:
-	  empilha(pil,m->Mem[arg]);
+	  empilha(pil,m->Mem[arg.Valor.n]);
 	  break;
-	*/case END:
+	case END:
 	  return;
 	case PRN:
 	  printf("%d\n", desempilha(pil));
 	  break;
-  /*case STL:
+  case STL:
     temp = desempilha(pil); //
     empilha(pil, temp);
     indexALC = 0;
@@ -228,7 +230,7 @@ void exec_maquina(Maquina *m, int n) {
       empilha(pil, desempilha(exec));
       indexALC++;
     }
-    temp = desempilha(exec); //
+    temp = desempilha(exec); 
     empilha(exec, temp);
     indexALC = 0;
     while (indexALC != arg){
@@ -253,7 +255,7 @@ void exec_maquina(Maquina *m, int n) {
       temp = desempilha(exec);
       indexALC--;
     }
-    break;*/
+    break;
 
     /* Implementação das novas instruções, sendo elas:
     MOV, ATK, ... (A CONCLUIR)
@@ -264,7 +266,7 @@ void exec_maquina(Maquina *m, int n) {
   case ATK:
     Sistema(1, arg.Valor.ac);
     break;
-  case INFO:
+  case INF:
     Sistema(2, 0);
     break;
   case CLT:
