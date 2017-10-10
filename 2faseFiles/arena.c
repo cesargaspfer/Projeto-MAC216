@@ -26,8 +26,8 @@ int main () {
 * MOV = valor 0 (movimenta)
 * ATK = valor 1 (ataca)
 * INF = valor 2 (informação) | spec = 0;
-* CLT = valor 3 (deposita)
-* DEP = valor 4 (coleta)
+* CLT = valor 3 (coleta)
+* DEP = valor 4 (deposita)
 *
 *************************************************/
 void Sistema(int op, int spec) {
