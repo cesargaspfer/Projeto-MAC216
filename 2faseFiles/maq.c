@@ -35,7 +35,15 @@ char *CODES[] = {
   "RCE",
   "ALC",
   "FRE",
+<<<<<<< HEAD
+  "MOV", // Adicionado codes daqui para baixo
+  "ATK",
+  "INF",
+  "CLT",
+  "DEP"
+=======
   "ATR"
+>>>>>>> 47232b98ca5087782bbac181c7853c86b614d969
 };
 #else
 #  define D(X)
@@ -116,7 +124,7 @@ void exec_maquina(Maquina *m, int n) {
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
   /*
-  MOV, ATK, INF estão prontos
+  MOV, ATK, INF estão prontos. Olhar funcionamento.
   */
 	switch (opc) {
 	  OPERANDO tmp;
