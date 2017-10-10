@@ -18,7 +18,19 @@ int main () {
 //                                       Sistema                                       //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-void Sistema(int op) {
+
+/* spec determina o que será feito, dado a op */
+
+/*************************************************
+* As op's vão ser implementadas da seguinte maneira,
+* MOV = valor 0 (movimenta)
+* ATK = valor 1 (ataca)
+* INF = valor 2 (informação) | spec = 0;
+* CLT = valor 3 (deposita)
+* DEP = valor 4 (coleta)
+*
+*************************************************/
+void Sistema(int op, int spec) {
   clock_t begin = clock();
   int movX = 0;
   int movY = 0;

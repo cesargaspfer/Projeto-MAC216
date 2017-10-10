@@ -86,7 +86,8 @@ void exec_maquina(Maquina *m, int n) {
       printf("%d \n", sizeof(prg[ip].values));
       OPERANDO arg;
       arg.t = t;
-      /* Qual tipo está chegando aqui? (Tipos são enum, e enums são números com nomes. Então no nosso código, NUM = 0 (...) )*/
+      /* Qual tipo está chegando aqui? (Tipos são enum, e enums são números com nomes. 
+      Então no nosso código, NUM = 0 (...) )*/
       switch (t)
       {
         case 0:
@@ -259,6 +260,25 @@ void exec_maquina(Maquina *m, int n) {
       indexALC--;
     }
     break;*/
+
+    /* Implementação das novas instruções, sendo elas:
+    MOV, ATK, ... (A CONCLUIR)
+    */
+  case MOV:
+    Sistema(0, arg.Valor.ac);
+    break;
+  case ATK:
+    Sistema(1, arg.Valor.ac);
+    break;
+  case INFO:
+    Sistema(2, 0);
+    break;
+  case CLT:
+    Sistema(3, );
+    break;
+  case DEP:
+    Sistema(4, );
+    break;
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));

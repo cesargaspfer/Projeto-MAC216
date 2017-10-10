@@ -48,12 +48,19 @@ while l:
             # ignorar eventuais Strings colocadas após
             # o opcode (o usuário não especifica tipos, já que só
             # empilha NUM).
-            if type(keys[0]) is str:
-                print('is string this: ' + keys.pop(0))
-            print(', NUM '),
+            # tenta converter para int a proxima key. Caso não funcione,
+            # é porque era uma string, que deve ser removida
+            try:
+                key = int(keys[0])
+            except:
+                keys.pop(0)
+            if op == 'ATK' or op == 'MOV' or op == 'CLT' or op == 'DEP':
+                print ', ACAO',
+            else:
+                print ', NUM ',
             if len(keys) != 0:
                 sizes.append(str(len(keys)));
-                print(',{')
+                print(',{'),
                 print (', '.join(keys)),
             print('}'),
         else:
@@ -66,10 +73,12 @@ while l:
     else:
         print "}"
     ip += 1 #avançar a instrução
+
 print("};")
 print('int sizes[] = {'),
 print(', '.join(sizes)),
 print('};')
+
 #Funcao Main
 print('');
 print("int main(int ac, char **av) {");
@@ -78,7 +87,3 @@ print("	exec_maquina(maq, 1000);");
 print("	destroi_maquina(maq);");
 print("	return 0;");
 print("}");
-
-# Local variables:
-# mode: python
-# End:
