@@ -49,11 +49,13 @@ static void Fatal(char *msg, int cod) {
   exit(cod);
 }
 
-Maquina *cria_maquina(INSTR *p) {
+Maquina *cria_maquina(INSTR *p, int sizes[]) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
-  p->values = malloc(20);
+  int i = 0;
+  // para alocar dinamicamente, precisamos do tamanho do values de cada instr
+  // falta alocar
   m->prog = p;
   return m;
 }
@@ -73,29 +75,37 @@ void exec_maquina(Maquina *m, int n) {
   int temp = 0;
   for (i = 0; i < n; i++) {
 	   OpCode   opc = prg[ip].instr;
-     //construir OPERANDO
+     //construir OPERANDO (arg)
 	    Tipo t = prg[ip].t;
-      //int* arrv = prg[ip].values;
+      printf("%d \n", sizeof(prg[ip].values));
       OPERANDO arg;
       arg.t = t;
-      /* Qual tipo está chegando aqui? (Tipos são enum, e enums são números com nomes. Então no nosso código, NUM = 0 (...) )
+      /* Qual tipo está chegando aqui? (Tipos são enum, e enums são números com nomes. Então no nosso código, NUM = 0 (...) )*/
       switch (t)
       {
         case 0:
-          printf("NUM ");
+          printf("NUM \n");
           break;
         case 1:
-          printf("ACAO ");
+          printf("ACAO \n");
+          break;
+        case 2:
+          printf("VAR \n");
           break;
         case 3:
-          printf("CELL ");
+          printf("CELL \n");
+          break;
+        case 4:
+          printf("BOOL \n");
+          break;
+        case 5:
+          printf("NONE \n");
           break;
         default:
-          printf("Outro tipo não definido no switch ");
+          printf("Outro tipo não definido no switch \n");
           break;
-      }*/
+      }
       //arg.Valor.n = arrv[0];
-
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
 
@@ -193,7 +203,7 @@ void exec_maquina(Maquina *m, int n) {
 	*/case END:
 	  return;
 	case PRN:
-	  printf("%d\n", desempilha(pil).Valor);
+	  printf("%d\n", desempilha(pil));
 	  break;
   /*case STL:
     temp = desempilha(pil); //

@@ -12,7 +12,7 @@ from sys import stdin
 l = stdin.readline()
 ip = 0
 tabsim = {}
-
+sizes = list()
 print('#include <stdio.h>')
 print('#include "maq.h"')
 print("INSTR prog[] = {")
@@ -42,11 +42,13 @@ while l:
         else:
             print(','),
         print('{'),
+        sizes.append(str(len(keys)));
         if len(keys) != 0:
             print (', '.join(keys)),
         print('}'),
     else:
         print('NONE,{0}'),                                            #Se a função não carece de argumentos
+        sizes.append('1')
         ip -= 1
     l = stdin.readline()
     if l:
@@ -55,7 +57,9 @@ while l:
         print "}"
     ip += 1 #avançar a instrução
 print("};")
-
+print('int sizes[] = {'),
+print(', '.join(sizes)),
+print('};')
 #Funcao Main
 print('');
 print("int main(int ac, char **av) {");
