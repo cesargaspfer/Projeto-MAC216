@@ -34,7 +34,8 @@ char *CODES[] = {
   "STL",
   "RCE",
   "ALC",
-  "FRE"
+  "FRE",
+  "ATR"
 };
 #else
 #  define D(X)
@@ -49,14 +50,19 @@ static void Fatal(char *msg, int cod) {
   exit(cod);
 }
 
-Maquina *cria_maquina(INSTR *p, int sizes[]) {
+Maquina* cria_maquina(INSTR *p, int *size) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
+  m->prog = p;
   int i = 0;
+  for (i = 0; i < sizeof(sizes)/sizeof(int); i++)
+  {
+    m->prog[i].values = (int *) malloc(sizes[i] * sizeof(int));
+  }
   // para alocar dinamicamente, precisamos do tamanho do values de cada instr
   // falta alocar
-  m->prog = p;
+
   return m;
 }
 

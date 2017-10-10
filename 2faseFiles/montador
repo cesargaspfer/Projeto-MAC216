@@ -16,40 +16,50 @@ sizes = list()
 print('#include <stdio.h>')
 print('#include "maq.h"')
 print("INSTR prog[] = {")
+
+
+# O seguinte loop é executado enquanto há conteúdo em l,
+# que é preenchido com stdin.readline()
 while l:
+    #op armazena o opcode
     label = op = ""
     try:
         l = l[:l.index('#')]
     except:
         pass
-        keys = list()
+    # keys é uma lista contendo as palavras (palavras: opcodes e numeros)
+    # digitados pelo usuário
+    keys = list()
     keys = l.split()
+    # remover labels do código de máquina
+    # ex de label: LOOP:
     if len(keys) > 0 and keys[0].endswith(":"):
-        label = keys[0][:-1]                                      #jogando fora o ':'
+        label = keys[0][:-1]
         tabsim[label]=ip
         keys.pop(0)
+    # se houver código a ser convertido para a sintaxe de C:
     if len(keys) > 0:
         op = keys.pop(0)
-    #if len(keys) > 0:
-        #arg = keys.pop(0)                                       #implementação anterior
-        #if arg in tabsim:
-            #arg = tabsim[arg]
-    if op != '':
-        print('{%s, ' %op),                                          #a virgula serve para imprimir na mesma linha
-    if len(keys) != 0:                                               # Se a função for do tipo que recebe mais argumentos, inteiros e um Tipo
-        if type(keys[0]) is str:
-            print '%s,' %keys.pop(0),
-        else:
-            print(','),
-        print('{'),
-        sizes.append(str(len(keys)));
+        # inserir o OpCode no código.
+        if op != '':
+            print('{%s' %op),
+            # se a função conter argumentos, incluí-los no código.
         if len(keys) != 0:
-            print (', '.join(keys)),
-        print('}'),
-    else:
-        print('NONE,{0}'),                                            #Se a função não carece de argumentos
-        sizes.append('1')
-        ip -= 1
+            # ignorar eventuais Strings colocadas após
+            # o opcode (o usuário não especifica tipos, já que só
+            # empilha NUM).
+            if type(keys[0]) is str:
+                print('is string this: ' + keys.pop(0))
+            print(', NUM '),
+            if len(keys) != 0:
+                sizes.append(str(len(keys)));
+                print(',{')
+                print (', '.join(keys)),
+            print('}'),
+        else:
+            print(',NONE,{0}'),
+            sizes.append('1')
+            ip -= 1
     l = stdin.readline()
     if l:
         print "},"
