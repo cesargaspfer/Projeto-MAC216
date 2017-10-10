@@ -82,7 +82,7 @@ print('};')
 #Funcao Main
 print('');
 print("int main(int ac, char **av) {");
-print("	Maquina *maq = cria_maquina(prog);");
+print("	Maquina *maq = cria_maquina(prog, sizes);");
 print("	exec_maquina(maq, 1000);");
 print("	destroi_maquina(maq);");
 print("	return 0;");
