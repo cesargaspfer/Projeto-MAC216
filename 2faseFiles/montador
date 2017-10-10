@@ -16,6 +16,7 @@ sizes = list()
 print('#include <stdio.h>')
 print('#include "maq.h"')
 print("INSTR prog[] = {")
+
 while l:
     label = op = ""
     try:
@@ -25,18 +26,18 @@ while l:
         keys = list()
     keys = l.split()
     if len(keys) > 0 and keys[0].endswith(":"):
-        label = keys[0][:-1]                                      #jogando fora o ':'
+        label = keys[0][:-1]            #jogando fora o ':'
         tabsim[label]=ip
         keys.pop(0)
     if len(keys) > 0:
         op = keys.pop(0)
     #if len(keys) > 0:
-        #arg = keys.pop(0)                                       #implementação anterior
+        #arg = keys.pop(0)              #implementação anterior
         #if arg in tabsim:
             #arg = tabsim[arg]
     if op != '':
-        print('{%s, ' %op),                                          #a virgula serve para imprimir na mesma linha
-    if len(keys) != 0:                                               # Se a função for do tipo que recebe mais argumentos, inteiros e um Tipo
+        print('{%s, ' %op),             #a virgula serve para imprimir na mesma linha
+    if len(keys) != 0:                  # Se a função for do tipo que recebe mais argumentos, inteiros e um Tipo
         if type(keys[0]) is str:
             print '%s,' %keys.pop(0),
         else:
@@ -47,7 +48,7 @@ while l:
             print (', '.join(keys)),
         print('}'),
     else:
-        print('NONE,{0}'),                                            #Se a função não carece de argumentos
+        print('NONE,{0}'),               #Se a função não carece de argumentos
         sizes.append('1')
         ip -= 1
     l = stdin.readline()
@@ -56,10 +57,12 @@ while l:
     else:
         print "}"
     ip += 1 #avançar a instrução
+
 print("};")
 print('int sizes[] = {'),
 print(', '.join(sizes)),
 print('};')
+
 #Funcao Main
 print('');
 print("int main(int ac, char **av) {");
@@ -68,7 +71,3 @@ print("	exec_maquina(maq, 1000);");
 print("	destroi_maquina(maq);");
 print("	return 0;");
 print("}");
-
-# Local variables:
-# mode: python
-# End:
