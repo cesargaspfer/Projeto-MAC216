@@ -49,7 +49,6 @@ typedef enum {
   NONE
 } Tipo;
 /* Operando, agora com o atributo Tipo */
-
 /***************************************
 * t = tipo da variavel
 * n = valor da variavel de tipo NUM
@@ -75,6 +74,5 @@ Toda instrução possui um Opcode, um Tipo de variável e um conjunto de valores
 Se a função não tem argumentos, o tipo é definido para NONE e os valores para 0*/
 typedef struct {
   OpCode instr;
-  Tipo t;
-  int* values;
+  OPERANDO o;
 } INSTR;

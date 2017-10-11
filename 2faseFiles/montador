@@ -16,8 +16,6 @@ sizes = list()
 print('#include <stdio.h>')
 print('#include "maq.h"')
 print("INSTR prog[] = {")
-
-
 # O seguinte loop é executado enquanto há conteúdo em l,
 # que é preenchido com stdin.readline()
 while l:
@@ -51,11 +49,12 @@ while l:
             # tenta converter para int a proxima key. Caso não funcione,
             # é porque era uma string, que deve ser removida
             try:
-                key = int(keys[0])
+                int(keys[0])
             except:
                 keys.pop(0)
             if op == 'ATK' or op == 'MOV' or op == 'CLT' or op == 'DEP':
                 print ', ACAO',
+                # buscar expressao de direcao (falta implementar)
             else:
                 print ', NUM ',
             if len(keys) != 0:
@@ -82,7 +81,7 @@ print('};')
 #Funcao Main
 print('');
 print("int main(int ac, char **av) {");
-print("	Maquina *maq = cria_maquina(prog, sizes);");
+print("	Maquina *maq = cria_maquina(prog);");
 print("	exec_maquina(maq, 1000);");
 print("	destroi_maquina(maq);");
 print("	return 0;");

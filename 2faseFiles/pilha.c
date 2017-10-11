@@ -25,13 +25,13 @@ void destroi_pilha(Pilha *p) {
 
 void empilha(Pilha *p, OPERANDO op) {
   if (p->topo < PILMAX)
-	 p->val[p->topo++] = op;
+	   p->val[p->topo++] = op;
   else Erro("Pilha cheia");
 }
 
 OPERANDO desempilha(Pilha *p) {
   if (p->topo > 0)
-	return p->val[--p->topo];
+	 return p->val[--p->topo];
   else Erro("Pilha vazia");
 }
 
