@@ -201,7 +201,7 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	case JIF:
   // Se o valor no topo da pilha for false,
-  // posicionar o ip na posição dada pelo argumento
+  // atribuir ao ip na posição dada pelo argumento
 	  if (desempilha(pil).Valor.n == false) {
   		ip = arg.Valor.n;
   		continue;
@@ -317,7 +317,6 @@ void exec_maquina(Maquina *m, int n) {
       indexALC--;
     }
     break;
-
     /* Implementação das novas instruções, sendo elas:
     MOV, ATK, ... (A CONCLUIR)
 
