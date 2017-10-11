@@ -3,14 +3,24 @@
 #include<arena.h>
 #include<time.h>
 
-// Duas variáveis locais: a arena e os robos
-Celula arena[20][20];
-Robo robos[2][5];
-int cristaisRestantes [20];
-int pontosTotais [2];
+// Variáveis globais
+int TotTimes = 2;
+int TotRobTime = 5;
+Celula arena[20][20];    // A arena em sí (o campo de batalha)
+Robo robos[2][5];        // Vetor que contem os estados dos robos
+int cristaisRestantes;   // Cristais restantes na arena
+int pontosTotais [2];    // Pontos totais de cada time
+int timeAtual = TotTimes - 2;
+int roboAtual = TotRobTime - 2;
+int TempoTranscorrido = 0;
+
 
 int main () {
-  CriaArena(20, 2, 10, 5);
+  CriaArena(20, TotTimes, 10, TotRobTime);
+  timeAtual = TotTimes - 2;
+  roboAtual = TotRobTime - 2;
+  TempoTranscorrido = -1;
+  Atualiza();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -60,7 +70,7 @@ void Sistema(int op, int spec) {
     movX = -1;
     movY = 1;
   }
-  if(robos[time-1][robo]->posx%2){
+  if(robos[timeAtual][roboAtual]->posx%2){
     movY--;
   }
   if(dir == 0){
@@ -75,8 +85,8 @@ void Sistema(int op, int spec) {
     movY = 0;
   }
   // Futura possivel posicao do robo
-  int posTmpX = robos[time-1][robo]->posx + movX;
-  int posTmpY = robos[time-1][robo]->posy + movY;
+  int posTmpX = robos[timeAtual][roboAtual]->posx + movX;
+  int posTmpY = robos[timeAtual][roboAtual]->posy + movY;
 
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 19 || posTmpY > 19) {
@@ -88,7 +98,7 @@ void Sistema(int op, int spec) {
       empilhaNoRobo(arena[posTmpX][posTmpY]);
     }
     Se move {
-      if(move(qual robo do time, qual time, posTmpX, posTmpY) != 0)
+      if(move(posTmpX, posTmpY) != 0)
         empilhaNoRobo falso
     }
     Se Ataque{
@@ -96,12 +106,12 @@ void Sistema(int op, int spec) {
     }
     Se Coletar{
       if(coleta(posTmpX, posTmpY))
-        robos[time-1][robo]->crist++;
+        robos[timeAtual][roboAtual]->crist++;
       else
         empilhaNoRobo falso
     }
     Se Depositar {
-      if(robos[time-1][robo]->crist) {
+      if(robos[timeAtual][roboAtual]->crist) {
         if(arena[posTmpX][posTmpY]->base){
           pontosTotais[arena[posTmpX][posTmpY]->base -1]++;
           cristaisRestantes--;
@@ -111,13 +121,14 @@ void Sistema(int op, int spec) {
         else {
            arena[posTmpX][posTmpY]->nCristais++;
         }
-        robos[time-1][robo]->crist--;
+        robos[timeAtual][robo]->crist--;
       }
       else
         empilhaNoRobo falso
     }
     */
   }
+  Atualiza();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -137,11 +148,26 @@ void Fim (clock_t begin) {
 /*-------------------------------------------------------------------------------------*/
 void Atualiza (){
   // Tempo trasncorrido - nao esquecer
-  /*
-  for (int i = 0; i < 10; i++) {
-      move(robo[i],time, posTmpX, posTmpY);
+  ///*
+  TempoTranscorrido++;
+  if(TempoTranscorrido < 1000) {
+	if(TempoTranscorrido%5){
+		// **Para o robo atual**
+		timeAtual++;
+		if(timeAtual == TotTimes -1) {
+			timeAtual = 0;
+			roboAtual++;
+			if(roboAtual == TotRobTime -1) {
+				roboAtual = 0;
+			}
+		}
+		// **Chama o robo**
+	}
   }
-  */
+  else {
+	Fim();
+  }
+  //*/
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -196,7 +222,7 @@ static int ataque(int posTmpX, int posTmpY){
 //                                        Move                                         //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static int move(int robo, int time, int posTmpX, int posTmpY){
+static int move(int posTmpX, int posTmpY){
 
   // Tem alguem ai? -- possivelmente adicionar se tem base
   if(arena[posTmpX][posTmpY]->vazia != 0){
@@ -204,11 +230,11 @@ static int move(int robo, int time, int posTmpX, int posTmpY){
   }
   else {
     // Muda estado da arena
-    arena[robos[time-1][robo]->posx][robos[time-1][robo]->posy]->vazia = 0;
-    arena[posTmpX][posTmpY]->vazia = time;
+    arena[robos[timeAtual][roboAtual]->posx][robos[timeAtual][roboAtual]->posy]->vazia = 0;
+    arena[posTmpX][posTmpY]->vazia = timeAtual + 1;
     // Muda estado do robo
-    robos[time-1][robo]->posx = posTmpX;
-    robos[time-1][robo]->posy = posTmpY;
+    robos[timeAtual][roboAtual]->posx = posTmpX;
+    robos[timeAtual][roboAtual]->posy = posTmpY;
     return 1;
   }
 }
