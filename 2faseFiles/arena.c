@@ -40,6 +40,11 @@ int main () {
 * DEP = valor 4 (deposita)
 *
 *************************************************/
+
+/*spec foi passado como 0 = valor significa que a instrução
+só tem um tipo de reação. Exemplo: CLT (coleta) só determina uma
+ação, logo chama o Sistema(3, 0). Já MOV, é diferente, pois pode
+ser em várias direções. */
 void Sistema(int op, int spec) {
   clock_t begin = clock();
   int movX = 0;

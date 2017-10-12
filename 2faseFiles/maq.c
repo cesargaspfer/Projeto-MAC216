@@ -322,15 +322,15 @@ void exec_maquina(Maquina *m, int n) {
   case ATK:
     Sistema(1, arg.Valor.ac);
     break;
-  /*case INF:
+  case INF:
     Sistema(2, 0);
     break;
   case CLT:
-    Sistema(3, );
+    Sistema(3, 0);
     break;
   case DEP:
-    Sistema(4, );
-    break;*/
+    Sistema(4, 0);
+    break;
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));
