@@ -35,15 +35,11 @@ char *CODES[] = {
   "RCE",
   "ALC",
   "FRE",
-<<<<<<< HEAD
   "MOV", // Adicionado codes daqui para baixo
   "ATK",
   "INF",
   "CLT",
   "DEP"
-=======
-  "ATR"
->>>>>>> 47232b98ca5087782bbac181c7853c86b614d969
 };
 #else
 #  define D(X)
@@ -335,7 +331,7 @@ void exec_maquina(Maquina *m, int n) {
     }
     break;
     /* Implementação das novas instruções, sendo elas:
-    MOV, ATK, ... (A CONCLUIR)
+    MOV, ATK, ... (A CONCLUIR) */
 
   case MOV:
     Sistema(0, arg.Valor.ac);
@@ -347,11 +343,11 @@ void exec_maquina(Maquina *m, int n) {
     Sistema(2, 0);
     break;
   case CLT:
-    Sistema(3, );
+    Sistema(3, 0);
     break;
   case DEP:
-    Sistema(4, );
-    break;*/
+    Sistema(4, 0);
+    break;
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));
