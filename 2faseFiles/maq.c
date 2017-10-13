@@ -136,7 +136,7 @@ void exec_maquina(Maquina *m, int n) {
     b = desempilha(pil);
     if (a.t == NUM && b.t == NUM)
     {
-      empilha(pil, (OPERANDO){NUM, a.Valor.n - b.Valor.n});
+      empilha(pil, (OPERANDO){NUM, b.Valor.n - a.Valor.n});
     }
     else
     {
@@ -217,49 +217,64 @@ void exec_maquina(Maquina *m, int n) {
 	  ip = desempilha(exec).Valor.n;
 	  break;
 	case EQ:
-    // Verificar se os dois valores no topo são iguais
-	  if (desempilha(pil).Valor.n == desempilha(pil).Valor.n)
-      // se forem, então empilha verdadeiro
+    // Desempilha os dois valores do topo da pilha e verifica
+    // se são iguais
+    a = desempilha(pil);
+    b = desempilha(pil);
+	  if (a.Valor.n == b.Valor.n)
       empilha(pil, (OPERANDO) {BOOL, true});
 	  else
-      // se não forem, empilha falso
       empilha(pil, (OPERANDO){BOOL, false});
 	  break;
 	case GT:
-    // verificar se o topo é maior do que a posição abaixo dele
+    // desempilha os dois valores do topo da pilha
+    // e verifica se o valor abaixo do topo é maior que o valor no topo
 	  if (desempilha(pil).Valor.n < desempilha(pil).Valor.n)
       empilha(pil, (OPERANDO){BOOL, true});
 	  else
 		  empilha(pil, (OPERANDO){BOOL, false});
 	  break;
 	case GE:
+    // desempilhar os dois valores no topo e verificar se o valor
+    // abaixo do topo da pilha é maior ou igual ao valor do topo
 	  if (desempilha(pil).Valor.n <= desempilha(pil).Valor.n)
 		  empilha(pil, (OPERANDO){BOOL, true});
 	  else
 		  empilha(pil, (OPERANDO){BOOL, false});
 	  break;
 	case LT:
+  // desempilhar os dois valores que estão no topo da pilha e
+  // verificar se o valor abaixo do topo é menor do que o valor no topo
 	  if (desempilha(pil).Valor.n > desempilha(pil).Valor.n)
 		  empilha(pil, (OPERANDO){BOOL, true});
 	  else
 		  empilha(pil, (OPERANDO){BOOL, false});
 	  break;
 	case LE:
+  // desempilhar os dois valores que estão no topo da pilha e
+  // verificar se o valor abaixo do topo é menor ou igual ao
+  // que o valor no topo
 	  if (desempilha(pil).Valor.n >= desempilha(pil).Valor.n)
 		  empilha(pil, (OPERANDO){BOOL, true});
 	  else
 		  empilha(pil, (OPERANDO){BOOL, false});
 	  break;
 	case NE:
+  // desempilhar os dois valores que estão no topo da pilha e
+  // verificar se são diferentes
 	  if (desempilha(pil).Valor.n != desempilha(pil).Valor.n)
 		  empilha(pil, (OPERANDO){BOOL, true});
 	  else
 		  empilha(pil, (OPERANDO){BOOL, false});
 	  break;
 	case STO:
+  // desempilha o valor do topo da pilha e armazena-o no vetor de memória,
+  // na posição dada pelo argumento
 	  m->Mem[arg.Valor.n] = desempilha(pil);
 	  break;
   case RCL:
+  // empilha na pilha de dados o valor no vetor de memória na posição dada pelo
+  // argumento
 	  empilha(pil,m->Mem[arg.Valor.n]);
 	  break;
 	case END:
@@ -285,7 +300,9 @@ void exec_maquina(Maquina *m, int n) {
       indexALC++;
     }
     break;
-  case RCE: //Copia na pilha de dados o valor dado por args da pilha de exec
+  case RCE:
+  //Copia na pilha de dados o valor que está na posição dada pelo argumento
+  // na pilha de execução
     indexALC = 0;
     while(indexALC != arg.Valor.n){
       empilha(pil, desempilha(exec));
@@ -323,7 +340,7 @@ void exec_maquina(Maquina *m, int n) {
   case MOV:
     Sistema(0, arg.Valor.ac);
     break;
-  case ATK:
+  case ATK:-9
     Sistema(1, arg.Valor.ac);
     break;
   case INF:
