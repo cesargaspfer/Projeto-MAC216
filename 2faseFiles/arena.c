@@ -10,16 +10,18 @@ Celula arena[20][20];    // A arena em sí (o campo de batalha)
 Robo robos[2][5];        // Vetor que contem os estados dos robos
 int cristaisRestantes;   // Cristais restantes na arena
 int pontosTotais [2];    // Pontos totais de cada time
-int timeAtual = TotTimes - 2;
-int roboAtual = TotRobTime - 2;
-int TempoTranscorrido = 0;
-
+int timeAtual = 0;
+int roboAtual = 0;
+int RodadaAtual = 1;
+int TempoDeCadaRobo[2][5];
+clock_t begin;
 
 int main () {
   CriaArena(20, TotTimes, 10, TotRobTime);
-  timeAtual = TotTimes - 2;
-  roboAtual = TotRobTime - 2;
-  TempoTranscorrido = -1;
+  timeAtual = 0;
+  roboAtual = 0;
+  RodadaAtual = 1;
+  begin = clock();
   Atualiza();
 }
 
@@ -45,8 +47,8 @@ int main () {
 só tem um tipo de reação. Exemplo: CLT (coleta) só determina uma
 ação, logo chama o Sistema(3, 0). Já MOV, é diferente, pois pode
 ser em várias direções. */
-void Sistema(int op, int spec) {
-  clock_t begin = clock();
+void Sistema(int op, int dir) {
+  
   int movX = 0;
   int movY = 0;
 
@@ -58,9 +60,10 @@ void Sistema(int op, int spec) {
      3 - Sul
      4 - Sudoeste
      5 - Noroeste
+	 6 - Atual
   */
 
-  // Ajusta o movimento da matriz exagonal para a matriz quadrada
+  // Ajusta o movimento da matriz hexagonal para a matriz quadrada
   if(dir == 1){
     movX = 1;
     movY = 1;
@@ -84,7 +87,6 @@ void Sistema(int op, int spec) {
   else if(dir == 3){
     movY = -1;
   }
-  // Posicao atual
   else if (dir == 6){
     movX = 0;
     movY = 0;
@@ -95,27 +97,34 @@ void Sistema(int op, int spec) {
 
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 19 || posTmpY > 19) {
-    //empilhaNoRobo falso
+    //empilhaNoRobo false------------------------------------------------------
   }
   else{
-    /*
-    Se Informacao {
-      empilhaNoRobo(arena[posTmpX][posTmpY]);
+    if(op == 2) { // Informação
+      empilhaNoRobo(arena[posTmpX][posTmpY]);//--------------------------------
     }
-    Se move {
-      if(move(posTmpX, posTmpY) != 0)
-        empilhaNoRobo falso
+    else if(op == 0) { // Move
+		if(move(posTmpX, posTmpY) == 0)
+			//empilhaNoRobo false ---------------------------------------------
+		else
+			//empilhaNoRobo true ----------------------------------------
+	}
+    else if(op == 1) { // Ataque
+		if(ataque(posTmpX, posTmpY))
+			// empilhaNoRobo true ---------------------------------------------
+		else
+			// empilhaNoRobo false --------------------------------------------------
+	  
     }
-    Se Ataque{
-      ataque(posTmpX, posTmpY);
-    }
-    Se Coletar{
-      if(coleta(posTmpX, posTmpY))
-        robos[timeAtual][roboAtual]->crist++;
+    else if(op == 3) { // Coletar
+		if(coleta(posTmpX, posTmpY)) {
+			robos[timeAtual][roboAtual]->crist++;
+			// empilhaNoRobo true ---------------------------------------------
+		}
       else
-        empilhaNoRobo falso
+        //empilhaNoRobo false -------------------------------------------------
     }
-    Se Depositar {
+    else if(op == 4) { // Depositar
       if(robos[timeAtual][roboAtual]->crist) {
         if(arena[posTmpX][posTmpY]->base){
           pontosTotais[arena[posTmpX][posTmpY]->base -1]++;
@@ -127,12 +136,13 @@ void Sistema(int op, int spec) {
            arena[posTmpX][posTmpY]->nCristais++;
         }
         robos[timeAtual][robo]->crist--;
+		// empilhaNoRobo true -------------------------------------------------
       }
       else
-        empilhaNoRobo falso
+        //empilhaNoRobo falso -------------------------------------------------
     }
-    */
   }
+  TempoDeCadaRobo[timeAtual][roboAtual]++;
   Atualiza();
 }
 
@@ -141,9 +151,37 @@ void Sistema(int op, int spec) {
 //                                        Fim                                          //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-void Fim (clock_t begin) {
+void Fim () {
   clock_t end = clock();
   double currentTime = (double) (end - begin)/ CLOCKS_PER_SEC;
+  
+  if(cristaisRestantes != 0){
+	printf("Esse jogo foi longe demais...\n");
+  }
+  int ganhador = 0;
+  for(int i = 1; i < pontosTotais.length; i++) {
+	if(pontosTotais[i-1] < pontosTotais[i]) {
+		ganhador = i;
+	}
+  }
+  int empate = 0;
+  for(int i = 1; i < pontosTotais.length; i++) {
+	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
+		printf("Empate! Times vencedores:\n");
+		printf("Time %d;", (i+1));
+		printf("Time %d;", ganhador);
+	}
+	else if(empate == 1  && ganhador != i){
+		printf("Time %d;", (i+1));
+	}
+  }
+  if(empate != 0) {
+	printf("Time ganhador: Time %d\n Parabéns!\n", ++ganhador);
+  }
+  else {
+	printf("Parabéns à todos!");
+  }
+  
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -152,27 +190,30 @@ void Fim (clock_t begin) {
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 void Atualiza (){
-  // Tempo trasncorrido - nao esquecer
-  ///*
-  TempoTranscorrido++;
-  if(TempoTranscorrido < 1000) {
-	if(TempoTranscorrido%5){
-		// **Para o robo atual**
+  
+  // Verifica se o jogo não foi muito longe
+  if(RodadaAtual < 500) {
+  
+	// Verifica se o robo não chamou mais do que 5 vezes o sistema nessa rodada
+	if(TempoDeCadaRobo[timeAtual][roboAtual] > RodadaAtual*5){
+		// Se chamou, passa a vez
 		timeAtual++;
 		if(timeAtual == TotTimes -1) {
 			timeAtual = 0;
 			roboAtual++;
+			// Caso tenha acabado a rodada:
 			if(roboAtual == TotRobTime -1) {
 				roboAtual = 0;
+				RodadaAtual++;
 			}
 		}
-		// **Chama o robo**
 	}
+	// **Executa o robo** ----------------------------------------------------------------
+	
   }
   else {
 	Fim();
   }
-  //*/
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -198,6 +239,7 @@ static int coleta(int posTmpX, int posTmpY){
 static int ataque(int posTmpX, int posTmpY){
   if(arena[posTmpX][posTmpY]->vazia){
     // Procura o robo nessa posicao
+	int temRobo = 0
     int time = 0;
     int qual = 0;
     for(int i = 0; i < robos.length; i++){
@@ -205,17 +247,18 @@ static int ataque(int posTmpX, int posTmpY){
         if(robos[time][qual]->posx == posTmpX && robos[time][qual]->posy == posTmpY) {
           time = i;
           qual = j;
+		  temRobo = 1;
           break;
         }
       }
     }
-    // Como, por enquanto so tem um tipo de ataque, deixemos essa parte comentada
-    // if(tipo == 1)
-    robos[time][qual]->vida -= 30;
-    if(robos[time][qual]->vida <= 0){
-      RemoveExercito(posTmpX, posTmpY, time, qual);
-    }
-    return 1;
+	// Como, por enquanto so tem um tipo de ataque, deixemos essa parte comentada
+	// if(tipo == 1)
+	robos[time][qual]->vida -= 30;
+	if(robos[time][qual]->vida <= 0){
+	  RemoveExercito(posTmpX, posTmpY, time, qual);
+	}
+	return 1;
   }
   else{
     return 0;
@@ -240,6 +283,7 @@ static int move(int posTmpX, int posTmpY){
     // Muda estado do robo
     robos[timeAtual][roboAtual]->posx = posTmpX;
     robos[timeAtual][roboAtual]->posy = posTmpY;
+	TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY]->terreno;
     return 1;
   }
 }
@@ -255,7 +299,8 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
   robos[time-1][qual]->vida = 100;
   robos[time-1][qual]->crist = 0;
   robos[time-1][qual]->time = time;
-  /////////////////////////////////////////////Criar a maquina lah//////////////////////////////////////////
+  TempoDeCadaRobo[time-1][qual] = 0;
+  // Criar a maquina -------------------------------------------------------------------
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -300,7 +345,7 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
     arena[posX][posY]->nCristais++;
   }
   robos[time][qual]->crist = 0;
-  ////////////////////////////////////////////////////////Destruir a maquina lah//////////////////////////qq
+  //Destruir a maquina -----------------------------------------------------------------
 }
 
 /*-------------------------------------------------------------------------------------*/
