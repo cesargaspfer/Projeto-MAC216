@@ -1,0 +1,30 @@
+O que falta fazer?
+	arena.c:
+		Atualiza() :
+			- Executa robo (211)
+			
+		Sistema() : 
+			- empilhaNoRobo false  (100)
+			- empilhaNoRobo Célula (104)
+			- empilhaNoRobo false  (108)
+			- empilhaNoRobo true   (110)
+			- empilhaNoRobo true   (114)
+			- empilhaNoRobo false  (116)
+			- empilhaNoRobo true   (122)
+			- empilhaNoRobo false  (125)
+			- empilhaNoRobo true   (139)
+			- empilhaNoRobo false  (142)
+			
+		InsereExercito() :
+			- Criar a maquina (303)
+		
+		RemoveExercito() :
+			- Destruir a maquina (348)
+		
+	maq.c:
+		empilhaNoRobo()
+		ExecutaAte()
+	
+	MakeFile
+	
+	Relatório
