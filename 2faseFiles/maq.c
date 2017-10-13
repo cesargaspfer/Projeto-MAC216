@@ -71,7 +71,7 @@ void destroi_maquina(Maquina *m) {
 #define exec (&m->exec)
 #define prg (m->prog)
 
-void exec_maquina(Maquina *m, int n) {
+void exec_maquina(Maquina *m, int nInstrucoes) {
   // variáveis de iteração
   int i;
   int indexALC = 0;
@@ -79,7 +79,7 @@ void exec_maquina(Maquina *m, int n) {
   int temp = 0;
   // Operandos auxiliares, para efetuar operações com mais de um operando
   OPERANDO a,b;
-  for (i = 0; i < n; i++) {
+  for (i = 0; i < nInstrucoes; i++) {
     // recuperar OpCode da instrução
      OpCode opc = prg[ip].instr;
      //construir OPERANDO (arg) a partir da instrução
@@ -342,14 +342,43 @@ void exec_maquina(Maquina *m, int n) {
     Sistema(1, arg.Valor.ac);
     break;
   case INF:
-    Sistema(2, 0);
+    Sistema(2, arg.Valor.ac);
     break;
   case CLT:
-    Sistema(3, 0);
+    Sistema(3, arg.Valor.ac);
     break;
   case DEP:
-    Sistema(4, 0);
+    Sistema(4, arg.Valor.ac);
     break;
+	case ATR:
+		tmp = desempilha(pil);
+		if(tmp.t == BOOL){
+			if(tmp.Valor.b == false){
+				empilha(pil,(OPERANDO) {NUM, {0}});
+			}
+			else{
+				empilha(pil,(OPERANDO) {NUM, {1}});
+			}
+		}
+		else if(tmp.t == CELL){
+			if(arg.Valor.n == 0) {
+				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.terreno}});
+			}
+			else if(arg.Valor.n == 1) {
+				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.vazia}});
+			}
+			else if(arg.Valor.n == 1) {
+				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.nCristais}});
+			}
+			else {
+				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.nCristais}});
+			}
+		}
+		else {
+			empilha(pil, tmp);
+		}
+    break;
+	
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));
