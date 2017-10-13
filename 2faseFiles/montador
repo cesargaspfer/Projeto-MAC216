@@ -53,7 +53,7 @@ while l:
             tipo = 'ACAO'
         # se a instrução dada for PUSH (empilha), então o tipo dado
         # é NUM, já que o jogador só pode empilhar números
-        elif op == 'PUSH':
+        elif op == 'PUSH' or op == 'ATR':
             tipo = 'NUM'
         else:
             # se não for PUSH, então o tipo do Operando será NONE
