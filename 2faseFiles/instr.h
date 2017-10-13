@@ -48,6 +48,18 @@ typedef enum {
   BOOL,
   NONE
 } Tipo;
+/* enum de Direção. Usada para converter o código dado pelo usuário
+  em um número, no intervalo [0, 5], sendo associado a cada palavra na ordem
+   disposta na ENUM. Então:
+   0 - norte, 1 - nordeste, 2 - sudeste, 3 - sul, 4 - sudoeste, 5 - noroeste */
+typedef enum {
+  NORTH,
+  NORTHEAST,
+  SOUTHEAST,
+  SOUTH,
+  SOUTHWEST,
+  NORTHWEST
+}Dir;
 /* Operando, agora com o atributo Tipo */
 /***************************************
 * t = tipo da variavel
@@ -56,6 +68,7 @@ typedef enum {
 * v = variavel do tipo VAR
 * c = célula do tipo CELL
 * b = valor booleano BOOL
+* d = Direção
 ***************************************/
 typedef struct {
    Tipo t;
@@ -65,10 +78,9 @@ typedef struct {
  	  int v;
     Celula c;
     Boolean b;
+    Dir d;
   } Valor;
  } OPERANDO;
-/*typedef int OPERANDO;*/
-
 /* Instrução
 Toda instrução possui um Opcode, um Tipo de variável e um conjunto de valores
 Se a função não tem argumentos, o tipo é definido para NONE e os valores para 0*/

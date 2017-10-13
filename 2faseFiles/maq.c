@@ -334,9 +334,11 @@ void exec_maquina(Maquina *m, int n) {
     MOV, ATK, ... (A CONCLUIR) */
 
   case MOV:
+    // DEBUG: Direção correta
+    //printf("Moving to %d\n", arg.Valor.d);
     Sistema(0, arg.Valor.ac);
     break;
-  case ATK:-9
+  case ATK:
     Sistema(1, arg.Valor.ac);
     break;
   case INF:

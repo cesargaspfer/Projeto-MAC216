@@ -12,15 +12,18 @@ from sys import stdin
 l = stdin.readline()
 ip = 0
 tabsim = {}
-sizes = list()
+first = True
 print('#include <stdio.h>')
 print('#include "maq.h"')
 print("INSTR prog[] = {")
 # O seguinte loop é executado enquanto há conteúdo em l,
 # que é preenchido com stdin.readline()
 while l:
+    if l == "":
+        pass
+    # se não for a primeira linha, fecha a instrução anterior
     #op armazena o opcode
-    label = op = ""
+    label = op = tipo = arg = ""
     try:
         l = l[:l.index('#')]
     except:
@@ -29,6 +32,7 @@ while l:
     # digitados pelo usuário
     keys = list()
     keys = l.split()
+    #print keys
     # remover labels do código de máquina
     # ex de label: LOOP:
     if len(keys) > 0 and keys[0].endswith(":"):
@@ -38,46 +42,37 @@ while l:
     # se houver código a ser convertido para a sintaxe de C:
     if len(keys) > 0:
         op = keys.pop(0)
-        # inserir o OpCode no código.
-        if op != '':
-            print('{%s' %op),
-            # se a função conter argumentos, incluí-los no código.
-        if len(keys) != 0:
-            # ignorar eventuais Strings colocadas após
-            # o opcode (o usuário não especifica tipos, já que só
-            # empilha NUM).
-            # tenta converter para int a proxima key. Caso não funcione,
-            # é porque era uma string, que deve ser removida
-            try:
-                int(keys[0])
-            except:
-                keys.pop(0)
-            if op == 'ATK' or op == 'MOV' or op == 'CLT' or op == 'DEP':
-                print ', ACAO',
-                # buscar expressao de direcao (falta implementar)
-            else:
-                print ', NUM ',
-            if len(keys) != 0:
-                sizes.append(str(len(keys)));
-                print(',{'),
-                print (', '.join(keys)),
-            print('}'),
+        # se a linha contiver argumentos
+        #if len(keys) != 0:
+        #ignorar eventuais Strings que sejam postas após o OpCode,
+        #exceto as que especificarem direções
+
+        # se o OpCode dado for o de uma função de ação
+        if op == 'ATK' or op == 'MOV' or op == 'CLT' or op == 'DEP':
+            # especifica o tipo da variável como ACAO
+            tipo = 'ACAO'
+        # se a instrução dada for PUSH (empilha), então o tipo dado
+        # é NUM, já que o jogador só pode empilhar números
+        elif op == 'PUSH':
+            tipo = 'NUM'
         else:
-            print(',NONE,{0}'),
-            sizes.append('1')
+            # se não for PUSH, então o tipo do Operando será NONE
+            tipo = 'NONE'
+        # introduzir os valores dos argumentos do Operando
+        if len(keys) > 0:
+            arg = ', '.join(keys)
+            if arg in tabsim:
+                arg = tabsim[arg]
+        else:
+            arg = 0
+        if op != "":
+            print ("{%s, %s, {%s}},"%(op, tipo, arg))
+        else:
+            print ''
             ip -= 1
     l = stdin.readline()
-    if l:
-        print "},"
-    else:
-        print "}"
     ip += 1 #avançar a instrução
-
-print("};")
-print('int sizes[] = {'),
-print(', '.join(sizes)),
-print('};')
-
+print '};'
 #Funcao Main
 print('');
 print("int main(int ac, char **av) {");
