@@ -179,7 +179,8 @@ void Fim () {
 	printf("Time ganhador: Time %d\n Parabéns!\n", ++ganhador);
   }
   else {
-	printf("Parabéns à todos!");
+	printf("Parabéns à todos!\n");
+	printf("Tempo total de jogo: %d\n", currentTime);
   }
   
 }
