@@ -20,6 +20,7 @@ Pilha *cria_pilha() {
 }
 
 void destroi_pilha(Pilha *p) {
+  p->topo = 0;
   free(p);
 }
 
