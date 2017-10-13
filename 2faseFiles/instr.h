@@ -31,7 +31,7 @@ typedef enum {
   RCE,
   ALC,
   FRE,
-  // ATR,
+  ATR,
   MOV,
   ATK,
   DEP,
@@ -58,7 +58,8 @@ typedef enum {
   SOUTHEAST,
   SOUTH,
   SOUTHWEST,
-  NORTHWEST
+  NORTHWEST,
+  CURRENT
 }Dir;
 /* Operando, agora com o atributo Tipo */
 /***************************************
