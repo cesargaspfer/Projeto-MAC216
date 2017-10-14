@@ -336,19 +336,19 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
   case MOV:
     // DEBUG: Direção correta
     //printf("Moving to %d\n", arg.Valor.d);
-    Sistema(0, arg.Valor.ac);
+    Sistema(0, arg.Valor.ac, m);
     break;
   case ATK:
-    Sistema(1, arg.Valor.ac);
+    Sistema(1, arg.Valor.ac, m);
     break;
   case INF:
-    Sistema(2, arg.Valor.ac);
+    Sistema(2, arg.Valor.ac, m);
     break;
   case CLT:
-    Sistema(3, arg.Valor.ac);
+    Sistema(3, arg.Valor.ac, m);
     break;
   case DEP:
-    Sistema(4, arg.Valor.ac);
+    Sistema(4, arg.Valor.ac, m);
     break;
 	case ATR:
 		tmp = desempilha(pil);
