@@ -47,7 +47,7 @@ int main () {
 só tem um tipo de reação. Exemplo: CLT (coleta) só determina uma
 ação, logo chama o Sistema(3, 0). Já MOV, é diferente, pois pode
 ser em várias direções. */
-void Sistema(int op, int dir) {
+void Sistema(int op, int dir, Maquina *m) {
   
   int movX = 0;
   int movY = 0;
@@ -97,32 +97,32 @@ void Sistema(int op, int dir) {
 
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 19 || posTmpY > 19) {
-    //empilhaNoRobo false------------------------------------------------------
+    empilha(&m->pil, (OPERANDO){BOOL, false}); //empilhaNoRobo false
   }
   else{
     if(op == 2) { // Informação
-      empilhaNoRobo(arena[posTmpX][posTmpY]);//--------------------------------
+      empilha(&m->pil, (OPERANDO){CELL, arena[posTmpX][posTmpY]}); // empilhaNoRobo Celula
     }
     else if(op == 0) { // Move
 		if(move(posTmpX, posTmpY) == 0)
-			//empilhaNoRobo false ---------------------------------------------
+			empilha(&m->pil, (OPERANDO){BOOL, false}); //empilhaNoRobo false
 		else
-			//empilhaNoRobo true ----------------------------------------
+			empilha(&m->pil, (OPERANDO){BOOL, true}); //empilhaNoRobo true
 	}
     else if(op == 1) { // Ataque
 		if(ataque(posTmpX, posTmpY))
-			// empilhaNoRobo true ---------------------------------------------
+			empilha(&m->pil, (OPERANDO){BOOL, true}); //empilhaNoRobo true
 		else
-			// empilhaNoRobo false --------------------------------------------------
+			empilha(&m->pil, (OPERANDO){BOOL, false}); //empilhaNoRobo false
 	  
     }
     else if(op == 3) { // Coletar
 		if(coleta(posTmpX, posTmpY)) {
 			robos[timeAtual][roboAtual]->crist++;
-			// empilhaNoRobo true ---------------------------------------------
+			empilha(&m->pil, (OPERANDO){BOOL, true}); //empilhaNoRobo true
 		}
       else
-        //empilhaNoRobo false -------------------------------------------------
+        empilha(&m->pil, (OPERANDO){BOOL, false}); //empilhaNoRobo false
     }
     else if(op == 4) { // Depositar
       if(robos[timeAtual][roboAtual]->crist) {
@@ -136,10 +136,10 @@ void Sistema(int op, int dir) {
            arena[posTmpX][posTmpY]->nCristais++;
         }
         robos[timeAtual][robo]->crist--;
-		// empilhaNoRobo true -------------------------------------------------
+		empilha(&m->pil, (OPERANDO){BOOL, true}); //empilhaNoRobo true
       }
       else
-        //empilhaNoRobo falso -------------------------------------------------
+        empilha(&m->pil, (OPERANDO){BOOL, false}); //empilhaNoRobo false
     }
   }
   TempoDeCadaRobo[timeAtual][roboAtual]++;
