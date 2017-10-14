@@ -66,6 +66,11 @@ void destroi_maquina(Maquina *m) {
 #define exec (&m->exec)
 #define prg (m->prog)
 
+// Funcao publica que empilha um valor na pilha de dados do robo 
+void empilhaPublic(struct data){
+  empilha(pil, data);
+}
+
 void exec_maquina(Maquina *m, int n) {
   int i;
   int indexALC = 0;

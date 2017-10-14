@@ -1,0 +1,9 @@
+1- Na página 8 do pdf, fala que o RET empilha na pilha de dados seu argumento, e no codigo, nao empilha, devemos implementar isso?
+2- A compilação do arquivo gerado pelo montador deve ser "unico"? (gcc programa -o programa) ou pode ser com os outros arquivos: (gcc maq.c pilha.c programa.c -o programa)
+3- devemos implementar os codigos de maq.c e pilha.c no montador?
+4- podemos alterar a função CALL e botar un rsp?
+5- como implementar o rbp?
+6- O RCE e STL devem mexer apenas com a pilha "exec"? pois a função STL depende de um valor já posto na pilha exec, entretanto a unica instrução que pode botar um valor de variavel na pilha exec é o 
+rce, que por sua vez precisa de um valor no vetor memoria, que depende da função STL para botá-lo. Ou seja, ambas se dependem, entrando em um ciclo. O motivo do STO funcionar, é por causa da função DUP, PUSH e POP, que adicionam ou retiram um valor na pilha de dados, sem dependerem de outra instrução.
+7- Precisamos de um novo PUSH e POP para variaveis locais?
+8- Como devemos entragar os arquivos?

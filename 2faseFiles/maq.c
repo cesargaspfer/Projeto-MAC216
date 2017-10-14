@@ -54,11 +54,16 @@ static void Fatal(char *msg, int cod) {
   exit(cod);
 }
 
-Maquina* cria_maquina(INSTR *p) {
+Maquina* cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
   m->prog = p;
+  m->posx = posX;
+  m->posy = posY;
+  m->vida = vidaV;
+  m->crist = CrstV;
+  m->time = TimeV;
   return m;
 }
 
@@ -378,7 +383,7 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
 			empilha(pil, tmp);
 		}
     break;
-	
+
 	}
 	D(imprime(pil,5));
 	D(puts("\n"));

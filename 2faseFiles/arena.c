@@ -7,13 +7,14 @@
 int TotTimes = 2;
 int TotRobTime = 5;
 Celula arena[20][20];    // A arena em sí (o campo de batalha)
-Robo robos[2][5];        // Vetor que contem os estados dos robos
+Maquina robos[2][5];        // Vetor que contem os estados dos robos
 int cristaisRestantes;   // Cristais restantes na arena
 int pontosTotais [2];    // Pontos totais de cada time
 int timeAtual = 0;
 int roboAtual = 0;
 int RodadaAtual = 1;
 int TempoDeCadaRobo[2][5];
+int RobosAtivos[2][5];
 clock_t begin;
 
 int main () {
@@ -48,7 +49,7 @@ só tem um tipo de reação. Exemplo: CLT (coleta) só determina uma
 ação, logo chama o Sistema(3, 0). Já MOV, é diferente, pois pode
 ser em várias direções. */
 void Sistema(int op, int dir, Maquina *m) {
-  
+
   int movX = 0;
   int movY = 0;
 
@@ -114,7 +115,7 @@ void Sistema(int op, int dir, Maquina *m) {
 			empilha(&m->pil, (OPERANDO){BOOL, true}); //empilhaNoRobo true
 		else
 			empilha(&m->pil, (OPERANDO){BOOL, false}); //empilhaNoRobo false
-	  
+
     }
     else if(op == 3) { // Coletar
 		if(coleta(posTmpX, posTmpY)) {
@@ -154,7 +155,7 @@ void Sistema(int op, int dir, Maquina *m) {
 void Fim () {
   clock_t end = clock();
   double currentTime = (double) (end - begin)/ CLOCKS_PER_SEC;
-  
+
   if(cristaisRestantes != 0){
 	printf("Esse jogo foi longe demais...\n");
   }
@@ -182,7 +183,7 @@ void Fim () {
 	printf("Parabéns à todos!\n");
 	printf("Tempo total de jogo: %d\n", currentTime);
   }
-  
+
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -191,29 +192,35 @@ void Fim () {
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 void Atualiza (){
-  
+
   // Verifica se o jogo não foi muito longe
   if(RodadaAtual < 500) {
-  
-	// Verifica se o robo não chamou mais do que 5 vezes o sistema nessa rodada
-	if(TempoDeCadaRobo[timeAtual][roboAtual] > RodadaAtual*5){
-		// Se chamou, passa a vez
-		timeAtual++;
-		if(timeAtual == TotTimes -1) {
-			timeAtual = 0;
-			roboAtual++;
-			// Caso tenha acabado a rodada:
-			if(roboAtual == TotRobTime -1) {
-				roboAtual = 0;
-				RodadaAtual++;
-			}
-		}
-	}
-	// **Executa o robo** ----------------------------------------------------------------
-	
+
+  	// Verifica se o robo não chamou mais do que 5 vezes o sistema nessa rodada
+  	if(TempoDeCadaRobo[timeAtual][roboAtual] > RodadaAtual*5){
+  		// Se chamou, passa a vez
+  		timeAtual++;
+  		if(timeAtual == TotTimes -1) {
+  			timeAtual = 0;
+  			roboAtual++;
+  			// Caso tenha acabado a rodada:
+  			if(roboAtual == TotRobTime -1) {
+  				roboAtual = 0;
+  				RodadaAtual++;
+  			}
+  		}
+  	}
+    // Verifica se o robo morreu
+    if(RobosAtivos[timeAtual][roboAtual]) {
+      Atualiza();
+    }
+    // Caso ainda esteja vivo
+    else{
+      exec_maquina(robos[timeAtual][roboAtual]->m, 50);
+    }
   }
   else {
-	Fim();
+	   Fim();
   }
 }
 
@@ -295,13 +302,9 @@ static int move(int posTmpX, int posTmpY){
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 static void InsereExercito (int time, int posX, int posY, int qual) {
-  robos[time-1][qual]->posx = posX;
-  robos[time-1][qual]->posy = posY;
-  robos[time-1][qual]->vida = 100;
-  robos[time-1][qual]->crist = 0;
-  robos[time-1][qual]->time = time;
+  robos[time-1][qual] = cria_maquina(instrucao[time-1][qual], posX, posY, 100, 0, time);
+  RobosAtivos[time-1][qual] = 1;
   TempoDeCadaRobo[time-1][qual] = 0;
-  // Criar a maquina -------------------------------------------------------------------
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -346,7 +349,9 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
     arena[posX][posY]->nCristais++;
   }
   robos[time][qual]->crist = 0;
-  //Destruir a maquina -----------------------------------------------------------------
+
+  destroi_maquina(robos[time][qual]);
+  RobosAtivos[time-1][qual] = 0;
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -354,7 +359,7 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
 //                                     Cria Arena                                      //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static int CriaArena(int tamanho, int times, int cristais, int robos){
+static int CriaArena(int tamanho, int times, int cristais, int robosT){
 
   int cristaisRestantes [cristais];
   int pontosTotais [times];
@@ -418,7 +423,7 @@ static int CriaArena(int tamanho, int times, int cristais, int robos){
 
   // Bota os robos aleatoriamente
   for(int j = 1; j <= times; j++){
-    for(int i = 0; i < robos; i++){
+    for(int i = 0; i < robosT; i++){
       int localX = rand() % 20;
       int localY = rand() % 20;
       if(arena[localX][localY]->vazia){
