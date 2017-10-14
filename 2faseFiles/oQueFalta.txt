@@ -10,7 +10,6 @@ O que falta fazer?
 			- Destruir a maquina (348)
 		
 	maq.c:
-		empilhaNoRobo()
 		ExecutaAte()
 	
 	MakeFile
