@@ -147,24 +147,24 @@ void Sistema(int op, int dir, Maquina *m) {
     else if(op == 4) { // Depositar
       // Se o robo tiver cristais
       if(robos[timeAtual][roboAtual]->crist) {
-		// Se for uma base a celula que ele quer depositar
+        // Se tiver uma base a celula que ele quer depositar
         if(arena[posTmpX][posTmpY]->base){
           // O time da base que foi depositado um cristal ganha um ponto
           pontosTotais[arena[posTmpX][posTmpY]->base -1]++;
           cristaisRestantes--;
-		  // Caso nao tenha sobrado nenhum cristal mais no jogo
+          // Caso nao tenha sobrado nenhum cristal mais no jogo
           if(cristaisRestantes == 0)
             Fim();
         }
-		// Se nao for base
+        // Se nao for base
         else {
            arena[posTmpX][posTmpY]->nCristais++;
         }
-		// Remove um cristal do robo
+        // Remove um cristal do robo
         robos[timeAtual][robo]->crist--;
 		empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
-	  // Caso ele nao tenha cristais
+      // Caso ele nao tenha cristais
       else
         empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
     }
@@ -324,7 +324,7 @@ static int ataque(int posTmpX, int posTmpY){
   // Caso tenha robo para atacar na posicao desejada:
   if(arena[posTmpX][posTmpY]->vazia){
     // Procura o robo nessa posicao
-	int temRobo = 0
+    int temRobo = 0
     int time = 0;
     int qual = 0;
     for(int i = 0; i < robos.length; i++){
@@ -337,17 +337,17 @@ static int ataque(int posTmpX, int posTmpY){
         }
       }
     }
-	// Como, por enquanto so tem um tipo de ataque, deixemos essa parte comentada
-	// if(tipo == 1)
-	// Retira 30 pontos de vida do robo atacado
-	robos[time][qual]->vida -= 30;
-	//}
-	// Caso acabe a vida desse robo, ele sera destruido
-	if(robos[time][qual]->vida <= 0){
-	  RemoveExercito(posTmpX, posTmpY, time, qual);
-	}
-	// Retorna sucesso
-	return 1;
+    // Como, por enquanto so tem um tipo de ataque, deixemos essa parte comentada
+    // if(tipo == 1)
+    // Retira 30 pontos de vida do robo atacado
+    robos[time][qual]->vida -= 30;
+    //}
+    // Caso acabe a vida desse robo, ele sera destruido
+    if(robos[time][qual]->vida <= 0){
+    RemoveExercito(posTmpX, posTmpY, time, qual);
+    }
+    // Retorna sucesso
+    return 1;
   }
   // Caso esteja vazia:
   else{
@@ -365,23 +365,23 @@ static int move(int posTmpX, int posTmpY){
 
   // Tem alguem ai? - Verifica se ja tem um robo na celula desejada
   if(arena[posTmpX][posTmpY]->vazia != 0){
-	// Retorna fracasso
+    // Retorna fracasso
     return 0;
   }
   // Nao tem monstro aqui - Nao tem robo na celula desejada
   else {
     // Muda estado da arena
-	// Marca a celula que o robo está deixando para vazia
+    // Marca a celula que o robo está deixando para vazia
     arena[robos[timeAtual][roboAtual]->posx][robos[timeAtual][roboAtual]->posy]->vazia = 0;
-	// Marca a celula que o robo esta indo para nao vazia, indicando o seu time
+    // Marca a celula que o robo esta indo para nao vazia, indicando o seu time
     arena[posTmpX][posTmpY]->vazia = timeAtual + 1;
     // Muda estado do robo
-	// Muda sua posicao
+    // Muda sua posicao
     robos[timeAtual][roboAtual]->posx = posTmpX;
     robos[timeAtual][roboAtual]->posy = posTmpY;
-	// Caso queiramos mudar a contagem de tempo para chamadas de sistema:
-	//TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY]->terreno;
-	// Retorna sucesso
+    // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
+    //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY]->terreno;
+    // Retorna sucesso
     return 1;
   }
 }
@@ -457,7 +457,7 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
 /*-------------------------------------------------------------------------------------*/
 static int CriaArena(int tamanho, int times, int cristais, int robosT){
 	
-	// Inicialização dos vetores de cristais e dos pontos de cada time
+  // Inicialização dos vetores de cristais e dos pontos de cada time
   int cristaisRestantes [cristais];
   int pontosTotais [times];
 
@@ -474,15 +474,15 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
 
   // Gera de modo aleatorio o terreno da arena, com irregularidades
   for(int a = 0; a < 7; a++){
-	// Sorteia uma posicao, e gera um retangulo de largura tamanhoX e altura 
-	// de tamanhoY de um tipo aleatorio de terreno na arena
+    // Sorteia uma posicao, e gera um retangulo de largura tamanhoX e altura 
+    // de tamanhoY de um tipo aleatorio de terreno na arena
     int tipoterr = rand() % 5;
     int localX = rand() % 20;
     int localY = rand() % 20;
     int tamanhoX = rand() % 5;
     int tamanhoY = rand() % 5;
 	
-	// Caso nao couber na arena, ajustamos o seu tamanho
+    // Caso nao couber na arena, ajustamos o seu tamanho
     for(int i = localX; i < Minimo(20, localX + tamanhoX); i++) {
       for(int j = localY; j < Minimo(20, localY + tamanhoY); j++) {
         arena[i][j]->terreno = tipoterr;
@@ -502,12 +502,12 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
   for(int i = 1; i <= times; i++){
     int localX = rand() % 20;
     int localY = rand() % 20;
-	// Caso tenha base ou cristais no local sorteado,
-	// decrementa o i para refazer esse loop
+    // Caso tenha base ou cristais no local sorteado,
+    // decrementa o i para refazer esse loop
     if(arena[localX][localY]->base || arena[localX][localY]->nCristais){
       i--;
     }
-	// Caso não tenha nem base nem cristais
+    // Caso não tenha nem base nem cristais
     else{
       arena[localX][localY]->base = i;
     }
@@ -517,11 +517,11 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
   for(int i = 1; i < cristais; i++){
     int localX = rand() % 20;
     int localY = rand() % 20;
-	// Caso ja tenha uma base no local sorteado, decrementa o i para refazer esse loop
+    // Caso ja tenha uma base no local sorteado, decrementa o i para refazer esse loop
     if(arena[localX][localY]->base){
       i--;
     }
-	// Caso nao tenha base no local
+    // Caso nao tenha base no local
     else{
       arena[localX][localY]->nCristais++;
     }
@@ -532,11 +532,11 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
     for(int i = 0; i < robosT; i++){
       int localX = rand() % 20;
       int localY = rand() % 20;
-	  // Caso ja tenha um robo no local sorteado, decrementa o i para refazer esse loop
+      // Caso ja tenha um robo no local sorteado, decrementa o i para refazer esse loop
       if(arena[localX][localY]->vazia){
         i--;
       }
-	  // Se estiver vazia:
+      // Se estiver vazia:
       else{
         arena[localX][localY]->vazia++;
         InsereExercito(times, localX, localY, i);
