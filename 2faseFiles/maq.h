@@ -14,7 +14,7 @@ typedef struct {
   int time;
 } Maquina;
 
-Maquina *cria_maquina(INSTR *p);
+Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV);
 
 void destroi_maquina(Maquina *m);
 

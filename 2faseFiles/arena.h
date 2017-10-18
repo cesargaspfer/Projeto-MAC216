@@ -14,5 +14,5 @@ typedef struct {
 } Robo;
 
 int main ();
-void Sistema(int op);
+void Sistema(int op, int dir, Maquina *m);
 void Atualiza ();
