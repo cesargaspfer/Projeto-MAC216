@@ -1,10 +1,10 @@
-play: maq.o pilha.o arena.o
+CC = gcc
+CFLAGS = -g -Wall
 
+default: arena
 
-pilha.o : pilha.c pilha.h
-	cc -c pilha.c
-arena.o : arena.c arena.h
-	cc -c arena.c
+arena: maq.o pilha.o arena.o
+	$(CC) $(CFLAGS) -o arena maq.o arena.o pilha.o
 
 clean:
-	rm -f play *.o
+	rm -f arena *.o
