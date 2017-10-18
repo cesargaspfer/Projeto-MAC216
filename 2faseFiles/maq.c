@@ -283,7 +283,16 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
 	  return;
 	case PRN:
     // desempilha e imprime o topo
-	  printf("%d\n", desempilha(pil).Valor);
+    a = desempilha(pil);
+    printf("%d\n", a.Valor.n);
+    printf("%d\n", a.Valor.ac);
+    printf("%d\n", a.Valor.v);
+    printf("%d\n", a.Valor.c.terreno);
+    printf("%d\n", a.Valor.c.vazia);
+    printf("%d\n", a.Valor.c.nCristais);
+    printf("%d\n", a.Valor.c.base);
+    printf("%s\n", a.Valor.b);
+    printf("%s\n", a.Valor.d);
 	  break;
   case STL:
     tmp = desempilha(pil);
