@@ -39,7 +39,8 @@ char *CODES[] = {
   "ATK",
   "INF",
   "CLT",
-  "DEP"
+  "DEP",
+  "ATR"
 };
 #else
 #  define D(X)
