@@ -164,7 +164,7 @@ void Sistema(int op, int dir, Maquina *m) {
         }
         // Remove um cristal do robo
         robos[timeAtual][robo]->crist--;
-		empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+		    empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
       // Caso ele nao tenha cristais
       else
