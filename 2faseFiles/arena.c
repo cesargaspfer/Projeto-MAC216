@@ -26,7 +26,9 @@
 	int fimDoJogo = 0;       // Guarda a informacao se o jogo ja acabou
 	
 	// Variavel de tempo
-	clock_t begin; // "relogio"
+	clock_t begin; // "relogio" do começo
+  clock_t end; // "relogio" do fim
+  double currentTime = 0.0; // tempo total de jogo
 	
 // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
 // int TempoDeCadaRobo[2][5];
@@ -181,8 +183,8 @@ void Sistema(int op, int dir, Maquina *m) {
 /*-------------------------------------------------------------------------------------*/
 void Fim () {
   // "Para o relogio"
-  clock_t end = clock();
-  double currentTime = (double) (end - begin)/ CLOCKS_PER_SEC;
+  end = clock();
+  currentTime = (double) (end - begin)/ CLOCKS_PER_SEC;
 
   // Caso nao foram coletados todos os cristais, eh avisado 
   // que o jogo nao foi ate o fim (ou seja, foi interrompido)
@@ -216,7 +218,7 @@ void Fim () {
   // Da parabens a todos e diz quanto tempo levou essa partida
   else {
 	printf("Parabéns à todos!\n");
-	printf("Tempo total de jogo: %d\n", currentTime);
+	printf("Tempo total de jogo: %f\n", currentTime);
   }
 }
 
@@ -435,7 +437,7 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
     int cairX = posX + localX;
     int cairY = posY + localY;
 
-    //Verifica se nao caiu dentro da arena, caso nao tenha caido, bota na estremidade da arena
+    //Verifica se nao caiu dentro da arena, caso nao tenha caido, bota na extremidade da arena
          if (cairX < 0)  cairX = 0;
     else if (cairX > 19) cairX = 19;
          if (cairY < 0)  cairY = 0;

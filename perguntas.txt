@@ -1,3 +1,9 @@
+A SEREM FEITAS
+
+
+
+RESPONDIDAS
+
 1- Na página 8 do pdf, fala que o RET empilha na pilha de dados seu argumento, e no codigo, nao empilha, devemos implementar isso?
 2- A compilação do arquivo gerado pelo montador deve ser "unico"? (gcc programa -o programa) ou pode ser com os outros arquivos: (gcc maq.c pilha.c programa.c -o programa)
 3- devemos implementar os codigos de maq.c e pilha.c no montador?

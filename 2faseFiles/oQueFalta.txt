@@ -12,6 +12,6 @@ O que falta fazer?
 	maq.c:
 		ExecutaAte()
 
-	MakeFile
+	DONE: MakeFile
 
 	Relatório
