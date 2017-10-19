@@ -285,15 +285,10 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
 	case PRN:
     // desempilha e imprime o topo
     a = desempilha(pil);
+    if (a.t == CELL)
+      printf("%d\n%d\n%d\n%d", a.Valor.c.terreno, a.Valor.c.vazia, a.Valor.c.nCristais, a.Valor.c.base);
+    else
     printf("%d\n", a.Valor.n);
-    printf("%d\n", a.Valor.ac);
-    printf("%d\n", a.Valor.v);
-    printf("%d\n", a.Valor.c.terreno);
-    printf("%d\n", a.Valor.c.vazia);
-    printf("%d\n", a.Valor.c.nCristais);
-    printf("%d\n", a.Valor.c.base);
-    printf("%s\n", a.Valor.b);
-    printf("%s\n", a.Valor.d);
 	  break;
   case STL:
     tmp = desempilha(pil);
