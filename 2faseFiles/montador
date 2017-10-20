@@ -75,9 +75,12 @@ while l:
 print '};'
 #Funcao Main
 print('');
+print('INSTR[] getProg() { return prog; }')
+'''
 print("int main(int ac, char **av) {");
 print("	Maquina *maq = cria_maquina(prog);");
 print("	exec_maquina(maq, 1000);");
 print("	destroi_maquina(maq);");
 print("	return 0;");
 print("}");
+'''
