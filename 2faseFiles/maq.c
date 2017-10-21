@@ -290,9 +290,12 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
     // desempilha e imprime o topo
     a = desempilha(pil);
     if (a.t == CELL)
-      printf("%d\n%d\n%d\n%d", a.Valor.c.terreno, a.Valor.c.vazia, a.Valor.c.nCristais, a.Valor.c.base);
+      printf("Terreno: %d\n Vazio: %d\n Cristais: %d\n Base :%d\n", a.Valor.c.terreno, a.Valor.c.vazia, a.Valor.c.nCristais, a.Valor.c.base);
+    else if (a.t == BOOL)
+    printf("%d\n", a.Valor.b);
     else
     printf("%d\n", a.Valor.n);
+    empilha(pil, a);
 	  break;
   case STL:
     tmp = desempilha(pil);

@@ -25,7 +25,7 @@ void exec_maquina(Maquina *m, int n);
 // declaração de função para retornar o array de instruções
 INSTR* getProg();
 
-void assignRobo(Maquina *m);
+
 void Sistema(int op, int dir,  Maquina *m);
 void Atualiza ();
 #endif /* MAQ_H*/

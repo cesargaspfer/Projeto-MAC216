@@ -7,24 +7,24 @@
 
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
-	int TotTimes = 2;      // Total de times na partida
-	int TotRobTime = 5;    // Total de robos por partida
-	Celula arena[20][20];  // A arena em sí (o campo de batalha)
-	Maquina robos[2][5];   // Vetor que contem os robos ([times][robos])
+	static int TotTimes = 2;      // Total de times na partida
+	static int TotRobTime = 5;    // Total de robos por partida
+	static Celula arena[20][20];  // A arena em sí (o campo de batalha)
+	static Maquina robos[2][5];   // Vetor que contem os robos ([times][robos])
 
 // Variáveis da arena
-	int cristaisRestantes;   // Cristais restantes na arena
+	static int cristaisRestantes;   // Cristais restantes na arena
 
 // Variaveis do sistema
 
 	// Variavies de execucao (indices para as matrizes)
-	int timeAtual = 0;   // Qual time o robo que esta sendo executado pertence
-	int roboAtual = 0;   // Do time, qual robo esta sendo executado
+	static int timeAtual = 0;   // Qual time o robo que esta sendo executado pertence
+	static int roboAtual = 0;   // Do time, qual robo esta sendo executado
 
 	// Variaveis de controle
-	int pontosTotais [2];    // Pontos totais de cada time,
-	int RobosAtivos[2][5];   // Vetor que guarda se o robo esta ativo ou nao
-	int fimDoJogo = 0;       // Guarda a informacao se o jogo ja acabou
+	static int pontosTotais [2];    // Pontos totais de cada time,
+	static int RobosAtivos[2][5];   // Vetor que guarda se o robo esta ativo ou nao
+	static int fimDoJogo = 0;       // Guarda a informacao se o jogo ja acabou
 
 	// Variavel de tempo
 	clock_t begin; // "relogio" do começo
@@ -37,11 +37,10 @@
 /*
 // Funcao apenas para esta faze, a qual atribui a mauina a matriz robos
 void assignRobo(Maquina *m){
-
+  robos[0][0] = *m;
 
 }
 */
-
 // Funcao main, a qual inicializa as variaveis e o jogo
 // Implementa, mas não para esta fase
 /*
@@ -77,7 +76,7 @@ int main () {
 *
 *************************************************/
 // Recebe a operacao (acao) que ira executar, a direcao e de qual maquina esta solicitando
-void Sistema(int op, int dir, Maquina* m) {
+void Sistema(int op, int dir, Maquina *m) {
 
 
   /*
@@ -90,33 +89,42 @@ void Sistema(int op, int dir, Maquina* m) {
      5 - Noroeste
 	 6 - Atual
   */
-  robos[0][0] = *m;
+   //Imprime a arena
+   /*
+  for(int i = 0; i < 20; i++){
+    for(int j = 0; j < 20; j++){
+        printf("%d ", arena[j][i].vazia);
+    }
+    printf("\n");
+  }
+  */
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
   int movX = 0; // Celula na direcao X a avancar
   int movY = 0; // Celula na direcao Y a avancar
 
   if(dir == 1){
-    movX = 1;
-    movY = 1;
+    movX = -1;
+    movY = -1;
   }
   else if(dir == 2){
-    movX = 1;
+    movX = -1;
   }
   else if(dir == 4){
-    movX = -1;
+    movX = 1;
   }
   else if(dir == 5){
-    movX = -1;
-    movY = 1;
+    movX = 1;
+    movY = -1;
   }
-  if(robos[timeAtual][roboAtual].posx%2){
-    movY--;
+  //Para a proxima fase: robos[timeAtual][roboAtual] ao invez de m
+  if(m->posx%2){
+    movY++;
   }
   if(dir == 0){
-    movY = 1;
+    movY = -1;
   }
   else if(dir == 3){
-    movY = -1;
+    movY = +1;
   }
   else if (dir == 6){
     movX = 0;
@@ -124,9 +132,8 @@ void Sistema(int op, int dir, Maquina* m) {
   }
 
   // Futura possivel posicao do robo
-  int posTmpX = robos[timeAtual][roboAtual].posx + movX;
-  int posTmpY = robos[timeAtual][roboAtual].posy + movY;
-
+  int posTmpX = m->posx + movX;
+  int posTmpY = m->posy + movY;
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 19 || posTmpY > 19) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
@@ -139,21 +146,21 @@ void Sistema(int op, int dir, Maquina* m) {
       empilha(&m->pil, o); // Empilha, no robo, a Celula
     }
     else if(op == 0) { // Move
-		if(move(posTmpX, posTmpY) == 0)
+		if(move(posTmpX, posTmpY, m) == 0)
 			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
 		else
 			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
 	}
     else if(op == 1) { // Ataque
-		if(ataque(posTmpX, posTmpY))
+		if(ataque(posTmpX, posTmpY, m))
 			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
 		else
 			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
 
     }
     else if(op == 3) { // Coletar
-		if(coleta(posTmpX, posTmpY)) {
-			robos[timeAtual][roboAtual].crist++;
+		if(coleta(posTmpX, posTmpY, m)) {
+			m->crist++;
 			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
 		}
       else
@@ -161,7 +168,7 @@ void Sistema(int op, int dir, Maquina* m) {
     }
     else if(op == 4) { // Depositar
       // Se o robo tiver cristais
-      if(robos[timeAtual][roboAtual].crist) {
+      if(m->crist) {
         // Se tiver uma base a celula que ele quer depositar
         if(arena[posTmpX][posTmpY].base){
           // O time da base que foi depositado um cristal ganha um ponto
@@ -176,7 +183,7 @@ void Sistema(int op, int dir, Maquina* m) {
            arena[posTmpX][posTmpY].nCristais++;
         }
         // Remove um cristal do robo
-        robos[timeAtual][roboAtual].crist--;
+        m->crist--;
 		    empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
       // Caso ele nao tenha cristais
@@ -319,13 +326,13 @@ void Atualiza (){
 //                                       Coleta                                        //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-int coleta(int posTmpX, int posTmpY){
+int coleta(int posTmpX, int posTmpY, Maquina *m){
   // Caso tenha cristais na celula desejada
   if(arena[posTmpX][posTmpY].nCristais){
     // Retira um cristal da arena
     arena[posTmpX][posTmpY].nCristais--;
 	// Adiciona um cristal ao robo
-	robos[timeAtual][roboAtual].crist++;
+	m->crist++;
 	// Retorna sucesso
     return 1;
   }
@@ -341,7 +348,7 @@ int coleta(int posTmpX, int posTmpY){
 //                                       Ataque                                        //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-int ataque(int posTmpX, int posTmpY){
+int ataque(int posTmpX, int posTmpY, Maquina *m){
   // Caso tenha robo para atacar na posicao desejada:
   if(arena[posTmpX][posTmpY].vazia){
     // Procura o robo nessa posicao
@@ -382,10 +389,11 @@ int ataque(int posTmpX, int posTmpY){
 //                                        Move                                         //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-int move(int posTmpX, int posTmpY){
+int move(int posTmpX, int posTmpY, Maquina *m){
 
   // Tem alguem ai? - Verifica se ja tem um robo na celula desejada
   if(arena[posTmpX][posTmpY].vazia != 0){
+
     // Retorna fracasso
     return 0;
   }
@@ -393,13 +401,13 @@ int move(int posTmpX, int posTmpY){
   else {
     // Muda estado da arena
     // Marca a celula que o robo está deixando para vazia
-    arena[robos[timeAtual][roboAtual].posx][robos[timeAtual][roboAtual].posy].vazia = 0;
+    arena[m->posx][m->posy].vazia = 0;
     // Marca a celula que o robo esta indo para nao vazia, indicando o seu time
     arena[posTmpX][posTmpY].vazia = timeAtual + 1;
     // Muda estado do robo
     // Muda sua posicao
-    robos[timeAtual][roboAtual].posx = posTmpX;
-    robos[timeAtual][roboAtual].posy = posTmpY;
+    m->posx = posTmpX;
+    m->posy = posTmpY;
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
     //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY].terreno;
     // Retorna sucesso
@@ -484,7 +492,9 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
   int pontosTotais [times];
 
   fimDoJogo = 0; // O jogo nao terminou
-
+  arena[tamanho][tamanho];
+   timeAtual = 0;
+	 roboAtual = 0;
   // Gera a Base do terreno da arena, ou seja, a arena toda fica com o terreno do tipo 1
   for(int i = 0; i < 20; i++){
     for(int j = 0; j < 20; j++){
@@ -506,8 +516,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     int tamanhoY = rand() % 5;
 
     // Caso nao couber na arena, ajustamos o seu tamanho
-    for(int i = localX; i < Minimo(20, localX + tamanhoX); i++) {
-      for(int j = localY; j < Minimo(20, localY + tamanhoY); j++) {
+    for(int i = localX - tamanhoX; i < Minimo(20, localX + tamanhoX); i++) {
+      for(int j = localY - tamanhoY; j < Minimo(20, localY + tamanhoY); j++) {
         arena[i][j].terreno = tipoterr;
       }
     }

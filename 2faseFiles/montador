@@ -81,7 +81,6 @@ print('INSTR[] getProg() { return prog; }')
 print("int main(int ac, char **av) {");
 print("CriaArena(20, 2, 10, 5);");
 print("	Maquina *maq = cria_maquina(prog, 0, 0, 100, 0, 1);");
-print("assignRobo(*maq);");
 print("	exec_maquina(maq, 1000);");
 print("	destroi_maquina(maq);");
 print("	return 0;");

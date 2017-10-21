@@ -7,5 +7,5 @@ typedef struct {
   int base;
 } Celula;
 //int main ();
-
+//void assignRobo(Maquina *m);
 #endif
