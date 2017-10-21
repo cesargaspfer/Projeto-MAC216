@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "maq.h"
-#include "arena.h"
 /* #define DEBUG */
 
 #ifdef DEBUG

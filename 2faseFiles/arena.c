@@ -3,6 +3,7 @@
 //#include"arena.h"
 #include<time.h>
 #include "maq.h"
+#include "util.h"
 
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
@@ -75,7 +76,7 @@ int main () {
 *
 *************************************************/
 // Recebe a operacao (acao) que ira executar, a direcao e de qual maquina esta solicitando
-void Sistema(int op, int dir, Maquina *m) {
+void Sistema(int op, int dir, Maquina* m) {
 
 
   /*

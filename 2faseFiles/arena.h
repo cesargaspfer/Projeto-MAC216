@@ -1,9 +1,7 @@
-
-#include "maq.h"
-
 #ifndef ARE_H
 #define ARE_H
-#endif /* ARE_H */
+
+#include "maq.h"
 
 typedef struct {
   int terreno;
@@ -12,14 +10,8 @@ typedef struct {
   int base;
 } Celula;
 
-typedef struct {
-  int posx;
-  int posy;
-  int vida;
-  int crist;
-  int time;
-} Robo;
-
-int main ();
-void Sistema(int op, int dir, Maquina *m);
+//int main ();
+void assignRobo(Maquina *m);
+void Sistema(int op, int dir,  Maquina *m);
 void Atualiza ();
+#endif /* ARE_H */

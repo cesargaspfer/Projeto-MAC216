@@ -1,4 +1,5 @@
-
+#ifndef INS_H
+#define INS_H
 #include "arena.h"
 #include "util.h"
 /* Códigos das instruções */
@@ -90,3 +91,4 @@ typedef struct {
   OpCode instr;
   OPERANDO o;
 } INSTR;
+#endif /* INS_H */
