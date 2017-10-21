@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-//#include"arena.h"
-#include<time.h>
+#include "arena.h"
 #include "maq.h"
+#include<time.h>
 #include "util.h"
 
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
@@ -17,7 +17,7 @@
 
 // Variaveis do sistema
 
-	// Variavies de execucao
+	// Variavies de execucao (indices para as matrizes)
 	int timeAtual = 0;   // Qual time o robo que esta sendo executado pertence
 	int roboAtual = 0;   // Do time, qual robo esta sendo executado
 
@@ -37,7 +37,8 @@
 
 // Funcao apenas para esta faze, a qual atribui a mauina a matriz robos
 void assignRobo(Maquina *m){
-  robos[0][0] = m;
+
+  robos[0][0] = *m;
 }
 
 
@@ -128,32 +129,35 @@ void Sistema(int op, int dir, Maquina* m) {
 
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 19 || posTmpY > 19) {
-    empilha(&m.pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+    empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
   }
   else{
-    if(op == 2) { // Informação
-      empilha(&m.pil, (OPERANDO){CELL, arena[posTmpX][posTmpY]}); // Empliha, no robo, a Celula
+    if(op == 2) { // Se pedir infos
+      OPERANDO o;
+      o.t = CELL;
+      o.Valor.c = arena[posTmpX][posTmpY];
+      empilha(&m->pil, o); // Empilha, no robo, a Celula
     }
     else if(op == 0) { // Move
 		if(move(posTmpX, posTmpY) == 0)
-			empilha(&m.pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
 		else
-			empilha(&m.pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
 	}
     else if(op == 1) { // Ataque
 		if(ataque(posTmpX, posTmpY))
-			empilha(&m.pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
 		else
-			empilha(&m.pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
 
     }
     else if(op == 3) { // Coletar
 		if(coleta(posTmpX, posTmpY)) {
 			robos[timeAtual][roboAtual].crist++;
-			empilha(&m.pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
 		}
       else
-        empilha(&m.pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+        empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
     }
     else if(op == 4) { // Depositar
       // Se o robo tiver cristais
@@ -172,12 +176,12 @@ void Sistema(int op, int dir, Maquina* m) {
            arena[posTmpX][posTmpY].nCristais++;
         }
         // Remove um cristal do robo
-        robos[timeAtual][robo].crist--;
-		    empilha(&m.pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+        robos[timeAtual][roboAtual].crist--;
+		    empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
       // Caso ele nao tenha cristais
       else
-				empilha(&m.pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+				empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
     }
   }
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
@@ -203,14 +207,17 @@ void Fim () {
 
   // Procura o ganhado (quem fez mais pontos)
   int ganhador = 0;
-  for(int i = 1; i < pontosTotais.length; i++) {
+  // calcular o tamanho do array pontosTotais
+  int len = sizeof(pontosTotais) / sizeof(pontosTotais[0]);
+
+  for(int i = 1; i < len; i++) {
 	if(pontosTotais[i-1] < pontosTotais[i]) {
 		ganhador = i;
 	}
   }
   // Verifica se houve empate, se houve, avisa que empatou e quem ganhou
   int empate = 0;
-  for(int i = 1; i < pontosTotais.length; i++) {
+  for(int i = 1; i < len; i++) {
 	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
 		printf("Empate! Times vencedores:\n");
 		printf("Time %d;", (i+1));
@@ -282,20 +289,23 @@ void Atualiza (){
 		for(int j = 0; j < TotTimes; j++){
 			// Se acabou o jogo, pare com os 3 lacos
 			if(fimDoJogo){
-				break 3;
+				break;
 			}
 			// Muda o Time atual que está executando
 			timeAtual = i;
 			// Se o robo esta vivo:
 			if(RobosAtivos[timeAtual][roboAtual] == 1) {
 				// Executa 50 instrucoes
-				exec_maquina(robos[timeAtual][roboAtual].m, 50);
+        // cria ponteiro apontando para a maquina atual
+        Maquina* mp = &robos[timeAtual][roboAtual];
+				exec_maquina(mp, 50);
 			}
-		}
-		// Muda qual robo dentro do time está executando
-		roboAtual = j;
-		// "Proxima rodada"
-		RodadaAtual++;
+      // Muda qual robo dentro do time está executando
+      roboAtual = j;
+      // "Proxima rodada"
+      RodadaAtual++;
+    }
+
 	}
 	// Caso seja a ultima rodada, acaba com o jogo
 	if(RodadaAtual == 499){
@@ -309,13 +319,13 @@ void Atualiza (){
 //                                       Coleta                                        //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static int coleta(int posTmpX, int posTmpY){
+int coleta(int posTmpX, int posTmpY){
   // Caso tenha cristais na celula desejada
   if(arena[posTmpX][posTmpY].nCristais){
     // Retira um cristal da arena
     arena[posTmpX][posTmpY].nCristais--;
 	// Adiciona um cristal ao robo
-	robos[timeAtual][robo].crist++;
+	robos[timeAtual][roboAtual].crist++;
 	// Retorna sucesso
     return 1;
   }
@@ -331,15 +341,15 @@ static int coleta(int posTmpX, int posTmpY){
 //                                       Ataque                                        //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static int ataque(int posTmpX, int posTmpY){
+int ataque(int posTmpX, int posTmpY){
   // Caso tenha robo para atacar na posicao desejada:
   if(arena[posTmpX][posTmpY].vazia){
     // Procura o robo nessa posicao
-    int temRobo = 0
+    int temRobo = 0;
     int time = 0;
     int qual = 0;
-    for(int i = 0; i < robos.length; i++){
-      for(int j = 0; i < robos[j].length; j++){
+    for(int i = 0; i < TotTimes; i++){
+      for(int j = 0; i < TotRobTime; j++){
         if(robos[time][qual].posx == posTmpX && robos[time][qual].posy == posTmpY) {
           time = i;
           qual = j;
@@ -372,7 +382,7 @@ static int ataque(int posTmpX, int posTmpY){
 //                                        Move                                         //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static int move(int posTmpX, int posTmpY){
+int move(int posTmpX, int posTmpY){
 
   // Tem alguem ai? - Verifica se ja tem um robo na celula desejada
   if(arena[posTmpX][posTmpY].vazia != 0){
@@ -404,7 +414,7 @@ static int move(int posTmpX, int posTmpY){
 /*-------------------------------------------------------------------------------------*/
 static void InsereExercito (int time, int posX, int posY, int qual) {
   // Cria o robo com a função cria_maquina
-  robos[time-1][qual] = cria_maquina(getProg(), posX, posY, 100, 0, time);
+  robos[time-1][qual] = *cria_maquina(getProg(), posX, posY, 100, 0, time);
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
@@ -416,15 +426,15 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
 //                                    Destroi Robo                                     //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static void RemoveExercito(int posX, int posY, int time, int qual) {
+void RemoveExercito(int posX, int posY, int time, int qual) {
 
   //Caso não foi informado de qual time o robo pertence
   if(time == -1){
     // Procura o robo a destruir, pela sua posição
     time = 0;
     qual = 0;
-    for(int i = 0; i < robos.length; i++){
-      for(int j = 0; i < robos[j].length; j++){
+    for(int i = 0; i < TotTimes; i++){
+      for(int j = 0; i < TotRobTime; j++){
         if(robos[time][qual].posx == posX && robos[time][qual].posy == posY) {
           time = i;
           qual = j;
@@ -456,7 +466,7 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
   robos[time][qual].crist = 0;
 
   // Destroi a Maquina pela funcao destroi_maquina
-  destroi_maquina(robos[time][qual]);
+  destroi_maquina(&robos[time][qual]);
   // Marca como "inativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 0;
 }
@@ -466,7 +476,7 @@ static void RemoveExercito(int posX, int posY, int time, int qual) {
 //                                     Cria Arena                                      //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static int CriaArena(int tamanho, int times, int cristais, int robosT){
+int CriaArena(int tamanho, int times, int cristais, int robosT){
 
   // Inicialização dos vetores de cristais e dos pontos de cada time
   int cristaisRestantes [cristais];
@@ -568,7 +578,7 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 // Retorna o maior valor entre dois numeros
-static int Maximo (int a, int b){
+int Maximo (int a, int b){
   if(a > b) return a;
   else return b;
 }
@@ -579,7 +589,7 @@ static int Maximo (int a, int b){
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 // Retorna o menor valor entre dois numeros
-static int Minimo (int a, int b){
+int Minimo (int a, int b){
   if(a < b) return a;
   else return b;
 }

@@ -34,7 +34,7 @@ char *CODES[] = {
   "RCE",
   "ALC",
   "FRE",
-  "MOV", // Adicionado codes daqui para baixo
+  "MOV", // Opcodes adicionados daqui para baixo
   "ATK",
   "INF",
   "CLT",

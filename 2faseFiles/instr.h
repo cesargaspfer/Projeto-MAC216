@@ -1,9 +1,9 @@
-#ifndef INS_H
-#define INS_H
-#include "arena.h"
+#ifndef INSTR_H
+#define INSTR_H
 #include "util.h"
+#include "arena.h"
 /* Códigos das instruções */
-/* Adição de MOV e ATR (por enquanto) */
+
 typedef enum {
   PUSH,
   POP,
@@ -91,4 +91,4 @@ typedef struct {
   OpCode instr;
   OPERANDO o;
 } INSTR;
-#endif /* INS_H */
+#endif /* INSTR_H*/
