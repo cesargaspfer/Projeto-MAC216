@@ -1,6 +1,9 @@
-/*#ifndef MAQ_H
-/*#define MAQ_H*/
+
 #include "maq.h"
+
+#ifndef ARE_H
+#define ARE_H
+#endif /* ARE_H */
 
 typedef struct {
   int terreno;
@@ -20,5 +23,3 @@ typedef struct {
 int main ();
 void Sistema(int op, int dir, Maquina *m);
 void Atualiza ();
-
-/*#endif /* MAQ_H */

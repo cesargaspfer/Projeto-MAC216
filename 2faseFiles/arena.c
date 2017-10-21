@@ -6,10 +6,10 @@
 
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
-	int TotTimes = 1;      // Total de times na partida
-	int TotRobTime = 1;    // Total de robos por partida
+	int TotTimes = 2;      // Total de times na partida
+	int TotRobTime = 5;    // Total de robos por partida
 	Celula arena[20][20];  // A arena em sí (o campo de batalha)
-	Maquina robos[1][1];   // Vetor que contem os robos ([times][robos])
+	Maquina robos[2][5];   // Vetor que contem os robos ([times][robos])
 
 // Variáveis da arena
 	int cristaisRestantes;   // Cristais restantes na arena
@@ -21,8 +21,8 @@
 	int roboAtual = 0;   // Do time, qual robo esta sendo executado
 
 	// Variaveis de controle
-	int pontosTotais [1];    // Pontos totais de cada time,
-	int RobosAtivos[1][1];   // Vetor que guarda se o robo esta ativo ou nao
+	int pontosTotais [2];    // Pontos totais de cada time,
+	int RobosAtivos[2][5];   // Vetor que guarda se o robo esta ativo ou nao
 	int fimDoJogo = 0;       // Guarda a informacao se o jogo ja acabou
 
 	// Variavel de tempo
@@ -33,9 +33,18 @@
 // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
 // int TempoDeCadaRobo[2][5];
 
+
+// Funcao apenas para esta faze, a qual atribui a mauina a matriz robos
+void assignRobo(Maquina *m){
+  robos[0][0] = m;
+}
+
+
 // Funcao main, a qual inicializa as variaveis e o jogo
+// Implementa, mas não para esta fase
+/*
 int main () {
-  fimDoJogo = 0; // O jogo nao terminou
+
 
   // Cria a arena, com os argumentos:
   //	-Tamanho da arena,
@@ -44,13 +53,12 @@ int main () {
   // 	-Total de robos por time
   CriaArena(20, TotTimes, 10, TotRobTime);
 
-  // "Inicializa o relogio"
-  begin = clock();
+
 
   // Chama o atualiza
   Atualiza();
 }
-
+*/
 /*-------------------------------------------------------------------------------------*/
 //                                                                                     //
 //                                       Sistema                                       //
@@ -463,6 +471,7 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
   int cristaisRestantes [cristais];
   int pontosTotais [times];
 
+  fimDoJogo = 0; // O jogo nao terminou
 
   // Gera a Base do terreno da arena, ou seja, a arena toda fica com o terreno do tipo 1
   for(int i = 0; i < 20; i++){
@@ -528,7 +537,7 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
       arena[localX][localY].nCristais++;
     }
   }
-
+/* Implementa, mas nao para esta fase
   // Bota os robos aleatoriamente no mapa
   for(int j = 1; j <= times; j++){
     for(int i = 0; i < robosT; i++){
@@ -545,6 +554,10 @@ static int CriaArena(int tamanho, int times, int cristais, int robosT){
       }
     }
   }
+  */
+
+  // "Inicializa o relogio"
+  begin = clock();
 }
 
 

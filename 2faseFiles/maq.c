@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "maq.h"
-
+#include "arena.h"
 /* #define DEBUG */
 
 #ifdef DEBUG
@@ -54,12 +54,12 @@ static void Fatal(char *msg, int cod) {
   Erro(msg);
   exit(cod);
 }
-
+/*
 Maquina *cria_maquina(INSTR *p)
 {
-  
-}
 
+}
+*/
 Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
