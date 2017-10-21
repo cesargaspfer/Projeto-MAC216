@@ -12,7 +12,7 @@ INSTR prog[] = {
 int main(int ac, char **av) {
 CriaArena(20, 2, 10, 5);
 	Maquina *maq = cria_maquina(prog, 0, 0, 100, 0, 1);
-assignRobo(*maq);
+//assignRobo(*maq);
 	exec_maquina(maq, 1000);
 	destroi_maquina(maq);
 	return 0;

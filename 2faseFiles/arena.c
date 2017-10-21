@@ -34,13 +34,13 @@
 // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
 // int TempoDeCadaRobo[2][5];
 
-
+/*
 // Funcao apenas para esta faze, a qual atribui a mauina a matriz robos
 void assignRobo(Maquina *m){
 
-  robos[0][0] = *m;
-}
 
+}
+*/
 
 // Funcao main, a qual inicializa as variaveis e o jogo
 // Implementa, mas não para esta fase
@@ -90,7 +90,7 @@ void Sistema(int op, int dir, Maquina* m) {
      5 - Noroeste
 	 6 - Atual
   */
-
+  robos[0][0] = *m;
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
   int movX = 0; // Celula na direcao X a avancar
   int movY = 0; // Celula na direcao Y a avancar
@@ -414,7 +414,8 @@ int move(int posTmpX, int posTmpY){
 /*-------------------------------------------------------------------------------------*/
 static void InsereExercito (int time, int posX, int posY, int qual) {
   // Cria o robo com a função cria_maquina
-  robos[time-1][qual] = *cria_maquina(getProg(), posX, posY, 100, 0, time);
+  //Implementar para a proxima fase
+  //robos[time-1][qual] = *cria_maquina(getProg(), posX, posY, 100, 0, time);
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
