@@ -103,17 +103,17 @@ void Sistema(int op, int dir, Maquina *m) {
   int movY = 0; // Celula na direcao Y a avancar
 
   if(dir == 1){
-    movX = -1;
+    movX = 1;
     movY = -1;
   }
   else if(dir == 2){
-    movX = -1;
+    movX = 1;
   }
   else if(dir == 4){
-    movX = 1;
+    movX = -1;
   }
   else if(dir == 5){
-    movX = 1;
+    movX = -1;
     movY = -1;
   }
   //Para a proxima fase: robos[timeAtual][roboAtual] ao invez de m
