@@ -73,5 +73,18 @@ O jogador faz chamadas ao sistema usando principalmente cinco das funções impl
 \item INF: Solicita ao sistema informações sobre a célula em que ele está. O sistema então empilha um objeto do tipo \textbf{Celula} na pilha de dados da máquina.
 \item DEP \textit{Dir}: Deposita cristais na célula indicada por Dir.
 
+Executando o código a seguir:
+\lstinputlisting{tprogtex2}
+Obteve-se a seguinte saída:
+\lstinputlisting{output}
+Que significa, de acordo com cada linha, que:
+\begin{itemize}
+\item O robô conseguiu se mover para a célula norte 
+\item Não conseguiu atacar a célula ao norte de sua posição (pois ela está vazia, só há um robô na arena por enquanto)
+\item A informação pedida sobre célula atual, o atributo 1 (que é se está vazia ou não), retornou 0 (falso, mas \textbf{vazia} é int na structure Celula)
+\item Tentou coletar cristais na célula sul mas não conseguiu, pois não havia cristais lá, então retornou falso.
+\item Tentou depositar seu cristais na célula a sudeste de sua posição, mas não conseguiu porque não possui cristais.
+\end{itemize}
+
 \end{itemize}
 \end{document}
