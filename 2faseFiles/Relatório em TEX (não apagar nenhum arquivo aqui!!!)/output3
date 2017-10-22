@@ -1,0 +1,5 @@
+gcc -g -w -c maq.c
+gcc -g -w -c pilha.c
+gcc -g -w -c arena.c
+gcc -g -w -c tprog.c
+gcc -g -w maq.o pilha.o arena.o tprog.o -o arena
