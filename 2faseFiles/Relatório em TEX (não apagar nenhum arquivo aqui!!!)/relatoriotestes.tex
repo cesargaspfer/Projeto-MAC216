@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \begin{document}
 \title {\textbf{MAC 216} \\ Relatório da segunda parte do projeto\\}
-\author {César Gasparini Fernandes (10297630) \\ Artur M. R. dos
+\author {Cesar Gasparini Fernandes (10297630) \\ Artur M. R. dos
 Santos (10297734)\\ Daniel Silva Nunes (10297612)}
 \date {22/10/2017}
 \maketitle
@@ -63,10 +63,14 @@ Segue agora alguma de nossas implementações na arena:\par
 	\item Quando um robô "morre", isto é, o atributo vida chega a zero, ele acaba "derrubando" seus cristais ao seu redor (de forma aleatória).
 	\item Para um time ganhar um ponto, ele deve depositar um cristal em sua base, caso ele deposite um cristal na base inimiga, o inimigo ganhará um ponto.
 \end{itemize}
-Esse é o principal, para mais detalhes, está tudo comentado no código.
+Foi apresentada apenas uma visão geral da estrutura do sistema nessa segunda fase. Para mais detalhes, está tudo comentado no código.
 
 \section{Testes}
 \subsection{Montador}
+No momento, para que os códigos gerados funcionem bem com o Makefile feito, o arquivo gerado pelo montador deverá obrigatoriamente se chamar \textbf{tprog.c}. Assim, a execução do montador no terminal deve ser feita da seguinte forma:
+\begin{lstlisting}
+python montador < (arquivo com opcodes) > tprog.c
+\end{lstlisting}
 O seguinte código em "linguagem de máquina" no arquivo \textbf{tprog} foi dado na entrada do montador pela entrada padrão e gerou o seguinte código em linguagem C no arquivo \textbf{tprog.c} como está mostrado a seguir:
 \begin{center}
 Código em tprog:
@@ -75,6 +79,7 @@ Código em tprog:
 Código em tprog.c:
 \lstinputlisting[language = C]{tprogtex.c}
 \end{center}
+Nas fases seguintes adicionaremos maior flexibilidade ao montador, se for necessário.
 O código em tprog foi feito a fim de testar o funcionamento das novas funções que realizam operações aritméticas. O resultado obtido a partir da execução do arquivo "arena", executável do tprog.c, foi:
 \begin{lstlisting}
 2
@@ -84,6 +89,10 @@ O código em tprog foi feito a fim de testar o funcionamento das novas funções
 \end{lstlisting}
 \clearpage
 \subsection{Chamadas ao sistema}
+Primeiramente, para executar o programa gerado pelo montador na máquina virtual e verificar o funcionamento geral do sistema, deve-se executar o arquivo \textbf{arena} gerado pelo makefile da seguinte forma:\par
+\begin{lstlisting}
+./arena
+\end{lstlisting}
 O jogador faz chamadas ao sistema usando principalmente cinco das funções implementadas em maq.c. São elas:
 \begin{itemize}
 \item MOV \textit{Dir}: Solicitação para mover-se na arena para uma nova célula, indica pelo argumento Dir, que pode assumir os valores NORTH, SOUTH, NORTHEAST, SOUTHEAST, NORTHWEST, SOUTHWEST ou CURRENT.
