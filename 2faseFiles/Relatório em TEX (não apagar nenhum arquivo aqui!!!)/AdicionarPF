@@ -1,0 +1,10 @@
+Ao implementar a arena e o sistema, decidimos implementar ambos em um código só, arena.c, pois achamos mais fácil manipular a arena no mesmo arquivo do sistema e para diminuir o fulxo de dados entre os arquivos, entretanto separamos, no codigo, nitidamente o que é do sistema e o que é da arena.
+Segue agora alguma de nossas implementações na arena:
+	- Decidimos implementar, ao invéz da intrução "SIS", as funções "MOV", "ATK", "CLT", "DEP", e "INF" (que serão explicadas mais adiantes), pois achamos que ficaria mais fácil do jogador digitar o seu código.
+	- O usuário não necessita empilhar as ações na pilha de dados para chamar o sistema, achamos melhor ele apenas usar um dos comandos a cima, pois o codigo fica mais curto, prático e fácil para entender. Internamente, o comando chama direto o sistema, passando como argumento a ação e a direção que se deseja executar (também passa o ponteiro de sua máquina).
+	- Sempre que o usuário requisitar uma ação ao sistema, ele empilhará "true" ou "false" na pilha de dados do robo indicando se foi possível realizar a ação, ou se não foi possível, respectivamente.
+	- Quando o usuário pede informação da célula e quer saber o índice de um ítem com o ATR, a ordem é: "tipo de terreno"; "está vazia"; "número de cristais"; "é base".
+	- Quando o usuário quer saber se a célula está vazia, ele pode receber "0" que indica "não está", ou "1" que indica "está sendo ocupada por um robo do time 1", ou "2" que indica "está sendo ocupada por um robo do time 2", e assim por diante.
+	- O mapa da arena é gerado, em grande parte aleatoriamente.
+	- Acabamos nos antecipando e, nos comentários, estão implementações para a terceira parte, as quais são irrelevantes para essa.
+Esse é o principal, para mais detalhes, está tudo comentado no código.
