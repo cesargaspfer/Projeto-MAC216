@@ -292,9 +292,14 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
     if (a.t == CELL)
       printf("Terreno: %d\n Vazio: %d\n Cristais: %d\n Base :%d\n", a.Valor.c.terreno, a.Valor.c.vazia, a.Valor.c.nCristais, a.Valor.c.base);
     else if (a.t == BOOL)
-    printf("%d\n", a.Valor.b);
-    else
-    printf("%d\n", a.Valor.n);
+    {
+      int b = a.Valor.b;
+      if (b == 0)
+        printf("false\n");
+      else
+        printf("true\n");
+    } else
+      printf("%d\n", a.Valor.n);
     empilha(pil, a);
 	  break;
   case STL:
@@ -369,26 +374,18 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
     break;
 	case ATR:
 		tmp = desempilha(pil);
-		if(tmp.t == BOOL){
-			if(tmp.Valor.b == false){
-				empilha(pil,(OPERANDO) {NUM, {0}});
-			}
-			else{
-				empilha(pil,(OPERANDO) {NUM, {1}});
-			}
-		}
-		else if(tmp.t == CELL){
+	   if(tmp.t == CELL){
 			if(arg.Valor.n == 0) {
 				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.terreno}});
 			}
 			else if(arg.Valor.n == 1) {
 				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.vazia}});
 			}
-			else if(arg.Valor.n == 1) {
+			else if(arg.Valor.n == 2) {
 				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.nCristais}});
 			}
 			else {
-				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.nCristais}});
+				empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.base}});
 			}
 		}
 		else {

@@ -1,0 +1,17 @@
+PUSH 1
+DUP
+ADD
+PRN         #imprimir 2
+PUSH 5
+PUSH 2
+SUB
+PRN        #imprimir 3
+PUSH 4
+DUP
+MUL
+PRN        #imprimir 16
+PUSH 10
+DUP
+DIV
+PRN       #imprimir 1
+END

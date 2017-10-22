@@ -493,6 +493,13 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
 
   fimDoJogo = 0; // O jogo nao terminou
   arena[tamanho][tamanho];
+  // alocar memória para arena
+  /*for (int i = 0; i < tamanho; i++)
+  {
+    for (int j = 0; j < tamanho; j++)
+      arena[i][j] = malloc ((sizeof(Celula));
+  }*/
+  //printf("tamanho de Celula: %d", sizeof(Celula));
    timeAtual = 0;
 	 roboAtual = 0;
   // Gera a Base do terreno da arena, ou seja, a arena toda fica com o terreno do tipo 1
@@ -518,7 +525,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     // Caso nao couber na arena, ajustamos o seu tamanho
     for(int i = localX - tamanhoX; i < Minimo(20, localX + tamanhoX); i++) {
       for(int j = localY - tamanhoY; j < Minimo(20, localY + tamanhoY); j++) {
-        arena[i][j].terreno = tipoterr;
+      //  arena[i][j].terreno = tipoterr;
       }
     }
   }
