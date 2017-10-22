@@ -7,4 +7,6 @@ Segue agora alguma de nossas implementações na arena:
 	- Quando o usuário quer saber se a célula está vazia, ele pode receber "0" que indica "não está", ou "1" que indica "está sendo ocupada por um robo do time 1", ou "2" que indica "está sendo ocupada por um robo do time 2", e assim por diante.
 	- O mapa da arena é gerado, em grande parte aleatoriamente.
 	- Acabamos nos antecipando e, nos comentários, estão implementações para a terceira parte, as quais são irrelevantes para essa.
+	- Quando um robo morre, ele acaba derruando seus cristais ao seu redor (de forma aleatória).
+	- Para um time ganhar um ponto, ele deve depositar um cristal em sua base, caso ele deposite um cristal na base inimiga, o inimigo ganhará um ponto.
 Esse é o principal, para mais detalhes, está tudo comentado no código.
