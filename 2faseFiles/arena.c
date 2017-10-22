@@ -93,7 +93,7 @@ void Sistema(int op, int dir, Maquina *m) {
    /*
   for(int i = 0; i < 20; i++){
     for(int j = 0; j < 20; j++){
-        printf("%d ", arena[j][i].vazia);
+        printf("%d ", arena[j][i].terreno);
     }
     printf("\n");
   }
@@ -493,6 +493,9 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
 
   fimDoJogo = 0; // O jogo nao terminou
   arena[tamanho][tamanho];
+
+
+
   // alocar memória para arena
   /*for (int i = 0; i < tamanho; i++)
   {
@@ -512,8 +515,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     }
   }
 
+  time_t t;
+  srand((unsigned) time(&t));
   // Gera de modo aleatorio o terreno da arena, com irregularidades
-  for(int a = 0; a < 7; a++){
+  for(int a = 0; a < 50; a++){
     // Sorteia uma posicao, e gera um retangulo de largura tamanhoX e altura
     // de tamanhoY de um tipo aleatorio de terreno na arena
     int tipoterr = rand() % 5;
@@ -522,14 +527,17 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     int tamanhoX = rand() % 5;
     int tamanhoY = rand() % 5;
 
+    int localXlMin = Maximo(0, localX - tamanhoX);
+    int localYlMin = Maximo(0, localY - tamanhoY);
+    //arena[0][0].terreno = tipoterr;
     // Caso nao couber na arena, ajustamos o seu tamanho
-    for(int i = localX - tamanhoX; i < Minimo(20, localX + tamanhoX); i++) {
-      for(int j = localY - tamanhoY; j < Minimo(20, localY + tamanhoY); j++) {
-      //  arena[i][j].terreno = tipoterr;
+    for(int i = localXlMin; i < Minimo(20, localX + tamanhoX); i++) {
+      for(int j = localYlMin; j < Minimo(20, localY + tamanhoY); j++) {
+        arena[i][j].terreno = tipoterr;
       }
     }
-  }
 
+  }
   //Bota um cristal no meio da arena, sendo no meio terreno mais dificil (o do tipo 5)
   for(int i = (tamanho/2) - 3; i <= (tamanho/2) + 3; i++){
     for(int j = (tamanho/2) - 3; j <= (tamanho/2) + 3; j++){
