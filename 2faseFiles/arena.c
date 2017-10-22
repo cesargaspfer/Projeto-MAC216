@@ -522,10 +522,13 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     int tamanhoX = rand() % 5;
     int tamanhoY = rand() % 5;
 
+    int localXlMin = Maximo(0, localX - tamanhoX);
+    int localYlMin = Maximo(0, localY - tamanhoY);
+    //arena[0][0].terreno = tipoterr;
     // Caso nao couber na arena, ajustamos o seu tamanho
-    for(int i = localX - tamanhoX; i < Minimo(20, localX + tamanhoX); i++) {
-      for(int j = localY - tamanhoY; j < Minimo(20, localY + tamanhoY); j++) {
-      //  arena[i][j].terreno = tipoterr;
+    for(int i = localXlMin; i < Minimo(20, localX + tamanhoX); i++) {
+      for(int j = localYlMin; j < Minimo(20, localY + tamanhoY); j++) {
+        arena[i][j].terreno = tipoterr;
       }
     }
   }
