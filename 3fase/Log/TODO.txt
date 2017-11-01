@@ -1,1 +1,10 @@
- 
+- Definir quem faz o que detalhadamente
+- Inicialização da arena
+- Colocar exércitos
+- Definir as bases no jogo
+- Ativação dos robôs
+- Penalidades e suspensões no robo: mudar a Atualiza() para tratar estes casos
+  Exemplo: Terreno rugoso, movimento inválido, etc
+- Qualquer implementação diferente do pdf deve ser especificada no arquivo de relatorio
+- Instalar pygame
+  Ex: pip3 install pygame
