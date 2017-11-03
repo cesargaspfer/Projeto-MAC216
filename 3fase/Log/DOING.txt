@@ -1,1 +1,2 @@
- 
+03/11/2017: Desenhar a arena em função do tipo de terreno. Vou usar só cores por enquanto, se der certo
+podemos tentar com as texturas que o Cesar falou. 

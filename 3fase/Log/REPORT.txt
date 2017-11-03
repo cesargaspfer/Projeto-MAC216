@@ -1,1 +1,2 @@
- 
+03/11/2017: Acrescentei o cabeçalho # -*- coding: utf-8 -*- no programa apres e precisei mudar o nome da classe
+Robô para Robo. Só assim compilou aqui. Testem depois e me digam se acontece com vocês também esse problema. 
