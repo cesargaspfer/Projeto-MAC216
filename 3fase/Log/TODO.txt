@@ -1,5 +1,7 @@
+Colocar um (x) no que foi feito
+
 - Definir quem faz o que detalhadamente
-- Inicialização da arena
+- Inicialização da arena (x)
 - Colocar exércitos
 - Definir as bases no jogo
 - Ativação dos robôs
@@ -8,3 +10,6 @@
 - Qualquer implementação diferente do pdf deve ser especificada no arquivo de relatorio
 - Instalar pygame
   Ex: pip3 install pygame
+
+- Criar struct tipo de terreno no arena.h (pode ser bom para cuidar da visualização. O Gubi fez assim
+no exemplo dele no paca que colocaram para a segunda fase)

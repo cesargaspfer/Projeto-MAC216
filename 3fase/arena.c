@@ -4,6 +4,7 @@
 #include "maq.h"
 #include<time.h>
 #include "util.h"
+#include "controle.h"
 
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
@@ -136,7 +137,7 @@ void Sistema(int op, int dir, Maquina *m) {
   int posTmpY = m->posy + movY;
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 19 || posTmpY > 19) {
-    empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+    empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
   }
   else{
     if(op == 2) { // Se pedir infos
@@ -149,7 +150,9 @@ void Sistema(int op, int dir, Maquina *m) {
 		if(move(posTmpX, posTmpY, m) == 0)
 			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
 		else
-			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+    {
+      empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+    }
 	}
     else if(op == 1) { // Ataque
 		if(ataque(posTmpX, posTmpY, m))
@@ -428,6 +431,8 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
   RobosAtivos[time-1][qual] = 1;
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
   //TempoDeCadaRobo[time-1][qual] = 0;
+
+  /* Daqui é preciso chamar a função para desenhar o exército (talvez criar no controle.c)*/
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -503,6 +508,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       arena[i][j] = malloc ((sizeof(Celula));
   }*/
   //printf("tamanho de Celula: %d", sizeof(Celula));
+
    timeAtual = 0;
 	 roboAtual = 0;
   // Gera a Base do terreno da arena, ou seja, a arena toda fica com o terreno do tipo 1
@@ -574,6 +580,18 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       arena[localX][localY].nCristais++;
     }
   }
+
+  // envia a arena para a visualização
+  for (int i = 0; i < tamanho; i++)
+  {
+    for (int j = 0; j < tamanho; j++){
+      Celula c = arena[i][j];
+      desenhaCelula(i, j, c.terreno);
+    }
+  }
+  inicializaGraf();
+
+
 /* Implementa, mas nao para esta fase
   // Bota os robos aleatoriamente no mapa
   for(int j = 1; j <= times; j++){
@@ -595,6 +613,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
 
   // "Inicializa o relogio"
   begin = clock();
+
 }
 
 

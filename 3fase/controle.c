@@ -1,14 +1,9 @@
 #include <stdio.h>
-
-typedef struct {
-  int pi, pj;
-  int i, j;
-  int vi, vj;
-} Robot;
+#include "controle.h"
 
 FILE *display;
+FILE *arena;
 Robot rb[2];
-
 
 void anda(int ri) {
   Robot r = rb[ri];
@@ -22,8 +17,15 @@ void anda(int ri) {
   r.i = r.pi + r.vi;
   r.j = r.pj + r.vj;
   rb[ri] = r;
+  mostra(ri);
 }
-
+void inicializaGraf()
+{
+  fclose(arena);
+  //int t; 						/* tempo */
+  // pipe direto para o programa apres
+  display = popen("python apres arena.txt", "w");
+}
 void atualiza(int ri) {
   Robot r = rb[ri];
   r.pi = r.i;
@@ -31,7 +33,22 @@ void atualiza(int ri) {
   rb[ri] = r;
 }
 
+/***********************
+* A função desenha célula recebe os argumentos px, py e terreno (inteiro) de
+* uma célula e mantem escrevendo esses valores no arquivo arena.txt
+* o arena.txt está no formato do protocolo do apres e será enviado na entrada padrão
+* do apres quando a função inicializaGraf for invocada.
+***********************/
+void desenhaCelula (int px, int py, int terreno)
+{
+  // se o arquivo arena.txt não existir
+  if (arena == NULL)
+    // então cria
+    arena = fopen("arena.txt", "w");
+  fprintf(arena, "d_cel %d %d %d\n", px, py, terreno);
+}
 
+// imprime no arquvivo display que vai imediatamente para o apres
 void mostra(int ri) {
   fprintf(display, "%d %d %d %d %d\n",
 		  ri, rb[ri].pi, rb[ri].pj, rb[ri].i, rb[ri].j);
@@ -39,15 +56,17 @@ void mostra(int ri) {
 }
 
 /* Programa simples para mostrar como controlar a arena */
-int main() {
+/*int main() {
   int t; 						/* tempo */
-  display = popen("./apres", "w");
+  // pipe direto para o programa apres
+  /*display = popen("python apres", "w");
+
 
   rb[0].pi =  6;
   rb[0].pj = 14;
   rb[0].vi = -1;
   rb[0].vj =  1;
-  
+
   rb[1].pi = 10;
   rb[1].pj = 11;
   rb[1].vi =  1;
@@ -57,18 +76,23 @@ int main() {
 	fprintf(stderr,"Não encontrei o programa de exibição\n");
 	return 1;
   }
-  
-  /* cria dois robôs */
+
+  /* cria dois robôs
   fprintf(display, "rob GILEAD_A.png\nrob GILEAD_B.png\n");
 
 
-  for (t=0; t < 100; t++) {
+  for (t=0; t < 10; t++) {
 	anda(0);
 	anda(1);
 	mostra(0);
 	mostra(1);
 	fflush(display);
   }
-
-  pclose(display);
-}
+   pclose(display);
+   desenhaCelula(5, 5, 7);
+   desenhaCelula(8, 9, 2);
+   desenhaCelula(1, 5, 3);
+   desenhaCelula(3, 4, 4);
+   desenhaCelula(5, 6, 8);
+   //fclose(arena);
+}*/

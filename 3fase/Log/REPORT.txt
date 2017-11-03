@@ -1,2 +1,33 @@
-03/11/2017: Acrescentei o cabeçalho # -*- coding: utf-8 -*- no programa apres e precisei mudar o nome da classe
-Robô para Robo. Só assim compilou aqui. Testem depois e me digam se acontece com vocês também esse problema. 
+03/11/2017:
+***** apres *************************************
+-Acrescentei o cabeçalho # -*- coding: utf-8 -*- no programa apres e precisei mudar o nome da classe
+Robô para Robo. Só assim compilou aqui. Testem depois e me digam se acontece com vocês também esse problema.
+-Ao desenhar uma célula, define-se uma cor para ela em função do parametro t (terreno). Não defini cores bonitas
+pois foi só uma implementação. Precisamos definir os tipos de terreno, acho que uma struct seria bom pra isso, como
+o Gubi colocou no paca nos exemplos pra segunda fase ainda.
+- coloquei no final do apres um while que só para quando o usuário fecha a janela. Isso é para a janela não fechar assim
+que o apres encerrar (depois podemos tirar, foi só para conseguir ver a arena também)
+
+*********************** controle.h, controle.c e arena.c ********************************************
+-Criação da interface controle.h, com as funções e structs (que ainda não foram usadas...) de controle.c
+-O arena.c usa o controle.c através da interface.
+- Funções novas em controle.c:
+  *desenhaCelula(i, j, terreno): cria o arena.txt se esse não existir e escreve nele uma linha d_cel i j terreno
+  que será interpretada no apres do python e desenha uma celula com um determinado tipo de terreno, que é um inteiro
+  que define uma cor pro hexagono
+  *inicializaGraf():
+  * começa a escrever no FILE display que já tem pipe direto pro apres, como o professor implementou. Ele é chamado
+  após a arena estar desenhada.
+  Comentei o main do controle porque ele não é necessário (eu acho que era só um test client)
+
+  No arena.c, ao final da função CriaArena, estão chamadas as duas novas funções.
+
+  ****************************** Makefile *********************************************************
+  Inclui o controle.c e controle.h e mudei o nome do arquivo executável. Ao invés de arena, agora ele cria um
+  arquivo 'game'.
+
+  EXECUÇÃO DO CÓDIGO:
+  make
+  ./game
+Daniel
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
