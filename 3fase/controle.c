@@ -48,6 +48,17 @@ void desenhaCelula (int px, int py, int terreno)
   fprintf(arena, "d_cel %d %d %d\n", px, py, terreno);
 }
 
+// metodo de testes. precisamos definir como os robos serão desenhados e movidos
+void desenhaRobo (int i, int j)
+{
+  rb[0].pi = 15;
+  rb[0].pj = 15;
+  rb[0].vi = 1;
+  rb[0].vj = 1;
+  fprintf(display, "rob rt.png");
+  mostra(0);
+}
+
 // imprime no arquvivo display que vai imediatamente para o apres
 void mostra(int ri) {
   fprintf(display, "%d %d %d %d %d\n",
@@ -88,11 +99,5 @@ void mostra(int ri) {
 	mostra(1);
 	fflush(display);
   }
-   pclose(display);
-   desenhaCelula(5, 5, 7);
-   desenhaCelula(8, 9, 2);
-   desenhaCelula(1, 5, 3);
-   desenhaCelula(3, 4, 4);
-   desenhaCelula(5, 6, 8);
-   //fclose(arena);
+   pclose(display)
 }*/

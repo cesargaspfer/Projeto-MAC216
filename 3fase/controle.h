@@ -3,6 +3,7 @@ typedef struct {
   int pi, pj;
   int i, j;
   int vi, vj;
+  int exercito;
 } Robot;
 // Struct com atributos de uma célula da visualização
 typedef struct {
