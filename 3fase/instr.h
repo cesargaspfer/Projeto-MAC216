@@ -55,11 +55,11 @@ typedef enum {
    disposta na ENUM. Então:
    0 - norte, 1 - nordeste, 2 - sudeste, 3 - sul, 4 - sudoeste, 5 - noroeste */
 typedef enum {
-  NORTH,
   NORTHEAST,
+  EAST,
   SOUTHEAST,
-  SOUTH,
   SOUTHWEST,
+  WEST,
   NORTHWEST,
   CURRENT
 }Dir;
