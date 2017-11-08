@@ -103,34 +103,51 @@ void Sistema(int op, int dir, Maquina *m) {
   int movX = 0; // Celula na direcao X a avancar
   int movY = 0; // Celula na direcao Y a avancar
 
+
+  //Para a proxima fase: robos[timeAtual][roboAtual] ao invez de m
   if(dir == 1){
     movX = 1;
-    movY = -1;
   }
-  else if(dir == 2){
+  else if(dir ==4){
     movX = 1;
-  }
-  else if(dir == 4){
-    movX = -1;
-  }
-  else if(dir == 5){
-    movX = -1;
-    movY = -1;
-  }
-  //Para a proxima fase: robos[timeAtual][roboAtual] ao invez de m
-  if(m->posx%2){
-    movY++;
-  }
-  if(dir == 0){
-    movY = -1;
-  }
-  else if(dir == 3){
-    movY = +1;
   }
   else if (dir == 6){
     movX = 0;
     movY = 0;
   }
+  else if(m->posy%2){
+    if(dir == 0){
+      movY = -1;
+    }
+    else if(dir == 2){
+      movY = 1;
+    }
+    else if(dir == 3){
+      movX = 1;
+      movY = -1;
+    }
+    else if(dir == 4){
+      movX = -1;
+      movY = -1;
+    }
+  }
+  else{
+    if(dir == 0){
+      movX = 1;
+      movY = -1;
+    }
+    else if(dir == 2){
+      movX = 1;
+      movY = 1;
+    }
+    else if(dir == 3){
+      movY = 1;
+    }
+    else if(dir == 4){
+      movY = -1;
+    }
+  }
+
 
   // Futura possivel posicao do robo
   int posTmpX = m->posx + movX;
@@ -589,6 +606,14 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       desenhaCelula(i, j, c.terreno);
     }
   }
+/*
+  for(int i = 0; i < 20; i++){
+    for(int j = 0; j < 20; j++){
+        printf("%d ", arena[j][i].terreno);
+    }
+    printf("\n");
+  }
+  */
   inicializaGraf();
 
 
