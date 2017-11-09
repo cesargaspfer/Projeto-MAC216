@@ -1,11 +1,12 @@
 #ifndef ARENA_H
 #define ARENA_H
 typedef enum {
-  ELEVADO,
   GRAMA,
   AREIA,
   PEDRA,
-  GELO
+  GELO,
+  AGUA,
+  INGREME
 } Terreno;
 
 typedef struct {

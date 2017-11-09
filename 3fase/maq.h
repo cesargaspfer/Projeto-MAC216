@@ -9,10 +9,16 @@ typedef struct {
   OPERANDO Mem[MAXMEM];
   INSTR *prog;
   int ip;
+
+  // atributos concretos de um robo //
+  // saúde (diminui com avarias)
+  int vida;
+  // coordenada da célula em que está
   int posx;
   int posy;
-  int vida;
+  // número de cristais que carrega
   int crist;
+  // time ao qual pertence
   int time;
 } Maquina;
 

@@ -38,3 +38,13 @@ Corrigi uma linha que estava fazendo a arena sair toda errada. A linha 109
 Inverti i e j na função desenhaCelula (outro erro que tinha)
 **** arena.h *****
 Comecei a fazer a enum de tipo de terreno.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+09/11/2017
+arena.c:
+Coloquei um trecho para gerar cada célula aleatoriamente e não em blocos, como estava antes
+Pra isso, comentei os trechos restantes que dependiam desses blocos (colocar cristais, bases...)
+apres:
+Defini cores para as células e comentei
+maq.h:
+Comecei a adaptar a struct do robo para se adequar às novas coisas no pdf
+Continuo depois as coisas na arena.c

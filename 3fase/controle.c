@@ -19,6 +19,9 @@ void anda(int ri) {
   rb[ri] = r;
   mostra(ri);
 }
+
+// termina de escrever o txt da arena e começa a mostrá-la e receber comandos
+// pelo protocolo estabelecido na comunicação entre controle.c e apres
 void inicializaGraf()
 {
   fclose(arena);

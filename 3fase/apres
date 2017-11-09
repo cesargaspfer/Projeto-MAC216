@@ -23,7 +23,7 @@ atu = pg.display.update
 
 
 # pinta o fundo da janela
-scr.fill((0,200,0))
+scr.fill((0,0,0))
 atu()
 
 def convert(i ,j):
@@ -65,21 +65,31 @@ class cell:
     """
     Representa uma das células da arena
     """
+
     def __init__(s,i,j,t):
         """
         Construtor, i e j formam a coordenada
         """
         # Posição do centro
         s.cx, s.cy = convert(i,j)
-        # Cor (pode ser passada para o construtor no futuro)
+        # Cor
+        #Terreno: GRAMA
         if t == '0':
-            s.cor = (200,0,0)
+            s.cor = (71,193,73)
+        #Terreno: AREIA
         elif t == '1':
-            s.cor = (0, 200, 0)
+            s.cor = (219, 216,129)
+        #Terreno: PEDRA
         elif t == '2':
-            s.cor = (0, 0, 200)
+            s.cor = (127, 127, 123)
+        #Terreno: GELO
+        elif t == '3':
+            s.cor = (255, 255, 249)
+        #Terreno; ÁGUA
+        elif t == '4':
+            s.cor = (155, 187, 221)
         else:
-            s.cor = (200, 200, 200)
+            s.cor = (191, 171, 219)
 
         # Vértices do hexágono
         s.pontos = (
@@ -90,7 +100,6 @@ class cell:
             (s.cx-l, s.cy+L/2),
             (s.cx-l, s.cy-L/2),
             )
-
     def draw(s) :
         """
         Desenha a célula

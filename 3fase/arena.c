@@ -529,19 +529,34 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
    timeAtual = 0;
 	 roboAtual = 0;
   // Gera a Base do terreno da arena, ou seja, a arena toda fica com o terreno do tipo 1
-  for(int i = 0; i < 20; i++){
+  /*for(int i = 0; i < 20; i++){
     for(int j = 0; j < 20; j++){
       arena[i][j].terreno = 0;
       arena[i][j].vazia = 0;
       arena[i][j].nCristais = 0;
       arena[i][j].base = 0;
     }
-  }
+  }*/
+
+  // toda célula aleatoria:
 
   time_t t;
   srand((unsigned) time(&t));
+  // Gera a base da arena, definindo aleatoriamente seus terrenos e seu número de cristais
+  for(int i = 0; i < 20; i++){
+   for(int j = 0; j < 20; j++){
+     // define um dos cinco terrenos ( de 0 a 4)
+     arena[i][j].terreno = rand() % 5;
+     printf("%d", arena[i][j].terreno);
+     // inicializa sempre vazia
+     arena[i][j].vazia = 0;
+     // inicializa sem nenhum cristal, pois é preciso definir se a celula em questão é base ou não
+     arena[i][j].nCristais = 0;
+   }
+ }
+
   // Gera de modo aleatorio o terreno da arena, com irregularidades
-  for(int a = 0; a < 50; a++){
+  /*for(int a = 0; a < 50; a++){
     // Sorteia uma posicao, e gera um retangulo de largura tamanhoX e altura
     // de tamanhoY de um tipo aleatorio de terreno na arena
     int tipoterr = rand() % 5;
@@ -560,17 +575,17 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       }
     }
 
-  }
+  }*/
   //Bota um cristal no meio da arena, sendo no meio terreno mais dificil (o do tipo 5)
-  for(int i = (tamanho/2) - 3; i <= (tamanho/2) + 3; i++){
+  /*for(int i = (tamanho/2) - 3; i <= (tamanho/2) + 3; i++){
     for(int j = (tamanho/2) - 3; j <= (tamanho/2) + 3; j++){
       arena[i][j].terreno = 4;
     }
   }
-  arena[tamanho/2][tamanho/2].nCristais++;
+  arena[tamanho/2][tamanho/2].nCristais++;*/
 
   // Gera as posições das bases aleatoriamente
-  for(int i = 1; i <= times; i++){
+  /*for(int i = 1; i <= times; i++){
     int localX = rand() % 20;
     int localY = rand() % 20;
     // Caso tenha base ou cristais no local sorteado,
@@ -582,10 +597,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     else{
       arena[localX][localY].base = i;
     }
-  }
+  }*/
 
   // Bota os cristais aleatoriamente no mapa
-  for(int i = 1; i < cristais; i++){
+  /*for(int i = 1; i < cristais; i++){
     int localX = rand() % 20;
     int localY = rand() % 20;
     // Caso ja tenha uma base no local sorteado, decrementa o i para refazer esse loop
@@ -596,7 +611,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     else{
       arena[localX][localY].nCristais++;
     }
-  }
+  }*/
 
   // envia a arena para a visualização
   for (int i = 0; i < tamanho; i++)
