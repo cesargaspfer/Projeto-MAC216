@@ -31,3 +31,10 @@ que o apres encerrar (depois podemos tirar, foi só para conseguir ver a arena t
   ./game
 Daniel
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+08/11/2017
+**** apres *****
+Corrigi uma linha que estava fazendo a arena sair toda errada. A linha 109
+*** arena.c ****
+Inverti i e j na função desenhaCelula (outro erro que tinha)
+**** arena.h *****
+Comecei a fazer a enum de tipo de terreno.

@@ -105,9 +105,9 @@ arena = []
 ap = open(sys.argv[1], 'r');
 
 for i in range(W):
-    t = ap.readline().split()[3]
     arena.append([])
     for j in range(H):
+        t = ap.readline().split()[3]
         arena[i].append(cell(i,j,t))
         arena[i][j].draw()
 
@@ -119,6 +119,7 @@ atu()
 # Leitura dos comandos pela entrada padrão ou de um arquivo
 for line in fileinput.input():
     r = line.split()
+    print r
     # linha começando com 'fim', termina o programa
     if r[0] == 'fim':
         break

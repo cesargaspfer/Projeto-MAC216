@@ -602,18 +602,18 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
   for (int i = 0; i < tamanho; i++)
   {
     for (int j = 0; j < tamanho; j++){
-      Celula c = arena[i][j];
+      Celula c = arena[j][i];
       desenhaCelula(i, j, c.terreno);
     }
   }
-/*
+  /*
+  // printar a arena. Util para debug
   for(int i = 0; i < 20; i++){
     for(int j = 0; j < 20; j++){
         printf("%d ", arena[j][i].terreno);
     }
     printf("\n");
-  }
-  */
+  }*/
   inicializaGraf();
 
 

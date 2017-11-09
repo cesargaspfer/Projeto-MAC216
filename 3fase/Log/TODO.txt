@@ -10,6 +10,7 @@ Colocar um (x) no que foi feito
 - Qualquer implementação diferente do pdf deve ser especificada no arquivo de relatorio
 - Instalar pygame
   Ex: pip3 install pygame
-
+  03/11/2017: Desenhar a arena em função do tipo de terreno. Vou usar só cores por enquanto, se der certo
+  podemos tentar com as texturas que o Cesar falou.  (x)
 - Criar struct tipo de terreno no arena.h (pode ser bom para cuidar da visualização. O Gubi fez assim
 no exemplo dele no paca que colocaram para a segunda fase)
