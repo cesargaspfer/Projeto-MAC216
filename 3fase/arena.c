@@ -11,7 +11,7 @@
 	static int TotTimes = 2;      // Total de times na partida
 	static int TotRobTime = 5;    // Total de robos por partida
 	static Celula arena[20][20];  // A arena em sí (o campo de batalha)
-	static Maquina robos[2][5];   // Vetor que contem os robos ([times][robos])
+	 Maquina *robos[2][5];   // Vetor que contem os robos ([times][robos])
 
 // Variáveis da arena
 	static int cristaisRestantes;   // Cristais restantes na arena
@@ -377,7 +377,7 @@ int ataque(int posTmpX, int posTmpY, Maquina *m){
     int qual = 0;
     for(int i = 0; i < TotTimes; i++){
       for(int j = 0; i < TotRobTime; j++){
-        if(robos[time][qual].posx == posTmpX && robos[time][qual].posy == posTmpY) {
+        if((robos[time][qual])->posx == posTmpX && robos[time][qual]->posy == posTmpY) {
           time = i;
           qual = j;
 		  temRobo = 1;
