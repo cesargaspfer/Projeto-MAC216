@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "maq.h"
+#include "instr.h"
+#include<time.h>
 /* #define DEBUG */
 
 #ifdef DEBUG
@@ -59,6 +61,39 @@ Maquina *cria_maquina(INSTR *p)
 
 }
 */
+
+
+INSTR *geraProg () {
+  static INSTR progr[] = {
+    {INF, NONE, {CURRENT}},
+    {PRN, NONE, {0}},
+    {MOV, ACAO, {NORTHEAST}},
+    {PRN, NONE, {0}},
+    {MOV, ACAO, {NORTHEAST}},
+    {PRN, NONE, {0}},
+    {INF, NONE, {CURRENT}},
+    {PRN, NONE, {0}},
+    {END, NONE, {0}}
+  };
+  //time_t t;
+  //srand((unsigned) time(&t));
+  /*
+  int direcao = rand() % 6;
+  progr[0].o.Valor.d = direcao;
+  progr[1].o.Valor.n = direcao;
+  //srand((unsigned) time(&t));
+  /*
+  for(int i = 0; i < 10; i++){
+    int direcao = rand() % 6;
+    progr[i].o.Valor.d = direcao;
+  }
+  */
+  return progr;
+}
+
+
+
+
 Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);

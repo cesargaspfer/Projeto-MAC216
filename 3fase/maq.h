@@ -22,8 +22,8 @@ Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int Ti
 void destroi_maquina(Maquina *m);
 // declaração da função exec_maquina
 void exec_maquina(Maquina *m, int n);
-// declaração de função para retornar o array de instruções
-INSTR* getProg();
+
+INSTR *geraProg();
 
 
 void Sistema(int op, int dir,  Maquina *m);

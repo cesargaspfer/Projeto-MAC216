@@ -119,7 +119,7 @@ atu()
 # Leitura dos comandos pela entrada padrão ou de um arquivo
 for line in fileinput.input():
     r = line.split()
-    print r
+    #print r
     # linha começando com 'fim', termina o programa
     if r[0] == 'fim':
         break
