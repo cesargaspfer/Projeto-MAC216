@@ -327,6 +327,9 @@ void Atualiza (){
   				// Executa 50 instrucoes
           // cria ponteiro apontando para a maquina atual
           //Maquina* mp = &robos[timeAtual][roboAtual];
+          if(robos[timeAtual][roboAtual]->energia){
+            robos[timeAtual][roboAtual]->energia--;
+          }
   				exec_maquina(robos[timeAtual][roboAtual], 50);
   			}
 
@@ -431,6 +434,7 @@ int move(int posTmpX, int posTmpY, Maquina *m){
     // Muda sua posicao
     m->posx = posTmpX;
     m->posy = posTmpY;
+    m->energia = arena[posTmpX][posTmpY].terreno;
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
     //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY].terreno;
     // Retorna sucesso
@@ -447,10 +451,10 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
   // Cria o robo com a função cria_maquina
   //Implementar para a proxima fase
   if(time == 1 && qual == 0){
-    robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time);
+    robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
   }
   else {
-    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time);
+    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
   }
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;
