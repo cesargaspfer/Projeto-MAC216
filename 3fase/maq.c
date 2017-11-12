@@ -94,7 +94,7 @@ INSTR *geraProg () {
 
 
 
-Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV) {
+Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV, int energ) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
@@ -104,6 +104,7 @@ Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int Ti
   m->vida = vidaV;
   m->crist = CrstV;
   m->time = TimeV;
+  m->energia = energ;
   return m;
 }
 
@@ -117,6 +118,8 @@ void destroi_maquina(Maquina *m) {
 #define prg (m->prog)
 
 void exec_maquina(Maquina *m, int nInstrucoes) {
+
+  int Moveu = 0;
   // variáveis de iteração
   int i;
   int indexALC = 0;
@@ -394,6 +397,8 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
     // DEBUG: Direção correta
     //printf("Moving to %d\n", arg.Valor.d);
     Sistema(0, arg.Valor.ac, m);
+    ip++;
+    Moveu = 1;
     break;
   case ATK:
     Sistema(1, arg.Valor.ac, m);
@@ -433,5 +438,8 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
 	D(puts("\n"));
 
 	ip++;
+  if(Moveu){
+    break;
+  }
   }
 }
