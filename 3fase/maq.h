@@ -18,6 +18,7 @@ typedef struct {
   int posy;
   // número de cristais que carrega
   int crist;
+  int energia;
   // time ao qual pertence
   int time;
 } Maquina;
