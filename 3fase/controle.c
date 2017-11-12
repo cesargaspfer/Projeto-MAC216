@@ -49,6 +49,7 @@ void desenhaCelula (int px, int py, int terreno)
     // então cria
     arena = fopen("arena.txt", "w");
   fprintf(arena, "d_cel %d %d %d\n", px, py, terreno);
+  return;
 }
 
 // metodo de testes. precisamos definir como os robos serão desenhados e movidos

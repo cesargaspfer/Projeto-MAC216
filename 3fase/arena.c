@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include "arena.h"
 #include "maq.h"
+#include "tprog.h"
 #include<time.h>
 #include "util.h"
 #include "controle.h"
@@ -11,7 +12,7 @@
 	static int TotTimes = 2;      // Total de times na partida
 	static int TotRobTime = 5;    // Total de robos por partida
 	static Celula arena[20][20];  // A arena em sí (o campo de batalha)
-	static Maquina robos[2][5];   // Vetor que contem os robos ([times][robos])
+	Maquina *robos[2][5];   // Vetor que contem os robos ([times][robos])
 
 // Variáveis da arena
 	static int cristaisRestantes;   // Cristais restantes na arena
@@ -44,7 +45,6 @@ void assignRobo(Maquina *m){
 */
 // Funcao main, a qual inicializa as variaveis e o jogo
 // Implementa, mas não para esta fase
-/*
 int main () {
 
 
@@ -60,7 +60,6 @@ int main () {
   // Chama o atualiza
   Atualiza();
 }
-*/
 /*-------------------------------------------------------------------------------------*/
 //                                                                                     //
 //                                       Sistema                                       //
@@ -238,21 +237,21 @@ void Fim () {
   int len = sizeof(pontosTotais) / sizeof(pontosTotais[0]);
 
   for(int i = 1; i < len; i++) {
-	if(pontosTotais[i-1] < pontosTotais[i]) {
-		ganhador = i;
-	}
+  	if(pontosTotais[i-1] < pontosTotais[i]) {
+  		ganhador = i;
+  	}
   }
   // Verifica se houve empate, se houve, avisa que empatou e quem ganhou
   int empate = 0;
   for(int i = 1; i < len; i++) {
-	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
-		printf("Empate! Times vencedores:\n");
-		printf("Time %d;", (i+1));
-		printf("Time %d;", ganhador);
-	}
-	else if(empate == 1  && ganhador != i){
-		printf("Time %d;", (i+1));
-	}
+  	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
+  		printf("Empate! Times vencedores:\n");
+  		printf("Time %d; ", (i+1));
+  		printf("Time %d; ", ganhador+1);
+  	}
+  	else if(empate == 1  && ganhador != i){
+  		printf("Time %d; ", (i+1));
+  	}
   }
   // Caso nao houve empate, avisa o ganhador
   if(empate != 0) {
@@ -260,7 +259,7 @@ void Fim () {
   }
   // Da parabens a todos e diz quanto tempo levou essa partida
   else {
-	printf("Parabéns à todos!\n");
+	printf("\nParabéns à todos!\n");
 	printf("Tempo total de jogo: %f\n", currentTime);
   }
 }
@@ -311,33 +310,37 @@ void Atualiza (){
   // Enquanto estiver abaixo da rodada 500:
   while(RodadaAtual < 500) {
 	// A cada robo dentro do time
-	for(int i = 0; i < TotRobTime; i++){
-		// A cada time
-		for(int j = 0; j < TotTimes; j++){
-			// Se acabou o jogo, pare com os 3 lacos
-			if(fimDoJogo){
-				break;
-			}
-			// Muda o Time atual que está executando
-			timeAtual = i;
-			// Se o robo esta vivo:
-			if(RobosAtivos[timeAtual][roboAtual] == 1) {
-				// Executa 50 instrucoes
-        // cria ponteiro apontando para a maquina atual
-        Maquina* mp = &robos[timeAtual][roboAtual];
-				exec_maquina(mp, 50);
-			}
-      // Muda qual robo dentro do time está executando
-      roboAtual = j;
-      // "Proxima rodada"
-      RodadaAtual++;
-    }
+  	for(int i = 0; i < TotRobTime; i++){
+  		// A cada time
+  		for(int j = 0; j < TotTimes; j++){
+  			// Se acabou o jogo, pare com os 3 lacos
+  			if(fimDoJogo){
+  				break;
+  			}
+  			// Muda o Time atual que está executando
+  			timeAtual = j;
+        // Muda qual robo dentro do time está executando
+        roboAtual = i;
+  			// Se o robo esta vivo:
 
-	}
-	// Caso seja a ultima rodada, acaba com o jogo
-	if(RodadaAtual == 499){
-		Fim();
-	}
+  			if(RobosAtivos[timeAtual][roboAtual] == 1) {
+  				// Executa 50 instrucoes
+          // cria ponteiro apontando para a maquina atual
+          //Maquina* mp = &robos[timeAtual][roboAtual];
+  				exec_maquina(robos[timeAtual][roboAtual], 50);
+  			}
+
+
+
+      }
+
+  	}
+    // "Proxima rodada"
+    RodadaAtual++;
+  	// Caso seja a ultima rodada, acaba com o jogo
+  	if(RodadaAtual == 499){
+  		Fim();
+  	}
   }
 }
 
@@ -377,7 +380,7 @@ int ataque(int posTmpX, int posTmpY, Maquina *m){
     int qual = 0;
     for(int i = 0; i < TotTimes; i++){
       for(int j = 0; i < TotRobTime; j++){
-        if(robos[time][qual].posx == posTmpX && robos[time][qual].posy == posTmpY) {
+        if((robos[time][qual])->posx == posTmpX && robos[time][qual]->posy == posTmpY) {
           time = i;
           qual = j;
 		  temRobo = 1;
@@ -388,10 +391,10 @@ int ataque(int posTmpX, int posTmpY, Maquina *m){
     // Como, por enquanto so tem um tipo de ataque, deixemos essa parte comentada
     // if(tipo == 1)
     // Retira 30 pontos de vida do robo atacado
-    robos[time][qual].vida -= 30;
+    robos[time][qual]->vida -= 30;
     //}
     // Caso acabe a vida desse robo, ele sera destruido
-    if(robos[time][qual].vida <= 0){
+    if(robos[time][qual]->vida <= 0){
     RemoveExercito(posTmpX, posTmpY, time, qual);
     }
     // Retorna sucesso
@@ -443,7 +446,12 @@ int move(int posTmpX, int posTmpY, Maquina *m){
 static void InsereExercito (int time, int posX, int posY, int qual) {
   // Cria o robo com a função cria_maquina
   //Implementar para a proxima fase
-  //robos[time-1][qual] = *cria_maquina(getProg(), posX, posY, 100, 0, time);
+  if(time == 1 && qual == 0){
+    robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time);
+  }
+  else {
+    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time);
+  }
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
@@ -466,7 +474,7 @@ void RemoveExercito(int posX, int posY, int time, int qual) {
     qual = 0;
     for(int i = 0; i < TotTimes; i++){
       for(int j = 0; i < TotRobTime; j++){
-        if(robos[time][qual].posx == posX && robos[time][qual].posy == posY) {
+        if(robos[time][qual]->posx == posX && robos[time][qual]->posy == posY) {
           time = i;
           qual = j;
           break;
@@ -476,12 +484,12 @@ void RemoveExercito(int posX, int posY, int time, int qual) {
   }
 
   // "Destroi" o robo no vetor
-  robos[time][qual].posx = -1;
-  robos[time][qual].posy = -1;
-  robos[time][qual].vida = 0;
+  robos[time][qual]->posx = -1;
+  robos[time][qual]->posy = -1;
+  robos[time][qual]->vida = 0;
 
   // Caso ele tenha cristais, ele os derruba (para uma posicao aleatoria, mas perto dele)
-  for(int i = 0; i < robos[time][qual].crist; i++){
+  for(int i = 0; i < robos[time][qual]->crist; i++){
     int localX = rand() % 3 -1;
     int localY = rand() % 3 -1;
     int cairX = posX + localX;
@@ -494,7 +502,7 @@ void RemoveExercito(int posX, int posY, int time, int qual) {
     else if (cairY > 19) cairY = 19;
     arena[posX][posY].nCristais++;
   }
-  robos[time][qual].crist = 0;
+  robos[time][qual]->crist = 0;
 
   // Destroi a Maquina pela funcao destroi_maquina
   destroi_maquina(&robos[time][qual]);
@@ -632,7 +640,6 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
   inicializaGraf();
 
 
-/* Implementa, mas nao para esta fase
   // Bota os robos aleatoriamente no mapa
   for(int j = 1; j <= times; j++){
     for(int i = 0; i < robosT; i++){
@@ -645,11 +652,11 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       // Se estiver vazia:
       else{
         arena[localX][localY].vazia++;
-        InsereExercito(times, localX, localY, i);
+        InsereExercito(j, localX, localY, i);
+        desenhaRobo(localX, localY, arena[localX][localY].terreno);
       }
     }
   }
-  */
 
   // "Inicializa o relogio"
   begin = clock();
