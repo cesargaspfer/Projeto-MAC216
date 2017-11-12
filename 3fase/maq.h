@@ -12,8 +12,6 @@ typedef struct {
   // atributos concretos de um robo //
   // saúde (diminui com avarias)
   int vida;
-  // energia do robô (pode ser interpretado como combustível)
-  int energia;
   // coordenada da célula em que está
   int posx;
   int posy;
@@ -25,7 +23,7 @@ typedef struct {
 } Maquina;
 
 // declaração da função cria_maquina
-Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV);
+Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV, int energia);
 // declaração da função destroi_maquina
 void destroi_maquina(Maquina *m);
 // declaração da função exec_maquina

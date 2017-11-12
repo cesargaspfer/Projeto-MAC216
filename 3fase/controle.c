@@ -2,10 +2,9 @@
 #include "controle.h"
 
 FILE *display;
-FILE *arena;
 Robot rb[10];
 
-void anda(int ri) {
+/*void anda(int ri) {
   Robot r = rb[ri];
 
   if (r.pi == 14) r.vi = -1;
@@ -18,38 +17,32 @@ void anda(int ri) {
   r.j = r.pj + r.vj;
   rb[ri] = r;
   mostra(ri);
-}
+}*/
 
 // termina de escrever o txt da arena e começa a mostrá-la e receber comandos
 // pelo protocolo estabelecido na comunicação entre controle.c e apres
 void inicializaGraf()
 {
-  fclose(arena);
   //int t; 						/* tempo */
   // pipe direto para o programa apres
-  display = popen("python apres arena.txt", "w");
+  display = popen("python apres", "w");
 
 }
-void atualiza(int ri) {
-  Robot r = rb[ri];
-  r.pi = r.i;
-  r.pj = r.j;
-  rb[ri] = r;
+void atualiza(int index) {
+  Robot r = rb[index];
+  r.oi = r.di;
+  r.oj = r.dj;
+  rb[index] = r;
 }
 
 /***********************
 * A função desenha célula recebe os argumentos px, py e terreno (inteiro) de
-* uma célula e mantem escrevendo esses valores no arquivo arena.txt
-* o arena.txt está no formato do protocolo do apres e será enviado na entrada padrão
-* do apres quando a função inicializaGraf for invocada.
+* uma célula e envia essas informações para o programa apres
 ***********************/
 void desenhaCelula (int px, int py, int terreno)
 {
-  // se o arquivo arena.txt não existir
-  if (arena == NULL)
-    // então cria
-    arena = fopen("arena.txt", "w");
-  fprintf(arena, "d_cel %d %d %d\n", px, py, terreno);
+  // envia para apres a instrução d_cel, as coordenadas (px,py) e o tipo de terreno
+  fprintf(display, "d_cel %d %d %d\n", px, py, terreno);
 }
 
 /*
@@ -61,10 +54,12 @@ i j dada como parâmetro
 */
 void desenhaRobo (int exercito, int index, int i, int j)
 {
+
+  printf("exercito = %d  index = %d\n", exercito, index);
   if (exercito == 0)
-    fprintf(display, "rob ra.png");
+    fprintf(display, "rob ra.png\n");
   else
-    fprintf(display, "rob rb.png");
+    fprintf(display, "rob rb.png\n");
   rb[index].exercito = exercito;
   // o robô começa fora da arena
   rb[index].oi = -1;
@@ -81,10 +76,10 @@ void mostra(int index) {
   // display: ri oi oj di dj (o: origem) (d: destino) (i,j): coordenadas
   fprintf(display, "%d %d %d %d %d\n",
 		  index, rb[index].oi, rb[index].oj, rb[index].di, rb[index].dj);
-  atualiza(ri);
+  atualiza(index);
 }
 
-void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo){
+/*void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo){
   fprintf(display, "%d %d %d %d %d\n", qual, Xantigo, Yantigo, Xnovo, Ynovo);
 }
 
@@ -93,7 +88,7 @@ void NovoRoboDesenho (int time){
     fprintf(display, "rob GILEAD_A.png\n");
   else
     fprintf(display, "rob GILEAD_B.png\n");
-}
+}*/
 
 /* Programa simples para mostrar como controlar a arena */
 /*int main() {

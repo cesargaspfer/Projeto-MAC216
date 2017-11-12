@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import pygame as pg
 import fileinput
@@ -9,7 +8,7 @@ from math import *
 pg.init()
 
 # altura e largura da arena, em células
-H, W = 20,20
+H, W = 15,15
 
 # largura da célula
 l = 30
@@ -51,7 +50,7 @@ class Robo (pg.sprite.Sprite):
         Desenha o robô na célula (i,j)
         """
         x, y = convert(i,j)
-
+        print '('+str(i)+','+str(j)+')'
         # fronteiras do sprite
         l0,h0,l1,h1 = s.rect
 
@@ -74,19 +73,19 @@ class cell:
         s.cx, s.cy = convert(i,j)
         # Cor
         #Terreno: GRAMA
-        if t == '0':
+        if t == 0:
             s.cor = (71,193,73)
         #Terreno: AREIA
-        elif t == '1':
+        elif t == 1:
             s.cor = (219, 216,129)
         #Terreno: PEDRA
-        elif t == '2':
+        elif t == 2:
             s.cor = (127, 127, 123)
         #Terreno: GELO
-        elif t == '3':
+        elif t == 3:
             s.cor = (255, 255, 249)
         #Terreno; ÁGUA
-        elif t == '4':
+        elif t == 4:
             s.cor = (155, 187, 221)
         else:
             s.cor = (191, 171, 219)
@@ -110,25 +109,26 @@ class cell:
 
 # Construção da matriz que representa a arena
 arena = []
+"""
 #abrir o arquivo arena.txt no modo leitura
 ap = open(sys.argv[1], 'r');
 
 for i in range(W):
-    arena.append([])
+
     for j in range(H):
-        t = ap.readline().split()[3]
+        item = ap.readline().split()
+        #print 'item: ' + str(item)
+        t = item[3]
         arena[i].append(cell(i,j,t))
         arena[i][j].draw()
-
+"""
 # lista dos robôs definidos
 robs = []
-
-# atualiza a janela
-atu()
 # Leitura dos comandos pela entrada padrão ou de um arquivo
 for line in fileinput.input():
+    #atualiza a janela
+    atu()
     r = line.split()
-    #print r
     # linha começando com 'fim', termina o programa
     if r[0] == 'fim':
         break
@@ -136,13 +136,20 @@ for line in fileinput.input():
     # linha começando com 'rob', inclui um robô,
     # o segundo argumento na linha é a imagem
     if r[0] == 'rob':
+        print r[1]
         #coloca a imagem do robo no robs
         robs.append(Robo(r[1]))
         #continue prossegue para a proxima iteração
         continue
     if r[0] == 'd_cel':
+        i = int(r[1])
+        j = int(r[2])
+        t = int(r[3])
+        if j == 0:
+            arena.append([])
+        arena[i].append(cell(i,j,t))
+        arena[i][j].draw()
         continue
-        #do nothing now
 
     #se não for nem rob nem fim
     # linha de movimentação:
@@ -158,8 +165,6 @@ for line in fileinput.input():
 
     # tempo de espera para atualização, apenas para testes
     pg.time.wait(1000)
-
-    #atu()
 
 running = True
 while running:

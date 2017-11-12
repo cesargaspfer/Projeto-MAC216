@@ -454,7 +454,7 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
     robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
   }
   else {
-    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
+    robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
   }
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;
@@ -559,7 +559,6 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
    for(int j = 0; j < 15; j++){
      // define um dos cinco terrenos ( de 0 a 4)
      arena[i][j].terreno = rand() % 5;
-     printf("%d", arena[i][j].terreno);
      // inicializa sempre vazia
      arena[i][j].vazia = 0;
      // inicializa sem nenhum cristal, pois é preciso definir se a celula em questão é base ou não
@@ -625,24 +624,23 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     }
   }*/
 
+  inicializaGraf();
   // envia a arena para a visualização
   for (int i = 0; i < tamanho; i++)
   {
     for (int j = 0; j < tamanho; j++){
-      Celula c = arena[j][i];
+      Celula c = arena[i][j];
       desenhaCelula(i, j, c.terreno);
     }
   }
-  /*
+
   // printar a arena. Util para debug
-  for(int i = 0; i < 20; i++){
-    for(int j = 0; j < 20; j++){
-        printf("%d ", arena[j][i].terreno);
+  for(int i = 0; i < 15; i++){
+    for(int j = 0; j < 15; j++){
+        printf("%d ", arena[i][j].terreno);
     }
     printf("\n");
-  }*/
-
-inicializaGraf();
+  }
 
   // Bota os robos aleatoriamente no mapa
   for(int j = 1; j <= times; j++){
@@ -656,11 +654,12 @@ inicializaGraf();
       // Se estiver vazia:
       else{
         // marca a arena como ocupada (vazia = 1)
-        arena[localX][localY].vazia++;
+        arena[localX][localY].vazia = 1;
         // coloca o robô i no time j
         InsereExercito(j, localX, localY, i);
-        // desenha o robô j
-        desenhaRobo(j,i, localX, localY);
+        // desenha o robô i do exército j
+        desenhaRobo(j-1, i + (j-1)*times, localX, localY);
+
 
 
         /*NovoRoboDesenho(j);

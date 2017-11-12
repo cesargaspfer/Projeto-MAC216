@@ -333,9 +333,9 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
     {
       int b = a.Valor.b;
       if (b == 0)
-        printf("false\n");
+        printf("PRN: false\n");
       else
-        printf("true\n");
+        printf("PRN: true\n");
     } else
       printf("%d\n", a.Valor.n);
     empilha(pil, a);
