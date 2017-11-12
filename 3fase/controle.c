@@ -28,6 +28,7 @@ void inicializaGraf()
   //int t; 						/* tempo */
   // pipe direto para o programa apres
   display = popen("python apres arena.txt", "w");
+
 }
 void atualiza(int ri) {
   Robot r = rb[ri];
@@ -49,7 +50,6 @@ void desenhaCelula (int px, int py, int terreno)
     // então cria
     arena = fopen("arena.txt", "w");
   fprintf(arena, "d_cel %d %d %d\n", px, py, terreno);
-  return;
 }
 
 // metodo de testes. precisamos definir como os robos serão desenhados e movidos
@@ -68,6 +68,17 @@ void mostra(int ri) {
   fprintf(display, "%d %d %d %d %d\n",
 		  ri, rb[ri].pi, rb[ri].pj, rb[ri].i, rb[ri].j);
   atualiza(ri);
+}
+
+void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo){
+  fprintf(display, "%d %d %d %d %d\n", qual, Xantigo, Yantigo, Xnovo, Ynovo);
+}
+
+void NovoRoboDesenho (int time){
+  if(time == 1)
+    fprintf(display, "rob GILEAD_A.png\n");
+  else
+    fprintf(display, "rob GILEAD_B.png\n");
 }
 
 /* Programa simples para mostrar como controlar a arena */

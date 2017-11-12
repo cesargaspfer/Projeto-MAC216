@@ -637,8 +637,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     }
     printf("\n");
   }*/
-  inicializaGraf();
 
+inicializaGraf();
 
   // Bota os robos aleatoriamente no mapa
   for(int j = 1; j <= times; j++){
@@ -653,11 +653,11 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       else{
         arena[localX][localY].vazia++;
         InsereExercito(j, localX, localY, i);
-        desenhaRobo(localX, localY, arena[localX][localY].terreno);
+        NovoRoboDesenho(j);
+        DesenhaRobo2( (i+((j-1)*times)), localX, localY, localX, localY);
       }
     }
   }
-
   // "Inicializa o relogio"
   begin = clock();
 
