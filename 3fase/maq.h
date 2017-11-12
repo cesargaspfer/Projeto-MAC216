@@ -24,7 +24,7 @@ typedef struct {
 } Maquina;
 
 // declaração da função cria_maquina
-Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV);
+Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV, int energ);
 // declaração da função destroi_maquina
 void destroi_maquina(Maquina *m);
 // declaração da função exec_maquina
