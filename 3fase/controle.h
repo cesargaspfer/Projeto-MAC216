@@ -1,8 +1,12 @@
 // Struct com atributos do robô da visualização
 typedef struct {
-  int pi, pj;
-  int i, j;
+  // coordenadas da célula de origem do robo
+  int oi, oj;
+  // coordenadas da célula de destino do robô
+  int di, dj;
+  // vetor de velocidade do robô
   int vi, vj;
+  //exército ao qual o robô pertence
   int exercito;
 } Robot;
 // Struct com atributos de uma célula da visualização

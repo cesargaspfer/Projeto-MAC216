@@ -11,7 +11,7 @@
 
 	static int TotTimes = 2;      // Total de times na partida
 	static int TotRobTime = 5;    // Total de robos por partida
-	static Celula arena[20][20];  // A arena em sí (o campo de batalha)
+	static Celula arena[15][15];  // A arena em sí (o campo de batalha)
 	Maquina *robos[2][5];   // Vetor que contem os robos ([times][robos])
 
 // Variáveis da arena
@@ -53,7 +53,7 @@ int main () {
   //	-Total de times,
   // 	-Total de cristais,
   // 	-Total de robos por time
-  CriaArena(20, TotTimes, 10, TotRobTime);
+  CriaArena(15, TotTimes, 10, TotRobTime);
 
 
 
@@ -555,8 +555,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
   time_t t;
   srand((unsigned) time(&t));
   // Gera a base da arena, definindo aleatoriamente seus terrenos e seu número de cristais
-  for(int i = 0; i < 20; i++){
-   for(int j = 0; j < 20; j++){
+  for(int i = 0; i < 15; i++){
+   for(int j = 0; j < 15; j++){
      // define um dos cinco terrenos ( de 0 a 4)
      arena[i][j].terreno = rand() % 5;
      printf("%d", arena[i][j].terreno);
@@ -647,18 +647,24 @@ inicializaGraf();
   // Bota os robos aleatoriamente no mapa
   for(int j = 1; j <= times; j++){
     for(int i = 0; i < robosT; i++){
-      int localX = rand() % 20;
-      int localY = rand() % 20;
+      int localX = rand() % 15;
+      int localY = rand() % 15;
       // Caso ja tenha um robo no local sorteado, decrementa o i para refazer esse loop
       if(arena[localX][localY].vazia){
         i--;
       }
       // Se estiver vazia:
       else{
+        // marca a arena como ocupada (vazia = 1)
         arena[localX][localY].vazia++;
+        // coloca o robô i no time j
         InsereExercito(j, localX, localY, i);
-        NovoRoboDesenho(j);
-        DesenhaRobo2( (i+((j-1)*times)), localX, localY, localX, localY);
+        // desenha o robô j
+        desenhaRobo(j,i, localX, localY);
+
+
+        /*NovoRoboDesenho(j);
+        DesenhaRobo2( (i+((j-1)*times)), localX, localY, localX, localY);*/
       }
     }
   }

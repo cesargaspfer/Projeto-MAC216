@@ -3,7 +3,7 @@
 
 FILE *display;
 FILE *arena;
-Robot rb[2];
+Robot rb[10];
 
 void anda(int ri) {
   Robot r = rb[ri];
@@ -52,21 +52,35 @@ void desenhaCelula (int px, int py, int terreno)
   fprintf(arena, "d_cel %d %d %d\n", px, py, terreno);
 }
 
-// metodo de testes. precisamos definir como os robos serão desenhados e movidos
-void desenhaRobo (int i, int j)
+/*
+Inicializa a sprite (a imagem) do robô no programa apres, que é responsável por
+exibir a arena. O que esse método faz é simplesmente mandar uma instrução ao
+programa apres que faça a imagem do robô ser adicionada na lista "robs" do programa
+em python. Depois, chama o método mostra para que o robô seja movido para a posição
+i j dada como parâmetro
+*/
+void desenhaRobo (int exercito, int index, int i, int j)
 {
-  rb[0].pi = 15;
-  rb[0].pj = 15;
-  rb[0].vi = 1;
-  rb[0].vj = 1;
-  fprintf(display, "rob rt.png");
-  mostra(0);
+  if (exercito == 0)
+    fprintf(display, "rob ra.png");
+  else
+    fprintf(display, "rob rb.png");
+  rb[index].exercito = exercito;
+  // o robô começa fora da arena
+  rb[index].oi = -1;
+  rb[index].oj = -1;
+  // o robô tem sua célula de destino definida pelos parâmetros i,j
+  rb[index].di = i;
+  rb[index].dj = j;
+  // mostra fará essa movimentação do novo robô criado de (-1,-1) para (i,j)
+  mostra(index);
 }
 
 // imprime no arquvivo display que vai imediatamente para o apres
-void mostra(int ri) {
+void mostra(int index) {
+  // display: ri oi oj di dj (o: origem) (d: destino) (i,j): coordenadas
   fprintf(display, "%d %d %d %d %d\n",
-		  ri, rb[ri].pi, rb[ri].pj, rb[ri].i, rb[ri].j);
+		  index, rb[index].oi, rb[index].oj, rb[index].di, rb[index].dj);
   atualiza(ri);
 }
 
