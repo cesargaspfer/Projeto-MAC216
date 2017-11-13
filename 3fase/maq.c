@@ -69,7 +69,7 @@ INSTR *geraProg () {
     {PRN, NONE, {0}},
     {MOV, ACAO, {NORTHEAST}},
     {PRN, NONE, {0}},
-    {MOV, ACAO, {NORTHEAST}},
+    {MOV, ACAO, {WEST}},
     {PRN, NONE, {0}},
     {INF, NONE, {CURRENT}},
     {PRN, NONE, {0}},
@@ -87,7 +87,7 @@ INSTR *geraProg () {
     int direcao = rand() % 6;
     progr[i].o.Valor.d = direcao;
   }
-  */ 
+  */
   return progr;
 }
 

@@ -52,7 +52,8 @@ class Robo (pg.sprite.Sprite):
         x, y = convert(i,j)
         # fronteiras do sprite
         l0,h0,l1,h1 = s.rect
-        print '(' + str(i) + ',' + str(j) + ')'
+        #imprimir a posição na qual o robô foi desenhado. Util para debug
+        #print '(' + str(i) + ',' + str(j) + ')'
         # corrige a posição de acordo com o tamanho do sprite
         s.rect.topleft = [x-l1/2,y-h1/2]
         # desenha
@@ -164,6 +165,8 @@ for line in fileinput.input():
         robs.append(Robo(r[1]))
         #continue prossegue para a proxima iteração
         continue
+
+    #Para desenhar uma célula da arena
     if r[0] == 'd_cel':
         i = int(r[1])
         j = int(r[2])
@@ -191,12 +194,8 @@ for line in fileinput.input():
         robs[ri].draw(di,dj)
 
     # tempo de espera para atualização, apenas para testes
-<<<<<<< HEAD
     #pg.time.wait(1000)
-atu()
-=======
     atu()
->>>>>>> d51aa2b123d0b9d17aa90ae894e2e7e92694920b
 running = True
 while running:
   for event in pg.event.get():

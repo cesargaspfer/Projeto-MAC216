@@ -42,12 +42,8 @@ void atualiza(int index) {
 void desenhaCelula (int px, int py, int terreno, int cristais)
 {
   // envia para apres a instrução d_cel, as coordenadas (px,py) e o tipo de terreno
-<<<<<<< HEAD
   fprintf(display, "d_cel %d %d %d %d\n", px, py, terreno, cristais);
-=======
-  fprintf(display, "d_cel %d %d %d\n", px, py, terreno);
   fflush(display);
->>>>>>> d51aa2b123d0b9d17aa90ae894e2e7e92694920b
 }
 
 /*
