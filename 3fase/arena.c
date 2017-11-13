@@ -643,6 +643,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
   }
 
   // Bota os robos aleatoriamente no mapa
+  int index = 0;
   for(int j = 1; j <= times; j++){
     for(int i = 0; i < robosT; i++){
       int localX = rand() % 15;
@@ -655,10 +656,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       else{
         // marca a arena como ocupada (vazia = 1)
         arena[localX][localY].vazia = 1;
+        // desenha o robô i do exército j
+        desenhaRobo(j-1, index++, localX, localY);
         // coloca o robô i no time j
         InsereExercito(j, localX, localY, i);
-        // desenha o robô i do exército j
-        desenhaRobo(j-1, i + (j-1)*times, localX, localY);
 
 
 
