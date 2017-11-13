@@ -179,7 +179,7 @@ for line in fileinput.input():
         robs[ri].draw(di,dj)
 
     # tempo de espera para atualização, apenas para testes
-    atu()
+atu()
 running = True
 while running:
   for event in pg.event.get():

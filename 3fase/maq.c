@@ -87,7 +87,7 @@ INSTR *geraProg () {
     int direcao = rand() % 6;
     progr[i].o.Valor.d = direcao;
   }
-  */
+  */ 
   return progr;
 }
 

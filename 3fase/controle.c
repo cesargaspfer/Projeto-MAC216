@@ -43,6 +43,7 @@ void desenhaCelula (int px, int py, int terreno)
 {
   // envia para apres a instrução d_cel, as coordenadas (px,py) e o tipo de terreno
   fprintf(display, "d_cel %d %d %d\n", px, py, terreno);
+  fflush(display);
 }
 
 /*
@@ -54,10 +55,13 @@ i j dada como parâmetro
 */
 void desenhaRobo (int exercito, int index, int i, int j)
 {
+
+
   if (exercito == 0)
     fprintf(display, "rob ra.png\n");
   else
     fprintf(display, "rob rb.png\n");
+  fflush(display);
   rb[index].exercito = exercito;
   // o robô começa fora da arena
   rb[index].oi = -1;
@@ -74,13 +78,20 @@ void mostra(int index) {
   // display: ri oi oj di dj (o: origem) (d: destino) (i,j): coordenadas
   fprintf(display, "%d %d %d %d %d\n",
 		  index, rb[index].oi, rb[index].oj, rb[index].di, rb[index].dj);
+  fflush(display);
   atualiza(index);
 }
 
-/*void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo){
-  fprintf(display, "%d %d %d %d %d\n", qual, Xantigo, Yantigo, Xnovo, Ynovo);
+void acabaDesenho () {
+  pclose(display);
 }
 
+
+void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo){
+  fprintf(display, "%d %d %d %d %d\n", qual, Xantigo, Yantigo, Xnovo, Ynovo);
+  fflush(display);
+}
+/*
 void NovoRoboDesenho (int time){
   if(time == 1)
     fprintf(display, "rob GILEAD_A.png\n");
