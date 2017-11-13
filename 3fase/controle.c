@@ -39,10 +39,22 @@ void atualiza(int index) {
 * A função desenha célula recebe os argumentos px, py e terreno (inteiro) de
 * uma célula e envia essas informações para o programa apres
 ***********************/
-void desenhaCelula (int px, int py, int terreno, int cristais)
+void desenhaCelula (int px, int py, int terreno)
 {
   // envia para apres a instrução d_cel, as coordenadas (px,py) e o tipo de terreno
-  fprintf(display, "d_cel %d %d %d %d\n", px, py, terreno, cristais);
+  fprintf(display, "d_cel %d %d %d\n", px, py, terreno);
+  fflush(display);
+}
+
+void desenhaBase (int x, int y, int exercito)
+{
+  fprintf(display, "base flag%d.png %d %d\n", exercito, x, y);
+  fflush(display);
+}
+
+void colocaCristal (int x, int y, int n)
+{
+  fprintf(display, "cristal %d %d %d\n", x, y, n);
   fflush(display);
 }
 

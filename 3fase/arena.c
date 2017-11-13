@@ -552,7 +552,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
 
   time_t t;
   srand((unsigned) time(&t));
-  // Gera a arena, definindo aleatoriamente seus terrenos e seu número de cristais
+  // Gera a arena, definindo aleatoriamente seus terrenos
   for(int i = 0; i < 15; i++){
    for(int j = 0; j < 15; j++){
      // define um dos cinco terrenos ( de 0 a 4)
@@ -563,7 +563,19 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
      arena[i][j].nCristais = 0;
    }
  }
- // define as duas bases de cada time
+
+ //Inicializa a construção da visualização
+ inicializaGraf();
+ // envia a arena para a visualização
+ for (int i = 0; i < tamanho; i++)
+ {
+   for (int j = 0; j < tamanho; j++){
+     Celula c = arena[i][j];
+     desenhaCelula(i, j, c.terreno);
+   }
+ }
+
+ // define as duas bases de cada time e as desenha
  for (int i = 0; i < times; i++)
  {
    // sorteia a posição da base (a primeira na metade superior da arena, a segunda na metade superior)
@@ -579,6 +591,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
    arena[x][y].base++;
    // define o "tipo de terreno" como BASE
    arena[x][y].terreno = BASE;
+   desenhaBase(x,y,i);
  }
 
   // Gera de modo aleatorio o terreno da arena, com irregularidades
@@ -641,7 +654,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
 
 
   // Distribuir cristais pela arena, de modo a não colocar um cristal onde já tem um robô ou
-  // uma base
+  // uma base e os desenha
 
   for (int i = 0; i < cristais; i++)
   {
@@ -652,17 +665,9 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       else
       {
         arena[x][y].nCristais++;
+        // desenha 1 cristal na célula (x,y)
+        colocaCristal(1, x, y);
       }
-  }
-
-  inicializaGraf();
-  // envia a arena para a visualização
-  for (int i = 0; i < tamanho; i++)
-  {
-    for (int j = 0; j < tamanho; j++){
-      Celula c = arena[i][j];
-      desenhaCelula(i, j, c.terreno, c.nCristais);
-    }
   }
 
   // printar a arena. Util para debug
@@ -682,7 +687,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       int localX = rand()%7 + 7*(j-1);
       int localY = rand() %7 + 7*(j-1);
       // Caso ja tenha um robo no local sorteado, decrementa o i para refazer esse loop
-      if(arena[localX][localY].vazia || arena[localX][localY].base){
+      if(arena[localX][localY].vazia || arena[localX][localY].base || arena[localX][localY].nCristais != 0){
         i--;
       }
       // Se estiver vazia:

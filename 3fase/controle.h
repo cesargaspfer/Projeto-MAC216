@@ -25,15 +25,12 @@ void atualiza(int ri);
 
 // essa função escreve as instruções para desenhar a célula segundo o protocolo
 // do apres
-void desenhaCelula(int px, int py, int terreno, int cristais);
+void desenhaCelula(int x, int y, int terreno);
 
+void desenhaBase(int x, int y, int exercito);
+
+void colocaCristal(int x, int y, int n);
 // inicializa o apres
 void inicializaGraf();
 
 void mostra(int ri);
-
-void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo);
-
-void NovoRoboDesenho (int time);
-
-void acabaDesenho ();
