@@ -386,7 +386,7 @@ int ataque(int posTmpX, int posTmpY, Maquina *m){
         if((robos[time][qual])->posx == posTmpX && robos[time][qual]->posy == posTmpY) {
           time = i;
           qual = j;
-		  temRobo = 1;
+		      temRobo = 1;
           break;
         }
       }
@@ -453,7 +453,7 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
     robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
   }
   else {
-    robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
+    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
   }
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;

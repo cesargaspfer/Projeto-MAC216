@@ -184,7 +184,6 @@ for line in fileinput.input():
 
     #para colocar um cristal em uma célula i,j
     if r[0] == 'cristal':
-      print r
       n = int(r[1])
       i = int(r[2])
       j = int(r[3])
