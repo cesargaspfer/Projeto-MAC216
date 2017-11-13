@@ -6,7 +6,8 @@ typedef enum {
   PEDRA,
   GELO,
   AGUA,
-  INGREME
+  INGREME,
+  BASE
 } Terreno;
 
 typedef struct {

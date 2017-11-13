@@ -50,11 +50,10 @@ class Robo (pg.sprite.Sprite):
         Desenha o robô na célula (i,j)
         """
         x, y = convert(i,j)
-        print '('+str(i)+','+str(j)+')'
         # fronteiras do sprite
         l0,h0,l1,h1 = s.rect
-
-        # corrije a posição de acordo com o tamanho do sprite
+        print '(' + str(i) + ',' + str(j) + ')'
+        # corrige a posição de acordo com o tamanho do sprite
         s.rect.topleft = [x-l1/2,y-h1/2]
         # desenha
         scr.blit(s.image, s.rect)
@@ -65,7 +64,8 @@ class cell:
     Representa uma das células da arena
     """
 
-    def __init__(s,i,j,t):
+    # a função recebe (i,j), t (tipo de terreno) e uma img opcional
+    def __init__(s,i,j,t,img):
         """
         Construtor, i e j formam a coordenada
         """
@@ -87,8 +87,14 @@ class cell:
         #Terreno; ÁGUA
         elif t == 4:
             s.cor = (155, 187, 221)
-        else:
+        elif t == 5:
             s.cor = (191, 171, 219)
+        else:
+            s.cor = (190,190,190)
+            s.image = pg.image.load(img)
+            s.rect = s.image.get_rect()
+
+
 
         # Vértices do hexágono
         s.pontos = (
@@ -105,6 +111,14 @@ class cell:
         """
         pg.draw.polygon(scr, s.cor, s.pontos, 0)
         pg.draw.lines(scr, (0,0,0), True, s.pontos, 2)
+        if t == 6:
+          x, y = convert(i,j)
+          # fronteiras do sprite
+          l0,h0,l1,h1 = s.rect
+          # corrige a posição de acordo com o tamanho do sprite
+          s.rect.topleft = [x-l1/2,y-h1/2]
+          # desenha a bandeira da base na célula
+          scr.blit(s.image, s.rect)
 
 
 # Construção da matriz que representa a arena
@@ -124,10 +138,9 @@ for i in range(W):
 """
 # lista dos robôs definidos
 robs = []
+basecount = -1
 # Leitura dos comandos pela entrada padrão ou de um arquivo
 for line in fileinput.input():
-    #atualiza a janela
-    atu()
     r = line.split()
     # linha começando com 'fim', termina o programa
     if r[0] == 'fim':
@@ -136,7 +149,6 @@ for line in fileinput.input():
     # linha começando com 'rob', inclui um robô,
     # o segundo argumento na linha é a imagem
     if r[0] == 'rob':
-        print r[1]
         #coloca a imagem do robo no robs
         robs.append(Robo(r[1]))
         #continue prossegue para a proxima iteração
@@ -147,7 +159,11 @@ for line in fileinput.input():
         t = int(r[3])
         if j == 0:
             arena.append([])
-        arena[i].append(cell(i,j,t))
+        if t == 6:
+          basecount+=1
+          arena[i].append(cell(i,j,t,'flag'+str(basecount)+'.png'))
+        else:
+          arena[i].append(cell(i,j,t,''))
         arena[i][j].draw()
         continue
 
@@ -155,7 +171,6 @@ for line in fileinput.input():
     # linha de movimentação:
     # robô, coordenadas originais, coordenadas finais
     ri, oi, oj, di, dj = list(map(int, r))
-
     # redesenha a célula original (apaga o robô)
     if 0 <= oi  < W and 0 <= oj < H:
         arena[oi][oj].draw()
@@ -164,8 +179,7 @@ for line in fileinput.input():
         robs[ri].draw(di,dj)
 
     # tempo de espera para atualização, apenas para testes
-    pg.time.wait(1000)
-
+atu()
 running = True
 while running:
   for event in pg.event.get():

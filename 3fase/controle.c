@@ -54,8 +54,6 @@ i j dada como parâmetro
 */
 void desenhaRobo (int exercito, int index, int i, int j)
 {
-
-  printf("exercito = %d  index = %d\n", exercito, index);
   if (exercito == 0)
     fprintf(display, "rob ra.png\n");
   else

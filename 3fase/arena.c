@@ -550,11 +550,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     }
   }*/
 
-  // toda célula aleatoria:
 
   time_t t;
   srand((unsigned) time(&t));
-  // Gera a base da arena, definindo aleatoriamente seus terrenos e seu número de cristais
+  // Gera a arena, definindo aleatoriamente seus terrenos e seu número de cristais
   for(int i = 0; i < 15; i++){
    for(int j = 0; j < 15; j++){
      // define um dos cinco terrenos ( de 0 a 4)
@@ -564,6 +563,23 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
      // inicializa sem nenhum cristal, pois é preciso definir se a celula em questão é base ou não
      arena[i][j].nCristais = 0;
    }
+ }
+ // define as duas bases de cada time
+ for (int i = 0; i < times; i++)
+ {
+   // sorteia a posição da base (a primeira na metade superior da arena, a segunda na metade superior)
+   int x = rand()%(7) + 7*i;
+   int y = rand()%(7) + 7*i;
+   if (arena[x][y].base)
+   {
+    i--;
+    continue;
+   }
+
+   // define como verdadeiro na struct que a célula é uma base
+   arena[x][y].base++;
+   // define o "tipo de terreno" como BASE
+   arena[x][y].terreno = BASE;
  }
 
   // Gera de modo aleatorio o terreno da arena, com irregularidades
@@ -646,10 +662,12 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
   int index = 0;
   for(int j = 1; j <= times; j++){
     for(int i = 0; i < robosT; i++){
-      int localX = rand() % 15;
-      int localY = rand() % 15;
+      // os robos do primeiro time começam sempre na metade superior da arena, onde está sua base
+      // já os do segundo time começarão o jogo na metade inferior da arena
+      int localX = rand()%7 + 7*(j-1);
+      int localY = rand() %7 + 7*(j-1);
       // Caso ja tenha um robo no local sorteado, decrementa o i para refazer esse loop
-      if(arena[localX][localY].vazia){
+      if(arena[localX][localY].vazia || arena[localX][localY].base){
         i--;
       }
       // Se estiver vazia:
@@ -660,11 +678,6 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
         desenhaRobo(j-1, index++, localX, localY);
         // coloca o robô i no time j
         InsereExercito(j, localX, localY, i);
-
-
-
-        /*NovoRoboDesenho(j);
-        DesenhaRobo2( (i+((j-1)*times)), localX, localY, localX, localY);*/
       }
     }
   }
