@@ -52,5 +52,12 @@ Comecei a adaptar a struct do robo para se adequar às novas coisas no pdf
 Continuo depois as coisas na arena.c
 =======
 **** instr.h ****
-Mudei os nomes das 
+Mudei os nomes das
 >>>>>>> 8680b8d54e0ab9f642d20c4f542f7f285a791f33
+13/11/2017:
+*Desenha os robôs, os cristais e as bases
+*Robôs colocados aleatoriamente nas "redondezas" de suas bases (mais ou menos, podemos melhorar isso ainda)
+*Cristais colocados aleatoriamente no mapa
+*Cristais e robôs colocados conforme o protocolo recomendado no pdf (cristal n i j e base n i j (ver pagina 21))
+*Adicionei o tipo de célula BASE, para facilitar a manipulação do apres
+*Por enquanto, na célula pode haver 198230942935 cristais mas só uma figura será exibida. Podemos pensar em como mudar isso
