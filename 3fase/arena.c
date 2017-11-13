@@ -53,7 +53,7 @@ int main () {
   //	-Total de times,
   // 	-Total de cristais,
   // 	-Total de robos por time
-  CriaArena(15, TotTimes, 10, TotRobTime);
+  CriaArena(15, TotTimes, 30, TotRobTime);
 
 
 
@@ -419,17 +419,16 @@ int move(int posTmpX, int posTmpY, Maquina *m){
 
   // Tem alguem ai? - Verifica se ja tem um robo na celula desejada
   if(arena[posTmpX][posTmpY].vazia != 0){
-
     // Retorna fracasso
     return 0;
   }
-  // Nao tem monstro aqui - Nao tem robo na celula desejada
+  // Não tem robô na celula desejada
   else {
     // Muda estado da arena
     // Marca a celula que o robo está deixando para vazia
     arena[m->posx][m->posy].vazia = 0;
     // Marca a celula que o robo esta indo para nao vazia, indicando o seu time
-    arena[posTmpX][posTmpY].vazia = timeAtual + 1;
+    arena[posTmpX][posTmpY].vazia = 1;
     // Muda estado do robo
     // Muda sua posicao
     m->posx = posTmpX;
@@ -640,13 +639,29 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     }
   }*/
 
+
+  // Distribuir cristais pela arena, de modo a não colocar um cristal onde já tem um robô ou
+  // uma base
+
+  for (int i = 0; i < cristais; i++)
+  {
+      int x = rand()%14;
+      int y = rand()%14;
+      if (arena[x][y].vazia || arena[x][y].base)
+        i--;
+      else
+      {
+        arena[x][y].nCristais++;
+      }
+  }
+
   inicializaGraf();
   // envia a arena para a visualização
   for (int i = 0; i < tamanho; i++)
   {
     for (int j = 0; j < tamanho; j++){
       Celula c = arena[i][j];
-      desenhaCelula(i, j, c.terreno);
+      desenhaCelula(i, j, c.terreno, c.nCristais);
     }
   }
 

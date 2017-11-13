@@ -25,7 +25,7 @@ void atualiza(int ri);
 
 // essa função escreve as instruções para desenhar a célula segundo o protocolo
 // do apres
-void desenhaCelula(int px, int py, int terreno);
+void desenhaCelula(int px, int py, int terreno, int cristais);
 
 // inicializa o apres
 void inicializaGraf();
