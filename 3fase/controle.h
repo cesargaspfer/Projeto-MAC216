@@ -35,3 +35,5 @@ void mostra(int ri);
 void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo);
 
 void NovoRoboDesenho (int time);
+
+void acabaDesenho ();

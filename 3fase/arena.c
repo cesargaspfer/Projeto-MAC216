@@ -7,6 +7,7 @@
 #include "util.h"
 #include "controle.h"
 
+
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
 	static int TotTimes = 2;      // Total de times na partida
@@ -210,6 +211,7 @@ void Sistema(int op, int dir, Maquina *m) {
 				empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
     }
   }
+  waitFor(1); // 0.5 seconds
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
   //TempoDeCadaRobo[timeAtual][roboAtual]++;
   //Atualiza();
@@ -262,6 +264,7 @@ void Fim () {
 	printf("\nParabéns à todos!\n");
 	printf("Tempo total de jogo: %f\n", currentTime);
   }
+  acabaDesenho ();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -430,12 +433,16 @@ int move(int posTmpX, int posTmpY, Maquina *m){
     // Marca a celula que o robo esta indo para nao vazia, indicando o seu time
     arena[posTmpX][posTmpY].vazia = 1;
     // Muda estado do robo
+    printf("%d %d %d\n", roboAtual, timeAtual, roboAtual + (timeAtual)*5);
+    DesenhaRobo2(roboAtual + (timeAtual)*5, m->posx, m->posy, posTmpX, posTmpY);
+
     // Muda sua posicao
     m->posx = posTmpX;
     m->posy = posTmpY;
     m->energia = arena[posTmpX][posTmpY].terreno;
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
     //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY].terreno;
+
     // Retorna sucesso
     return 1;
   }
@@ -453,7 +460,7 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
     robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
   }
   else {
-    robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
+    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
   }
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;
@@ -673,6 +680,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
     printf("\n");
   }
 
+
+
+
+
   // Bota os robos aleatoriamente no mapa
   int index = 0;
   for(int j = 1; j <= times; j++){
@@ -696,6 +707,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       }
     }
   }
+
+
+
+  waitFor(1); // 5 seconds
   // "Inicializa o relogio"
   begin = clock();
 
@@ -722,4 +737,10 @@ int Maximo (int a, int b){
 int Minimo (int a, int b){
   if(a < b) return a;
   else return b;
+}
+
+
+void waitFor (unsigned int secs) {
+    unsigned int retTime = time(0) + secs;   // Get finishing time.
+    while (time(0) < retTime);               // Loop until it arrives.
 }

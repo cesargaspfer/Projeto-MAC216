@@ -65,7 +65,7 @@ class cell:
     """
 
     # a função recebe (i,j), t (tipo de terreno) e uma img opcional
-    def __init__(s,i,j,t,c, img):
+    def __init__(s,i,j,t,img):
         """
         Construtor, i e j formam a coordenada
         """
@@ -95,6 +95,7 @@ class cell:
             s.rect = s.image.get_rect()
 
 
+
         # Vértices do hexágono
         s.pontos = (
             (s.cx,   s.cy-L),
@@ -118,18 +119,6 @@ class cell:
           s.rect.topleft = [x-l1/2,y-h1/2]
           # desenha a bandeira da base na célula
           scr.blit(s.image, s.rect)
-        if c != 0:
-          s.image = pg.image.load('diamond.png')
-          s.rect = s.image.get_rect()
-          x, y = convert(i,j)
-          # fronteiras do sprite
-          l0,h0,l1,h1 = s.rect
-          # corrige a posição de acordo com o tamanho do sprite
-          s.rect.topleft = [x-l1/2,y-h1/2]
-          # desenha o cristal na célula
-          scr.blit(s.image, s.rect)
-
-
 
 
 # Construção da matriz que representa a arena
@@ -168,14 +157,13 @@ for line in fileinput.input():
         i = int(r[1])
         j = int(r[2])
         t = int(r[3])
-        c = int(r[4])
         if j == 0:
             arena.append([])
         if t == 6:
           basecount+=1
-          arena[i].append(cell(i,j,t,c,'flag'+str(basecount)+'.png'))
+          arena[i].append(cell(i,j,t,'flag'+str(basecount)+'.png'))
         else:
-          arena[i].append(cell(i,j,t,c,''))
+          arena[i].append(cell(i,j,t,''))
         arena[i][j].draw()
         continue
 
@@ -191,12 +179,7 @@ for line in fileinput.input():
         robs[ri].draw(di,dj)
 
     # tempo de espera para atualização, apenas para testes
-<<<<<<< HEAD
-    #pg.time.wait(1000)
 atu()
-=======
-    atu()
->>>>>>> d51aa2b123d0b9d17aa90ae894e2e7e92694920b
 running = True
 while running:
   for event in pg.event.get():
