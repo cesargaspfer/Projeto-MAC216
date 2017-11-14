@@ -89,7 +89,7 @@ void Sistema(int op, int dir, Maquina *m) {
     ***************************/
 
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
-  /*int movX = 0; // Celula na direcao X a avançar
+  int movX = 0; // Celula na direcao X a avançar
   int movY = 0; // Celula na direcao Y a avançar
 
   // Movimentar o robô de acordo com o argumento dado em Dir
@@ -105,11 +105,12 @@ void Sistema(int op, int dir, Maquina *m) {
     movX = 0;
     movY = 0;
   }
-  else if(m->posy%2 == 0){
+  else if(m->posx%2 == 0){
     printf("%s\n", "Par");
     if(dir == NORTHEAST){
       printf("%s\n", "Nordeste");
       movX = -1;
+
     }
     else if(dir == SOUTHEAST){
       printf("%s\n", "Sudeste");
@@ -117,13 +118,13 @@ void Sistema(int op, int dir, Maquina *m) {
     }
     else if(dir == SOUTHWEST){
       printf("%s\n", "Sudoeste");
-      movX = -1;
+      movX = 1;
       movY = -1;
     }
     else if(dir == NORTHWEST){
       printf("%s\n", "Noroeste");
-      movX = 1;
-      movY = 1;
+      movX = -1;
+      movY = -1;
     }
   }
   else{
@@ -135,8 +136,8 @@ void Sistema(int op, int dir, Maquina *m) {
     }
     else if(dir == SOUTHEAST){
       printf("%s\n", "Sudeste");
-      movX = -1;
-      movY = -1;
+      movX = 1;
+      movY = 1;
     }
     else if(dir == SOUTHWEST){
       printf("%s\n", "Sudoeste");
@@ -151,36 +152,35 @@ void Sistema(int op, int dir, Maquina *m) {
 
   // Futura posição do robô na arena
   int posTmpX = m->posx + movX;
-  int posTmpY = m->posy + movY;*/
-  int posTmpX = m->posx;
-  int posTmpY = m->posy;
+  int posTmpY = m->posy + movY;
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 14 || posTmpY > 14) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
   }
   else{
-    if(op == INF) { // Se pedir infos
+    if(op == 2) { // Se pedir infos
       OPERANDO o;
       o.t = CELL;
       o.Valor.c = arena[posTmpX][posTmpY];
       empilha(&m->pil, o); // Empilha, no robo, a Celula
     }
-    else if(op == MOV) { // Move
-		if(move(posTmpX, posTmpY, m) == 0)
-			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
-		else
-    {
-      empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
-    }
-	}
-    else if(op == ATK) { // Ataque
-		if(ataque(posTmpX, posTmpY, m))
-			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
-		else
-			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+    else if(op == 0) { // Move
+  		if(move(posTmpX, posTmpY, m) == 0)
+  			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+  		else
+      {
+        empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+      }
 
+  	}
+    else if(op == 1) { // Ataque
+  		if(ataque(posTmpX, posTmpY, m))
+  			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+  		else
+  			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+      printf("%s\n", "OI");
     }
-    else if(op == CLT) { // Coletar
+    else if(op == 3) { // Coletar
 		if(coleta(posTmpX, posTmpY, m)) {
       // indica ao robô que ele coletou um item
 			empilha(&m->pil, (OPERANDO){BOOL, true});
@@ -214,6 +214,7 @@ void Sistema(int op, int dir, Maquina *m) {
 				empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
     }
   }
+  waitFor(1);
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
   //TempoDeCadaRobo[timeAtual][roboAtual]++;
   //Atualiza();
@@ -751,7 +752,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
     }
   }
   // Espera 1 segundo para a visualizacao
-  waitFor(1);
+  waitFor(2);
   // "Inicializa o relogio"
   begin = clock();
 
