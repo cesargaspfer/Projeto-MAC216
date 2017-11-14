@@ -28,6 +28,9 @@ void inicializaGraf()
   display = popen("python apres", "w");
 
 }
+
+// substitui (oi,oj) por (di,dj). Ou seja, as antigas coordenadas de destino
+// do robô agora são as de origem, pois ele foi para a célula (di,dj)
 void atualiza(int index) {
   Robot r = rb[index];
   r.oi = r.di;
@@ -81,16 +84,19 @@ void desenhaRobo (int exercito, int index, int i, int j)
   // o robô tem sua célula de destino definida pelos parâmetros i,j
   rb[index].di = i;
   rb[index].dj = j;
-  // mostra fará essa movimentação do novo robô criado de (-1,-1) para (i,j)
+  // a função 'mostra' enviará para a interface visual a instrução para "Movimentar"
+  // o novo robô da posição (-1,-1) para a posição (i,j)
   mostra(index);
 }
 
-// imprime no arquvivo display que vai imediatamente para o apres
+// mostra na arena o robô colocado em index
 void mostra(int index) {
   // display: ri oi oj di dj (o: origem) (d: destino) (i,j): coordenadas
   fprintf(display, "%d %d %d %d %d\n",
 		  index, rb[index].oi, rb[index].oj, rb[index].di, rb[index].dj);
   fflush(display);
+  // substitui (oi,oj) por (di,dj). Ou seja, as antigas coordenadas de destino
+  // do robô agora são as de origem, pois ele foi para a célula (di,dj)
   atualiza(index);
 }
 
@@ -98,10 +104,16 @@ void acabaDesenho () {
   pclose(display);
 }
 
-
-void DesenhaRobo2 (int qual, int Xantigo, int Yantigo, int Xnovo, int Ynovo){
-  fprintf(display, "%d %d %d %d %d\n", qual, Xantigo, Yantigo, Xnovo, Ynovo);
-  fflush(display);
+// move o robô no index dado para a posição (di, dj)
+void moveRobo (int index, int di, int dj){
+  // recupera o robô em index
+  Robot r = rb[index];
+  // muda as coordenadas de seu destino
+  r.di = di;
+  r.dj = dj;
+  rb[index] = r;
+  // envia para a interface visual a instrução para movê-lo
+  mostra(index);
 }
 /*
 void NovoRoboDesenho (int time){
