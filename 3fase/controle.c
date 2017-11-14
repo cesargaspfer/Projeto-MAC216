@@ -89,7 +89,7 @@ void desenhaRobo (int exercito, int index, int i, int j)
   mostra(index);
 }
 
-// mostra na arena o robô colocado em index
+// mostra na arena o robô em index
 void mostra(int index) {
   // display: ri oi oj di dj (o: origem) (d: destino) (i,j): coordenadas
   fprintf(display, "%d %d %d %d %d\n",

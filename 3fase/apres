@@ -164,14 +164,12 @@ for line in fileinput.input():
 
     # linha começando com 'rob', inclui um robô,
     # o segundo argumento na linha é a imagem
-    if r[0] == 'rob':
+    elif r[0] == 'rob':
         #coloca a imagem do robo no robs
         robs.append(Robo(r[1]))
-        #continue prossegue para a proxima iteração
-        continue
-
+        atu()
     #Para desenhar uma célula da arena
-    if r[0] == 'd_cel':
+    elif r[0] == 'd_cel':
         i = int(r[1])
         j = int(r[2])
         t = int(r[3])
@@ -180,34 +178,32 @@ for line in fileinput.input():
             arena.append([])
         arena[i].append(cell(i,j,t))
         arena[i][j].draw()
-        continue
-
+        atu()
     #para colocar um cristal em uma célula i,j
-    if r[0] == 'cristal':
+    elif r[0] == 'cristal':
       n = int(r[1])
       i = int(r[2])
       j = int(r[3])
       arena[i][j].cristal(n, i, j)
-      continue
-
+      atu()
     #para colocar uma base em uma célula i,j:
-    if r[0] == 'base':
+    elif r[0] == 'base':
       img = r[1]
       i = int(r[2])
       j = int(r[3])
       arena[i][j].base(i,j,img)
-      continue
-
-    #se não for nem rob nem fim
-    # linha de movimentação:
-    # robô, coordenadas originais, coordenadas finais
-    ri, oi, oj, di, dj = list(map(int, r))
-    # redesenha a célula original (apaga o robô)
-    if 0 <= oi  < W and 0 <= oj < H:
-        arena[oi][oj].draw()
-    # desenha o robô na célula de destino
-    if 0 <= di  < W and 0 <= dj < H and ri < len(robs):
-        robs[ri].draw(di,dj)
+      atu()
+    else:
+      #se não for nem rob nem fim
+      # linha de movimentação:
+      # robô, coordenadas originais, coordenadas finais
+      ri, oi, oj, di, dj = list(map(int, r))
+      # redesenha a célula original (apaga o robô)
+      if 0 <= oi  < W and 0 <= oj < H:
+          arena[oi][oj].draw()
+      # desenha o robô na célula de destino
+      if 0 <= di  < W and 0 <= dj < H and ri < len(robs):
+          robs[ri].draw(di,dj)
 
     # tempo de espera para atualização, apenas para testes
     #pg.time.wait(1000)

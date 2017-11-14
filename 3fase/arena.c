@@ -77,9 +77,7 @@ int main () {
 *************************************************/
 // Recebe a operacao (acao) que ira executar, a direcao e de qual maquina esta solicitando
 void Sistema(int op, int dir, Maquina *m) {
-
-
-  /*
+  /*****************************
   Legenda da direcao:
      0 - Norte
      1 - Nordeste
@@ -87,82 +85,74 @@ void Sistema(int op, int dir, Maquina *m) {
      3 - Sul
      4 - Sudoeste
      5 - Noroeste
-	 6 - Atual
-  */
-   //Imprime a arena
-   /*
-  for(int i = 0; i < 20; i++){
-    for(int j = 0; j < 20; j++){
-        printf("%d ", arena[j][i].terreno);
-    }
-    printf("\n");
-  }
-  */
+	   6 - Atual
+    ***************************/
+
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
-  int movX = 0; // Celula na direcao X a avancar
-  int movY = 0; // Celula na direcao Y a avancar
+  int movX = 0; // Celula na direcao X a avançar
+  int movY = 0; // Celula na direcao Y a avançar
 
-
-  //Para a proxima fase: robos[timeAtual][roboAtual] ao invez de m
-  if(dir == 1){
+  // Movimentar o robô de acordo com o argumento dado em Dir
+  if(dir == EAST){
     printf("%s\n", "Direita");
     movY = 1;
   }
-  else if(dir ==4){
+  else if(dir == WEST){
     printf("%s\n", "Esquerda");
     movY = -1;
   }
-  else if (dir == 6){
+  else if (dir == CURRENT){
     movX = 0;
     movY = 0;
   }
   else if(m->posy%2 == 0){
     printf("%s\n", "Par");
-    if(dir == 0){
-      printf("%s\n", "  Nordeste");
+    if(dir == NORTHEAST){
+      printf("%s\n", "Nordeste");
       movX = -1;
     }
-    else if(dir == 2){
-      printf("%s\n", "  Sudeste");
+    else if(dir == SOUTHEAST){
+      printf("%s\n", "Sudeste");
       movX = 1;
     }
-    else if(dir == 3){
-      printf("%s\n", "  Sudoeste");
+    else if(dir == SOUTHWEST){
+      printf("%s\n", "Sudoeste");
       movX = -1;
       movY = -1;
     }
-    else if(dir == 5){
-      printf("%s\n", "  Noroeste");
+    else if(dir == NORTHWEST){
+      printf("%s\n", "Noroeste");
       movX = 1;
       movY = 1;
     }
   }
   else{
     printf("%s\n", "Impar");
-    if(dir == 0){
-      printf("%s\n", "  Nordeste");
+    if(dir == NORTHEAST){
+      printf("%s\n", "Nordeste");
       movX = -1;
       movY = 1;
     }
-    else if(dir == 2){
-      printf("%s\n", "  Sudeste");
+    else if(dir == SOUTHEAST){
+      printf("%s\n", "Sudeste");
       movX = -1;
       movY = -1;
     }
-    else if(dir == 3){
-      printf("%s\n", "  Sudoeste");
+    else if(dir == SOUTHWEST){
+      printf("%s\n", "Sudoeste");
       movX = 1;
     }
-    else if(dir == 5){
-      printf("%s\n", "  Noroeste");
+    else if(dir == NORTHWEST){
+      printf("%s\n", "Noroeste");
       movX = -1;
     }
   }
 
 
-  // Futura possivel posicao do robo
+  // Futura posição do robô na arena
   int posTmpX = m->posx + movX;
   int posTmpY = m->posy + movY;
+  
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 14 || posTmpY > 14) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
@@ -432,10 +422,10 @@ int move(int posTmpX, int posTmpY, Maquina *m){
 
   // Tem alguem ai? - Verifica se ja tem um robo na celula desejada
   if(arena[posTmpX][posTmpY].vazia != 0){
-    // Retorna fracasso
+    // Recusa a solicitação
     return 0;
   }
-  // Não tem robô na celula desejada
+  // Se não houver robô na celula desejada
   else {
     // Muda estado da arena
     // Marca a celula que o robo está deixando para vazia
@@ -444,24 +434,23 @@ int move(int posTmpX, int posTmpY, Maquina *m){
     arena[posTmpX][posTmpY].vazia =  timeAtual + 1;
     // Muda estado do robo
     // Muda sua posicao
-    DesenhaRobo2(roboAtual + (timeAtual)*5, m->posx, m->posy, posTmpX, posTmpY);
-
+    moveRobo(roboAtual + (timeAtual)*5, posTmpX, posTmpY);
     m->posx = posTmpX;
     m->posy = posTmpY;
     m->energia = arena[posTmpX][posTmpY].terreno;
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
     //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY].terreno;
-    // Retorna sucesso
-    // printar a arena. Util para debug
-    for(int i = 0; i < 15; i++){
+
+    // printar a posição do robo. Util para debug
+    /*for(int i = 0; i < 15; i++){
       for(int j = 0; j < 15; j++){
           printf("%d ", arena[i][j].vazia);
       }
       printf("\n");
-    }
+    }*/
     // Espera 1 segundo para a visualizacao
-    waitFor(1);
-
+    //waitFor(1);
+    // Retorna sucesso
     return 1;
   }
 }
