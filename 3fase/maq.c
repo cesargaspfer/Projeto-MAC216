@@ -65,14 +65,13 @@ Maquina *cria_maquina(INSTR *p)
 
 INSTR *geraProg () {
   static INSTR progr[] = {
-    {INF, NONE, {CURRENT}},
-    {PRN, NONE, {0}},
     {MOV, ACAO, {NORTHEAST}},
-    {PRN, NONE, {0}},
+    {MOV, ACAO, {EAST}},
+    {MOV, ACAO, {SOUTHEAST}},
+    {MOV, ACAO, {SOUTHWEST}},
     {MOV, ACAO, {WEST}},
-    {PRN, NONE, {0}},
-    {INF, NONE, {CURRENT}},
-    {PRN, NONE, {0}},
+    {MOV, ACAO, {NORTHWEST}},
+    {MOV, ACAO, {CURRENT}},
     {END, NONE, {0}}
   };
   //time_t t;
@@ -399,7 +398,7 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
     Sistema(0, arg.Valor.ac, m);
     ip++;
     Moveu = 1;
-    break;
+    return;
   case ATK:
     Sistema(1, arg.Valor.ac, m);
     break;
@@ -438,8 +437,5 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
 	D(puts("\n"));
 
 	ip++;
-  if(Moveu){
-    break;
-  }
   }
 }

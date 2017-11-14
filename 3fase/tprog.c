@@ -3,7 +3,7 @@
 INSTR prog[] = {
 	{DEP, ACAO, {SOUTHEAST}},
 	//{PRN, NONE, {0}},
-	{END, NONE, {0}},
+	{END, NONE, {0}}
 };
 
 /*

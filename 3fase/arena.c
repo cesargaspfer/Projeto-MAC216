@@ -9,8 +9,8 @@
 
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
-	static int TotTimes = 2;      // Total de times na partida
-	static int TotRobTime = 5;    // Total de robos por partida
+	static int TotTimes = 1;      // Total de times na partida
+	static int TotRobTime = 1;    // Total de robos por partida
 	static Celula arena[15][15];  // A arena em sí (o campo de batalha)
 	Maquina *robos[2][5];   // Vetor que contem os robos ([times][robos])
 
@@ -105,45 +105,57 @@ void Sistema(int op, int dir, Maquina *m) {
 
   //Para a proxima fase: robos[timeAtual][roboAtual] ao invez de m
   if(dir == 1){
-    movX = 1;
+    printf("%s\n", "Direita");
+    movY = 1;
   }
   else if(dir ==4){
-    movX = 1;
+    printf("%s\n", "Esquerda");
+    movY = -1;
   }
   else if (dir == 6){
     movX = 0;
     movY = 0;
   }
-  else if(m->posy%2){
+  else if(m->posy%2 == 0){
+    printf("%s\n", "Par");
     if(dir == 0){
-      movY = -1;
+      printf("%s\n", "  Nordeste");
+      movX = -1;
     }
     else if(dir == 2){
-      movY = 1;
+      printf("%s\n", "  Sudeste");
+      movX = 1;
     }
     else if(dir == 3){
-      movX = 1;
-      movY = -1;
-    }
-    else if(dir == 4){
+      printf("%s\n", "  Sudoeste");
       movX = -1;
       movY = -1;
     }
+    else if(dir == 5){
+      printf("%s\n", "  Noroeste");
+      movX = 1;
+      movY = 1;
+    }
   }
   else{
+    printf("%s\n", "Impar");
     if(dir == 0){
-      movX = 1;
-      movY = -1;
+      printf("%s\n", "  Nordeste");
+      movX = -1;
+      movY = 1;
     }
     else if(dir == 2){
-      movX = 1;
-      movY = 1;
+      printf("%s\n", "  Sudeste");
+      movX = -1;
+      movY = -1;
     }
     else if(dir == 3){
-      movY = 1;
+      printf("%s\n", "  Sudoeste");
+      movX = 1;
     }
-    else if(dir == 4){
-      movY = -1;
+    else if(dir == 5){
+      printf("%s\n", "  Noroeste");
+      movX = -1;
     }
   }
 
@@ -152,7 +164,7 @@ void Sistema(int op, int dir, Maquina *m) {
   int posTmpX = m->posx + movX;
   int posTmpY = m->posy + movY;
   //Fora do mapa?
-  if(posTmpX < 0 || posTmpY < 0 || posTmpX > 19 || posTmpY > 19) {
+  if(posTmpX < 0 || posTmpY < 0 || posTmpX > 14 || posTmpY > 14) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
   }
   else{
@@ -330,7 +342,8 @@ void Atualiza (){
           if(robos[timeAtual][roboAtual]->energia){
             robos[timeAtual][roboAtual]->energia--;
           }
-  				exec_maquina(robos[timeAtual][roboAtual], 50);
+          else
+  				    exec_maquina(robos[timeAtual][roboAtual], 50);
   			}
 
 
@@ -341,7 +354,7 @@ void Atualiza (){
     // "Proxima rodada"
     RodadaAtual++;
   	// Caso seja a ultima rodada, acaba com o jogo
-  	if(RodadaAtual == 499){
+  	if(RodadaAtual == 500){
   		Fim();
   	}
   }
@@ -428,15 +441,27 @@ int move(int posTmpX, int posTmpY, Maquina *m){
     // Marca a celula que o robo está deixando para vazia
     arena[m->posx][m->posy].vazia = 0;
     // Marca a celula que o robo esta indo para nao vazia, indicando o seu time
-    arena[posTmpX][posTmpY].vazia = 1;
+    arena[posTmpX][posTmpY].vazia =  timeAtual + 1;
     // Muda estado do robo
     // Muda sua posicao
+    DesenhaRobo2(roboAtual + (timeAtual)*5, m->posx, m->posy, posTmpX, posTmpY);
+
     m->posx = posTmpX;
     m->posy = posTmpY;
     m->energia = arena[posTmpX][posTmpY].terreno;
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
     //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY].terreno;
     // Retorna sucesso
+    // printar a arena. Util para debug
+    for(int i = 0; i < 15; i++){
+      for(int j = 0; j < 15; j++){
+          printf("%d ", arena[i][j].vazia);
+      }
+      printf("\n");
+    }
+    // Espera 1 segundo para a visualizacao
+    waitFor(1);
+
     return 1;
   }
 }
@@ -450,7 +475,7 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
   // Cria o robo com a função cria_maquina
   //Implementar para a proxima fase
   if(time == 1 && qual == 0){
-    robos[time-1][qual] = cria_maquina(prog, posX, posY, 100, 0, time, 0);
+    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
   }
   else {
     robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
@@ -692,8 +717,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       }
       // Se estiver vazia:
       else{
-        // marca a arena como ocupada (vazia = 1)
-        arena[localX][localY].vazia = 1;
+        // marca a arena como ocupada (vazia = 0, sennao representa qual time esta ai)
+        arena[localX][localY].vazia = times;
         // desenha o robô i do exército j
         desenhaRobo(j-1, index++, localX, localY);
         // coloca o robô i no time j
@@ -701,6 +726,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       }
     }
   }
+  // Espera 1 segundo para a visualizacao
+  waitFor(1);
   // "Inicializa o relogio"
   begin = clock();
 
@@ -727,4 +754,9 @@ int Maximo (int a, int b){
 int Minimo (int a, int b){
   if(a < b) return a;
   else return b;
+}
+
+void waitFor (unsigned int secs) {
+    unsigned int retTime = time(0) + secs;   // Get finishing time.
+    while (time(0) < retTime);               // Loop until it arrives.
 }
