@@ -61,3 +61,13 @@ Mudei os nomes das
 *Cristais e robôs colocados conforme o protocolo recomendado no pdf (cristal n i j e base n i j (ver pagina 21))
 *Adicionei o tipo de célula BASE, para facilitar a manipulação do apres
 *Por enquanto, na célula pode haver 198230942935 cristais mas só uma figura será exibida. Podemos pensar em como mudar isso
+*********************
+14/11/2017:
+*moveRobo substituiu o desenhaRobo2. A impĺementação também mudou
+*reduzi o número de argumentos em cria_maquina do maq.c. Só é necessária a posição e o time do robô, a vida, o dano e os cristais
+são iguais para todos no começo
+* o robô agora tem um dano que ele causa
+*implementei o tipo Coletavel e agora o robô pode coletar armas na arena
+*mudei o ataque para ficar em função do robô atacante
+*precisa rever o Sistema(). Parece que sempre que tem uma chamada ao sistema, o robô se move pra uma outra célula antes de fazer
+qualquer coisa.

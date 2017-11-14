@@ -134,6 +134,17 @@ class cell:
       # desenha o cristal na célula
       scr.blit(s.image, s.rect)
 
+    def arma (s, i, j):
+      s.image = pg.image.load('gun.png')
+      s.rect = s.image.get_rect()
+      x, y = convert(i,j)
+      # fronteiras do sprite
+      l0,h0,l1,h1 = s.rect
+      # corrige a posição de acordo com o tamanho do sprite
+      s.rect.topleft = [x-l1/2,y-h1/2]
+      # desenha a arma na célula
+      scr.blit(s.image, s.rect)
+
 
 
 
@@ -192,6 +203,11 @@ for line in fileinput.input():
       i = int(r[2])
       j = int(r[3])
       arena[i][j].base(i,j,img)
+      atu()
+    elif r[0] == 'gun':
+      i = int(r[1])
+      j = int(r[2])
+      arena[i][j].arma(i,j)
       atu()
     else:
       #se não for nem rob nem fim

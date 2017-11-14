@@ -93,17 +93,18 @@ INSTR *geraProg () {
 
 
 
-Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV, int energ) {
+Maquina *cria_maquina(INSTR *p, int posX, int posY, int TimeV) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
   m->prog = p;
   m->posx = posX;
   m->posy = posY;
-  m->vida = vidaV;
-  m->crist = CrstV;
   m->time = TimeV;
-  m->energia = energ;
+  m->vida = 100;
+  m->crist = 0;
+  m->energia = 100;
+  m->dano = 10;
   return m;
 }
 

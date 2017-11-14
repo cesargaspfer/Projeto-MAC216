@@ -29,7 +29,9 @@ void desenhaCelula(int x, int y, int terreno);
 
 void desenhaBase(int x, int y, int exercito);
 
-void colocaCristal(int x, int y, int n);
+void desenhaCristal(int x, int y, int n);
+void desenhaArma(int x, int y);
+
 // inicializa o apres
 void inicializaGraf();
 

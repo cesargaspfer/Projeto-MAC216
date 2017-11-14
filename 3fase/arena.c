@@ -53,7 +53,7 @@ int main () {
   //	-Total de times,
   // 	-Total de cristais,
   // 	-Total de robos por time
-  CriaArena(15, TotTimes, 20, TotRobTime);
+  CriaArena(15, TotTimes, 20, TotRobTime, 2);
 
 
 
@@ -89,7 +89,7 @@ void Sistema(int op, int dir, Maquina *m) {
     ***************************/
 
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
-  int movX = 0; // Celula na direcao X a avançar
+  /*int movX = 0; // Celula na direcao X a avançar
   int movY = 0; // Celula na direcao Y a avançar
 
   // Movimentar o robô de acordo com o argumento dado em Dir
@@ -151,20 +151,21 @@ void Sistema(int op, int dir, Maquina *m) {
 
   // Futura posição do robô na arena
   int posTmpX = m->posx + movX;
-  int posTmpY = m->posy + movY;
-  
+  int posTmpY = m->posy + movY;*/
+  int posTmpX = m->posx;
+  int posTmpY = m->posy;
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 14 || posTmpY > 14) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
   }
   else{
-    if(op == 2) { // Se pedir infos
+    if(op == INF) { // Se pedir infos
       OPERANDO o;
       o.t = CELL;
       o.Valor.c = arena[posTmpX][posTmpY];
       empilha(&m->pil, o); // Empilha, no robo, a Celula
     }
-    else if(op == 0) { // Move
+    else if(op == MOV) { // Move
 		if(move(posTmpX, posTmpY, m) == 0)
 			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
 		else
@@ -172,20 +173,21 @@ void Sistema(int op, int dir, Maquina *m) {
       empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
     }
 	}
-    else if(op == 1) { // Ataque
+    else if(op == ATK) { // Ataque
 		if(ataque(posTmpX, posTmpY, m))
 			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
 		else
 			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
 
     }
-    else if(op == 3) { // Coletar
+    else if(op == CLT) { // Coletar
 		if(coleta(posTmpX, posTmpY, m)) {
-			m->crist++;
-			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+      // indica ao robô que ele coletou um item
+			empilha(&m->pil, (OPERANDO){BOOL, true});
 		}
       else
-        empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+        // indica para o robô que ele não pode coletar um item (porque não tinha nada na célula)
+        empilha(&m->pil, (OPERANDO){BOOL, false});
     }
     else if(op == 4) { // Depositar
       // Se o robo tiver cristais
@@ -356,16 +358,33 @@ void Atualiza (){
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 int coleta(int posTmpX, int posTmpY, Maquina *m){
-  // Caso tenha cristais na celula desejada
-  if(arena[posTmpX][posTmpY].nCristais){
-    // Retira um cristal da arena
-    arena[posTmpX][posTmpY].nCristais--;
-	// Adiciona um cristal ao robo
-	m->crist++;
-	// Retorna sucesso
-    return 1;
+  // Caso existam coletáveis na célula em (posTmpX, posTmpY):
+  if(arena[posTmpX][posTmpY].coletavel != NENHUM){
+    Coletavel c = arena[posTmpX][posTmpY].coletavel;
+    switch (c)
+    {
+      case CRISTAL:
+        // diminui o número de cristais na célula
+        arena[posTmpX][posTmpY].nCristais--;
+        // se foi pego o último cristal
+        if (arena[posTmpX][posTmpY].nCristais == 0)
+          // não há mais nenhum coletável
+          arena[posTmpX][posTmpY].coletavel = NENHUM;
+        // o robô está carregando mais um executável
+        m->crist++;
+        break;
+      case ARMA:
+        arena[posTmpX][posTmpY].coletavel = NENHUM;
+        // o dano do robô aumenta para 30 (um ataque dele tira 30 pontos de saúde da vítima)
+        m->dano = 30;
+        break;
+      default:
+        break;
+    }
+	   // Retorna sucesso
+     return 1;
   }
-  // Caso nao tenha cristais na celula desejada
+  // Caso nao tenha coletáveis na célula
   else{
 	// Retorna fracasso
     return 0;
@@ -394,14 +413,12 @@ int ataque(int posTmpX, int posTmpY, Maquina *m){
         }
       }
     }
-    // Como, por enquanto so tem um tipo de ataque, deixemos essa parte comentada
-    // if(tipo == 1)
-    // Retira 30 pontos de vida do robo atacado
-    robos[time][qual]->vida -= 30;
-    //}
-    // Caso acabe a vida desse robo, ele sera destruido
+    // Retira pontos de vida do robo atacado em função do dano associado ao robô atacante
+    robos[time][qual]->vida -= m->dano;
+    // Caso acabe a vida desse robo, ele será destruido
     if(robos[time][qual]->vida <= 0){
-    RemoveExercito(posTmpX, posTmpY, time, qual);
+      // remove o robô de seu exército
+      RemoveExercito(posTmpX, posTmpY, time, qual);
     }
     // Retorna sucesso
     return 1;
@@ -464,10 +481,10 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
   // Cria o robo com a função cria_maquina
   //Implementar para a proxima fase
   if(time == 1 && qual == 0){
-    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
+    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, time);
   }
   else {
-    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, 100, 0, time, 0);
+    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, time);
   }
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time-1][qual] = 1;
@@ -532,7 +549,7 @@ void RemoveExercito(int posX, int posY, int time, int qual) {
 //                                     Cria Arena                                      //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-int CriaArena(int tamanho, int times, int cristais, int robosT){
+int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
 
   // Inicialização dos vetores de cristais e dos pontos de cada time
   int cristaisRestantes [cristais];
@@ -575,12 +592,14 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
      arena[i][j].vazia = 0;
      // inicializa sem nenhum cristal, pois é preciso definir se a celula em questão é base ou não
      arena[i][j].nCristais = 0;
+     // por enquanto, não a cristais em nenhuma das células
+     arena[i][j].coletavel = NENHUM;
    }
  }
 
  //Inicializa a construção da visualização
  inicializaGraf();
- // envia a arena para a visualização
+ // envia a arena para a visualização, sem robôs ou coletáveis ainda
  for (int i = 0; i < tamanho; i++)
  {
    for (int j = 0; j < tamanho; j++){
@@ -679,9 +698,25 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       else
       {
         arena[x][y].nCristais++;
+        arena[x][y].coletavel = CRISTAL;
         // desenha 1 cristal na célula (x,y)
-        colocaCristal(1, x, y);
+        desenhaCristal(1, x, y);
       }
+  }
+
+  // Distribuir duas armas na arena em células não ocupadas por bases ou cristais
+  for (int i = 0; i < armas;)
+  {
+    int x = rand()%14;
+    int y = rand()%14;
+    if (arena[x][y].vazia == 0 && arena[x][y].coletavel == NENHUM)
+    {
+      // define o coletável da célula(x,y) como ARMA
+      arena[x][y].coletavel = ARMA;
+      // desenha uma arma na posição (x,y)
+      desenhaArma(x,y);
+      i++;
+    }
   }
 
   // printar a arena. Util para debug
@@ -700,8 +735,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT){
       // já os do segundo time começarão o jogo na metade inferior da arena
       int localX = rand()%7 + 7*(j-1);
       int localY = rand() %7 + 7*(j-1);
-      // Caso ja tenha um robo no local sorteado, decrementa o i para refazer esse loop
-      if(arena[localX][localY].vazia || arena[localX][localY].base || arena[localX][localY].nCristais != 0){
+      // Caso ja tenha um robo, uma base ou um item coletavel no local sorteado, decrementa o i para refazer esse loop
+      if(arena[localX][localY].vazia || arena[localX][localY].base || arena[localX][localY].coletavel != NENHUM){
         i--;
       }
       // Se estiver vazia:

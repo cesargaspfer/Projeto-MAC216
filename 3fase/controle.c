@@ -55,9 +55,15 @@ void desenhaBase (int x, int y, int exercito)
   fflush(display);
 }
 
-void colocaCristal (int x, int y, int n)
+void desenhaCristal (int x, int y, int n)
 {
   fprintf(display, "cristal %d %d %d\n", x, y, n);
+  fflush(display);
+}
+
+void desenhaArma (int x, int y)
+{
+  fprintf(display, "gun %d %d\n", x, y);
   fflush(display);
 }
 

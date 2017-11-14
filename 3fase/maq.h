@@ -20,12 +20,13 @@ typedef struct {
   int energia;
   // time ao qual pertence
   int time;
+  // dano que o robô causa quando ataca outro robô (decréscimo na "vida" de outro robô)
+  // padrão: 10
+  int dano;
 } Maquina;
 
 // declaração da função cria_maquina
-Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV, int energia);
-
-Maquina *cria_maquina(INSTR *p, int posX, int posY, int vidaV, int CrstV, int TimeV, int energ);// declaração da função destroi_maquina
+Maquina *cria_maquina(INSTR *p, int posX, int posY, int TimeV);
 void destroi_maquina(Maquina *m);
 // declaração da função exec_maquina
 void exec_maquina(Maquina *m, int n);
