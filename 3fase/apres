@@ -145,9 +145,17 @@ class cell:
       # desenha a arma na célula
       scr.blit(s.image, s.rect)
 
+def load_sound(sound_filename):
+  sound = pg.mixer.Sound(sound_filename)
+  return sound
 
 
-
+#inicializar lista de sons
+'''
+0: som de coleta de cristais
+'''
+sounds = []
+sounds.append(load_sound('collect.wav'))
 # Construção da matriz que representa a arena
 arena = []
 """
@@ -208,6 +216,13 @@ for line in fileinput.input():
       i = int(r[1])
       j = int(r[2])
       arena[i][j].arma(i,j)
+      atu()
+    elif r[0] == 'remitem':
+      i = int(r[1])
+      j = int(r[2])
+      sounds[0].play()
+      pg.time.wait(1000)
+      arena[i][j].draw()
       atu()
     else:
       #se não for nem rob nem fim

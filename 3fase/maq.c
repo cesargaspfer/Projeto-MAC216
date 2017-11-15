@@ -85,6 +85,7 @@ INSTR *geraProg () {
     {INF, ACAO, {EAST}},
     {ATR, NONE,{2}},
     {PRN, NONE, {0}},
+    {PRN, NONE, {0}},
     {END, NONE, {0}}
   };
   //time_t t;

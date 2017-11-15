@@ -77,17 +77,6 @@ int main () {
 *************************************************/
 // Recebe a operacao (acao) que ira executar, a direcao e de qual maquina esta solicitando
 void Sistema(int op, int dir, Maquina *m) {
-  /*****************************
-  Legenda da direcao:
-     0 - Norte
-     1 - Nordeste
-     2 - Sudeste
-     3 - Sul
-     4 - Sudoeste
-     5 - Noroeste
-	   6 - Atual
-    ***************************/
-
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
   int movX = 0; // Celula na direcao X a avançar
   int movY = 0; // Celula na direcao Y a avançar
@@ -195,6 +184,9 @@ void Sistema(int op, int dir, Maquina *m) {
 		if(coleta(posTmpX, posTmpY, m)) {
       // indica ao robô que ele coletou um item
 			empilha(&m->pil, (OPERANDO){BOOL, true});
+      if (arena[posTmpX][posTmpY].coletavel == NENHUM)
+        // retirar o desenho do cristal se não há mais nenhum cristal na célula
+        removeItem(posTmpX,posTmpY);
       printf("Coletou da posição (%d,%d)\n", posTmpX, posTmpY);
 		}
       else

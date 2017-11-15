@@ -95,6 +95,12 @@ void desenhaRobo (int exercito, int index, int i, int j)
   mostra(index);
 }
 
+void removeItem(int x, int y)
+{
+  fprintf(display, "remitem %d %d\n", x, y);
+  fflush(display);
+}
+
 // mostra na arena o robô em index
 void mostra(int index) {
   // display: ri oi oj di dj (o: origem) (d: destino) (i,j): coordenadas

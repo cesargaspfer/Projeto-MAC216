@@ -26,11 +26,14 @@ void atualiza(int ri);
 // essa função escreve as instruções para desenhar a célula segundo o protocolo
 // do apres
 void desenhaCelula(int x, int y, int terreno);
-
+// desenhar uma base na célula x,y
 void desenhaBase(int x, int y, int exercito);
-
+// desenhar um cristal na célula x,y
 void desenhaCristal(int x, int y, int n);
+// desenhar uma arma na célula x,y
 void desenhaArma(int x, int y);
+// remover o desenho de um item na célula x,y
+void removeItem(int x, int y);
 
 // inicializa o apres
 void inicializaGraf();
