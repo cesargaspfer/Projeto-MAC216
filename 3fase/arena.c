@@ -711,7 +711,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
   // Distribuir cristais pela arena, de modo a não colocar um cristal onde já tem um robô ou
   // uma base e os desenha
 
-  for (int i = 0; i < cristais; i++)
+  /*for (int i = 0; i < cristais; i++)
   {
       int x = rand()%14;
       int y = rand()%14;
@@ -724,10 +724,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
         // desenha 1 cristal na célula (x,y)
         desenhaCristal(1, x, y);
       }
-  }
+  }*/
 
   // Distribuir duas armas na arena em células não ocupadas por bases ou cristais
-  for (int i = 0; i < armas;)
+  /*for (int i = 0; i < armas;)
   {
     int x = rand()%14;
     int y = rand()%14;
@@ -739,7 +739,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
       desenhaArma(x,y);
       i++;
     }
-  }
+  }*/
 
   // printar a arena. Util para debug
   for(int i = 0; i < 15; i++){
@@ -764,11 +764,20 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
       // Se estiver vazia:
       else{
         // marca a arena como ocupada (vazia = 0, sennao representa qual time esta ai)
-        arena[localX][localY].vazia = times;
+        //arena[localX][localY].vazia = times;
         // desenha o robô i do exército j
-        desenhaRobo(j-1, index++, localX, localY);
+        //desenhaRobo(j-1, index++, localX, localY);
         // coloca o robô i no time j
-        InsereExercito(j, localX, localY, i);
+        //InsereExercito(j, localX, localY, i);
+
+        // Para testar o CLT: Robô e item coletavel em ponto fixo (1,4)
+        arena[1][4].vazia = 1;
+        desenhaRobo(j-1, index++, 1, 4);
+        InsereExercito(j, 1, 4, i);
+
+        arena[1][5].coletavel = CRISTAL;
+        arena[1][5].nCristais++;
+        desenhaCristal(1,1,5);
       }
     }
   }

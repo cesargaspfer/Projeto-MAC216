@@ -64,7 +64,7 @@ Maquina *cria_maquina(INSTR *p)
 
 
 INSTR *geraProg () {
-  static INSTR progr[] = {
+  /*static INSTR progr[] = {
     {MOV, ACAO, {NORTHEAST}},
     {ATK, ACAO, {SOUTHEAST}},
     {MOV, ACAO, {EAST}},
@@ -75,6 +75,16 @@ INSTR *geraProg () {
     {MOV, ACAO, {WEST}},
     {MOV, ACAO, {NORTHWEST}},
     {MOV, ACAO, {CURRENT}},
+    {END, NONE, {0}}
+  };*/
+  static INSTR progr[] = {
+    {INF, ACAO, {EAST}},
+    {ATR, NONE,{2}},
+    {PRN, NONE, {0}},
+    {CLT, ACAO, {EAST}},
+    {INF, ACAO, {EAST}},
+    {ATR, NONE,{2}},
+    {PRN, NONE, {0}},
     {END, NONE, {0}}
   };
   //time_t t;
