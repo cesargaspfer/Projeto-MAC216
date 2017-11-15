@@ -19,7 +19,7 @@ typedef struct {
   int crist;
   int energia;
   // time ao qual pertence
-  int time;
+  int exercito;
   // dano que o robô causa quando ataca outro robô (decréscimo na "vida" de outro robô)
   // padrão: 10
   int dano;

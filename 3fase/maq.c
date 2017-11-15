@@ -66,8 +66,11 @@ Maquina *cria_maquina(INSTR *p)
 INSTR *geraProg () {
   static INSTR progr[] = {
     {MOV, ACAO, {NORTHEAST}},
+    {ATK, ACAO, {SOUTHEAST}},
     {MOV, ACAO, {EAST}},
+    {CLT, ACAO, {NORTHEAST}},
     {MOV, ACAO, {SOUTHEAST}},
+    {DEP, ACAO, {NORTHEAST}},
     {MOV, ACAO, {SOUTHWEST}},
     {MOV, ACAO, {WEST}},
     {MOV, ACAO, {NORTHWEST}},
@@ -93,14 +96,15 @@ INSTR *geraProg () {
 
 
 
-Maquina *cria_maquina(INSTR *p, int posX, int posY, int TimeV) {
+Maquina *cria_maquina(INSTR *p, int x, int y, int exercito) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
-  if (!m) Fatal("Memória insuficiente",4);
+  if (!m)
+    Fatal("Memória insuficiente",4);
   m->ip = 0;
   m->prog = p;
-  m->posx = posX;
-  m->posy = posY;
-  m->time = TimeV;
+  m->posx = x;
+  m->posy = y;
+  m->exercito = exercito;
   m->vida = 100;
   m->crist = 0;
   m->energia = 100;
@@ -396,21 +400,21 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
   case MOV:
     // DEBUG: Direção correta
     //printf("Moving to %d\n", arg.Valor.d);
-    Sistema(0, arg.Valor.ac, m);
+    Sistema(MOV, arg.Valor.ac, m);
     ip++;
     Moveu = 1;
     return;
   case ATK:
-    Sistema(1, arg.Valor.ac, m);
+    Sistema(ATK, arg.Valor.ac, m);
     break;
   case INF:
-    Sistema(2, arg.Valor.ac, m);
+    Sistema(INF, arg.Valor.ac, m);
     break;
   case CLT:
-    Sistema(3, arg.Valor.ac, m);
+    Sistema(CLT, arg.Valor.ac, m);
     break;
   case DEP:
-    Sistema(4, arg.Valor.ac, m);
+    Sistema(DEP, arg.Valor.ac, m);
     break;
 	case ATR:
 		tmp = desempilha(pil);

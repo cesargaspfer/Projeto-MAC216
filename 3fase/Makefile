@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -w -std=c99
+CFLAGS = -g -w
 default: game
 
 game: maq.o pilha.o arena.o tprog.o controle.o

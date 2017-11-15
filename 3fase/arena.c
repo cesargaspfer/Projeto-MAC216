@@ -91,14 +91,15 @@ void Sistema(int op, int dir, Maquina *m) {
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
   int movX = 0; // Celula na direcao X a avançar
   int movY = 0; // Celula na direcao Y a avançar
-
+  printf("Energia do robô: %d\n", m->energia);
+  printf("op: %d\n", op);
   // Movimentar o robô de acordo com o argumento dado em Dir
   if(dir == EAST){
-    printf("%s\n", "Direita");
+    //printf("%s\n", "Direita");
     movY = 1;
   }
   else if(dir == WEST){
-    printf("%s\n", "Esquerda");
+    //printf("%s\n", "Esquerda");
     movY = -1;
   }
   else if (dir == CURRENT){
@@ -106,45 +107,45 @@ void Sistema(int op, int dir, Maquina *m) {
     movY = 0;
   }
   else if(m->posx%2 == 0){
-    printf("%s\n", "Par");
+    //printf("%s\n", "Par");
     if(dir == NORTHEAST){
-      printf("%s\n", "Nordeste");
+      //printf("%s\n", "Nordeste");
       movX = -1;
 
     }
     else if(dir == SOUTHEAST){
-      printf("%s\n", "Sudeste");
+      //printf("%s\n", "Sudeste");
       movX = 1;
     }
     else if(dir == SOUTHWEST){
-      printf("%s\n", "Sudoeste");
+      //printf("%s\n", "Sudoeste");
       movX = 1;
       movY = -1;
     }
     else if(dir == NORTHWEST){
-      printf("%s\n", "Noroeste");
+      //printf("%s\n", "Noroeste");
       movX = -1;
       movY = -1;
     }
   }
   else{
-    printf("%s\n", "Impar");
+    //printf("%s\n", "Impar");
     if(dir == NORTHEAST){
-      printf("%s\n", "Nordeste");
+      //printf("%s\n", "Nordeste");
       movX = -1;
       movY = 1;
     }
     else if(dir == SOUTHEAST){
-      printf("%s\n", "Sudeste");
+      //printf("%s\n", "Sudeste");
       movX = 1;
       movY = 1;
     }
     else if(dir == SOUTHWEST){
-      printf("%s\n", "Sudoeste");
+      //printf("%s\n", "Sudoeste");
       movX = 1;
     }
     else if(dir == NORTHWEST){
-      printf("%s\n", "Noroeste");
+      //printf("%s\n", "Noroeste");
       movX = -1;
     }
   }
@@ -156,44 +157,59 @@ void Sistema(int op, int dir, Maquina *m) {
   //Fora do mapa?
   if(posTmpX < 0 || posTmpY < 0 || posTmpX > 14 || posTmpY > 14) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
+    printf("Direção inválida\n");
   }
   else{
-    if(op == 2) { // Se pedir infos
+    if(op == INF) { // Se pedir infos
       OPERANDO o;
       o.t = CELL;
       o.Valor.c = arena[posTmpX][posTmpY];
       empilha(&m->pil, o); // Empilha, no robo, a Celula
     }
-    else if(op == 0) { // Move
+    else if(op == MOV) { // Move
   		if(move(posTmpX, posTmpY, m) == 0)
-  			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+      {
+        empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+        printf("Não conseguiu se mover para a posição (%d,%d)\n", posTmpX, posTmpY);
+      }
   		else
       {
+        printf("Conseguiu se mover para a posição (%d,%d)\n", posTmpX, posTmpY);
         empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
 
   	}
-    else if(op == 1) { // Ataque
+    else if(op == ATK) { // Ataque
   		if(ataque(posTmpX, posTmpY, m))
-  			empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+      {
+        printf("Atacou a posição (%d,%d)\n", posTmpX, posTmpY);
+        empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
+      }
   		else
-  			empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
-      printf("%s\n", "OI");
+      {
+        printf("Não conseguiu atacar para a posição (%d,%d)\n", posTmpX, posTmpY);
+        empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+      }
     }
-    else if(op == 3) { // Coletar
+    else if(op == CLT) { // Coletar
 		if(coleta(posTmpX, posTmpY, m)) {
       // indica ao robô que ele coletou um item
 			empilha(&m->pil, (OPERANDO){BOOL, true});
+      printf("Coletou da posição (%d,%d)\n", posTmpX, posTmpY);
 		}
       else
+      {
+        printf("Não conseguiu coletar da posição (%d,%d)\n", posTmpX, posTmpY);
         // indica para o robô que ele não pode coletar um item (porque não tinha nada na célula)
         empilha(&m->pil, (OPERANDO){BOOL, false});
+      }
     }
-    else if(op == 4) { // Depositar
+    else if(op == DEP) { // Depositar
       // Se o robo tiver cristais
       if(m->crist) {
         // Se tiver uma base a celula que ele quer depositar
         if(arena[posTmpX][posTmpY].base){
+          printf("Depositou na posição (%d,%d)\n", posTmpX, posTmpY);
           // O time da base que foi depositado um cristal ganha um ponto
           pontosTotais[arena[posTmpX][posTmpY].base -1]++;
           cristaisRestantes--;
@@ -203,6 +219,7 @@ void Sistema(int op, int dir, Maquina *m) {
         }
         // Se nao for base
         else {
+          printf("Depositou na posição (%d,%d)\n", posTmpX, posTmpY);
            arena[posTmpX][posTmpY].nCristais++;
         }
         // Remove um cristal do robo
@@ -211,7 +228,11 @@ void Sistema(int op, int dir, Maquina *m) {
       }
       // Caso ele nao tenha cristais
       else
-				empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+      {
+        printf("Não depositou na posição (%d,%d)\n", posTmpX, posTmpY);
+        empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
+      }
+
     }
   }
   waitFor(1);
