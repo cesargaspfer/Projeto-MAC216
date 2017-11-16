@@ -458,17 +458,35 @@ int move(int posTmpX, int posTmpY, Maquina *m){
   }
   // Se não houver robô na celula desejada
   else {
+    // salva coordenadas "antigas" do robô
+    int ox = m->posx;
+    int oy = m->posy;
     // Muda estado da arena
     // Marca a celula que o robo está deixando para vazia
-    arena[m->posx][m->posy].vazia = 0;
+    arena[ox][oy].vazia = 0;
     // Marca a celula que o robo esta indo para nao vazia, indicando o seu time
     arena[posTmpX][posTmpY].vazia =  timeAtual + 1;
     // Muda estado do robo
     // Muda sua posicao
     moveRobo(roboAtual + (timeAtual)*5, posTmpX, posTmpY);
+
     m->posx = posTmpX;
     m->posy = posTmpY;
     m->energia = arena[posTmpX][posTmpY].terreno;
+    // se na célula pela qual o robô passou havia algum item que não foi coletado
+    if (arena[ox][oy].coletavel != NENHUM)
+    {
+      // redesenha o item
+      if (arena[ox][oy].coletavel == CRISTAL)
+        desenhaCristal(1, ox, oy);
+      else if (arena[ox][oy].coletavel == ARMA)
+        desenhaArma(ox, oy);
+        //Se havia uma base
+    } else if (arena[ox][oy].base != 0)
+    {
+      // desenha a base novamente
+      desenhaBase(ox,oy,arena[ox][oy].base);
+    }
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
     //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY].terreno;
 
@@ -623,11 +641,11 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
  }
 
  // define as duas bases de cada time e as desenha
- for (int i = 0; i < times; i++)
+ for (int i = 1; i <= times; i++)
  {
    // sorteia a posição da base (a primeira na metade superior da arena, a segunda na metade superior)
-   int x = rand()%(7) + 7*i;
-   int y = rand()%(7) + 7*i;
+   int x = rand()%(7) + 7*(i-1);
+   int y = rand()%(7) + 7*(i-1);
    if (arena[x][y].base)
    {
     i--;
@@ -641,37 +659,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
    desenhaBase(x,y,i);
  }
 
-  // Gera de modo aleatorio o terreno da arena, com irregularidades
-  /*for(int a = 0; a < 50; a++){
-    // Sorteia uma posicao, e gera um retangulo de largura tamanhoX e altura
-    // de tamanhoY de um tipo aleatorio de terreno na arena
-    int tipoterr = rand() % 5;
-    int localX = rand() % 20;
-    int localY = rand() % 20;
-    int tamanhoX = rand() % 5;
-    int tamanhoY = rand() % 5;
-
-    int localXlMin = Maximo(0, localX - tamanhoX);
-    int localYlMin = Maximo(0, localY - tamanhoY);
-    //arena[0][0].terreno = tipoterr;
-    // Caso nao couber na arena, ajustamos o seu tamanho
-    for(int i = localXlMin; i < Minimo(20, localX + tamanhoX); i++) {
-      for(int j = localYlMin; j < Minimo(20, localY + tamanhoY); j++) {
-        arena[i][j].terreno = tipoterr;
-      }
-    }
-
-  }*/
-  //Bota um cristal no meio da arena, sendo no meio terreno mais dificil (o do tipo 5)
-  /*for(int i = (tamanho/2) - 3; i <= (tamanho/2) + 3; i++){
-    for(int j = (tamanho/2) - 3; j <= (tamanho/2) + 3; j++){
-      arena[i][j].terreno = 4;
-    }
-  }
-  arena[tamanho/2][tamanho/2].nCristais++;*/
-
   // Gera as posições das bases aleatoriamente
-  /*for(int i = 1; i <= times; i++){
+  for(int i = 1; i <= times; i++){
     int localX = rand() % 20;
     int localY = rand() % 20;
     // Caso tenha base ou cristais no local sorteado,
@@ -683,7 +672,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
     else{
       arena[localX][localY].base = i;
     }
-  }*/
+  }
 
   // Bota os cristais aleatoriamente no mapa
   /*for(int i = 1; i < cristais; i++){
@@ -703,7 +692,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
   // Distribuir cristais pela arena, de modo a não colocar um cristal onde já tem um robô ou
   // uma base e os desenha
 
-  /*for (int i = 0; i < cristais; i++)
+  for (int i = 0; i < cristais; i++)
   {
       int x = rand()%14;
       int y = rand()%14;
@@ -716,10 +705,10 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
         // desenha 1 cristal na célula (x,y)
         desenhaCristal(1, x, y);
       }
-  }*/
+  }
 
   // Distribuir duas armas na arena em células não ocupadas por bases ou cristais
-  /*for (int i = 0; i < armas;)
+  for (int i = 0; i < armas;)
   {
     int x = rand()%14;
     int y = rand()%14;
@@ -731,7 +720,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
       desenhaArma(x,y);
       i++;
     }
-  }*/
+  }
 
   // printar a arena. Util para debug
   for(int i = 0; i < 15; i++){
@@ -756,20 +745,21 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
       // Se estiver vazia:
       else{
         // marca a arena como ocupada (vazia = 0, sennao representa qual time esta ai)
-        //arena[localX][localY].vazia = times;
+        arena[localX][localY].vazia = times;
         // desenha o robô i do exército j
-        //desenhaRobo(j-1, index++, localX, localY);
+        desenhaRobo(j-1, index++, localX, localY);
         // coloca o robô i no time j
-        //InsereExercito(j, localX, localY, i);
+        InsereExercito(j, localX, localY, i);
 
-        // Para testar o CLT: Robô e item coletavel em ponto fixo (1,4)
-        arena[1][4].vazia = 1;
+        // Para testar ações e interações entre robos e a arena. Robô e item coletavel em
+        // pontos fixos (1,4) e (1,5)
+        /*arena[1][4].vazia = 1;
         desenhaRobo(j-1, index++, 1, 4);
         InsereExercito(j, 1, 4, i);
 
         arena[1][5].coletavel = CRISTAL;
         arena[1][5].nCristais++;
-        desenhaCristal(1,1,5);
+        desenhaCristal(1,1,5);*/
       }
     }
   }

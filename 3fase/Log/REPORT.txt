@@ -71,3 +71,9 @@ são iguais para todos no começo
 *mudei o ataque para ficar em função do robô atacante
 *precisa rever o Sistema(). Parece que sempre que tem uma chamada ao sistema, o robô se move pra uma outra célula antes de fazer
 qualquer coisa.
+
+15/11/2017:
+*Novo recurso: temos um efeito sonoro quando o robô coleta um item
+*Alguns problemas nas ações consertados
+*Se o robô passa por uma célula que tem um item (ou uma base) mas não coleta nada e depois sai dessa célula,
+os itens ou a base são mantidos na célula. (não apaga mais a Sprite quando redesenha)
