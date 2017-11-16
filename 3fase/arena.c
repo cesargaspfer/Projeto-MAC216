@@ -450,6 +450,7 @@ int move(int x, int y, Maquina *m){
 
   // Tem alguem ai? - Verifica se ja tem um robo na celula desejada
   if(arena[x][y].vazia != 0){
+
     // Recusa a solicitação
     return 0;
   }
@@ -487,13 +488,7 @@ int move(int x, int y, Maquina *m){
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
     //TempoDeCadaRobo[timeAtual][roboAtual] += arena[x][y].terreno;
 
-    // printar a posição do robo. Util para debug
-    /*for(int i = 0; i < 15; i++){
-      for(int j = 0; j < 15; j++){
-          printf("%d ", arena[i][j].vazia);
-      }
-      printf("\n");
-    }*/
+
     // Espera 1 segundo para a visualizacao
     //waitFor(1);
     // Retorna sucesso
@@ -582,7 +577,11 @@ void destroiRobo(int posX, int posY, int time, int qual) {
 int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
   // Inicialização dos vetores de cristais e dos pontos de cada time
   cristaisRestantes = cristais;
-  int pontosTotais [times];
+
+  for(int i = 0; i < times; i++){
+    pontosTotais[i] = 0;
+  }
+
 
   fimDoJogo = 0; // O jogo não terminou
   //arena[tamanho][tamanho];
@@ -694,7 +693,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
       // Se estiver vazia:
       else{
         // marca a arena como ocupada (vazia = 0, sennao representa qual time esta ai)
-        arena[localX][localY].vazia = times;
+        arena[localX][localY].vazia = j;
         // desenha o robô i do exército j
         desenhaRobo(index++, j-1, localX, localY);
         // coloca o robô i no time j

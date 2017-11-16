@@ -71,7 +71,7 @@ INSTR *geraProg () {
       {MOV, ACAO, {NORTHEAST}},
       {MOV, ACAO, {WEST}},
       {MOV, ACAO, {SOUTHWEST}},
-      {MOV, ACAO, {CURRENT}},
+      {ATK, ACAO, {EAST}},
       {PRN, NONE, {0}},
       {END, NONE, {0}}
   };
