@@ -78,7 +78,14 @@ INSTR *geraProg () {
     {END, NONE, {0}}
   };*/
   static INSTR progr[] = {
-    {ATK, ACAO, {EAST}},
+    {MOV, ACAO, {EAST}},
+    {MOV, ACAO, {WEST}},
+    {MOV, ACAO, {NORTHEAST}},
+    {MOV, ACAO, {SOUTHWEST}},
+    {MOV, ACAO, {NORTHWEST}},
+    {MOV, ACAO, {SOUTHEAST}},
+    {MOV, ACAO, {CURRENT}},
+    {PRN, NONE, {0}},
     {END, NONE, {0}}
   };
   //time_t t;
@@ -341,9 +348,9 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
     {
       int b = a.Valor.b;
       if (b == 0)
-        printf("PRN: false\n");
+        printf("false\n");
       else
-        printf("PRN: true\n");
+        printf("true\n");
     } else
       printf("%d\n", a.Valor.n);
     empilha(pil, a);
@@ -398,9 +405,6 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
       indexALC--;
     }
     break;
-    /* Implementação das novas instruções, sendo elas:
-    MOV, ATK, ... (A CONCLUIR) */
-
   case MOV:
     // DEBUG: Direção correta
     //printf("Moving to %d\n", arg.Valor.d);

@@ -74,7 +74,7 @@ programa apres que faça a imagem do robô ser adicionada na lista "robs" do pro
 em python. Depois, chama o método mostra para que o robô seja movido para a posição
 i j dada como parâmetro
 */
-void desenhaRobo (int exercito, int index, int i, int j)
+void desenhaRobo (int index, int exercito, int i, int j)
 {
 
 

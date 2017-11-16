@@ -77,3 +77,8 @@ qualquer coisa.
 *Alguns problemas nas ações consertados
 *Se o robô passa por uma célula que tem um item (ou uma base) mas não coleta nada e depois sai dessa célula,
 os itens ou a base são mantidos na célula. (não apaga mais a Sprite quando redesenha)
+16/11/2017
+*Mudei a função InsereExercito. Ela agora se chama inicializaRobo (para o código ficar mais legível) e mudei
+a ordem dos argumentos também. Sua assinatura agora é:
+static void inicializaRobo (int index, int time, int posX, int posY)
+*Mudei a função RemoveExercito. Ela agora se chama destroiRobo. Não mexi na assinatura dela.

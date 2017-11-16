@@ -141,10 +141,10 @@ void Sistema(int op, int dir, Maquina *m) {
 
 
   // Futura posição do robô na arena
-  int posTmpX = m->posx + movX;
-  int posTmpY = m->posy + movY;
+  int x = m->posx + movX;
+  int y = m->posy + movY;
   //Fora do mapa?
-  if(posTmpX < 0 || posTmpY < 0 || posTmpX > 14 || posTmpY > 14) {
+  if(x < 0 || y < 0 || x > 14 || y > 14) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
     printf("Direção inválida\n");
   }
@@ -152,46 +152,46 @@ void Sistema(int op, int dir, Maquina *m) {
     if(op == INF) { // Se pedir infos
       OPERANDO o;
       o.t = CELL;
-      o.Valor.c = arena[posTmpX][posTmpY];
+      o.Valor.c = arena[x][y];
       empilha(&m->pil, o); // Empilha, no robo, a Celula
     }
     else if(op == MOV) { // Move
-  		if(move(posTmpX, posTmpY, m) == 0)
+  		if(move(x, y, m) == 0)
       {
         empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
-        printf("Não conseguiu se mover para a posição (%d,%d)\n", posTmpX, posTmpY);
+        printf("Não conseguiu se mover para a posição (%d,%d)\n", x, y);
       }
   		else
       {
-        printf("Conseguiu se mover para a posição (%d,%d)\n", posTmpX, posTmpY);
+        printf("Conseguiu se mover para a posição (%d,%d)\n", x, y);
         empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
 
   	}
     else if(op == ATK) { // Ataque
-  		if(ataque(posTmpX, posTmpY, m))
+  		if(ataque(x, y, m))
       {
-        printf("Atacou a posição (%d,%d)\n", posTmpX, posTmpY);
+        printf("Atacou a posição (%d,%d)\n", x, y);
         empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
   		else
       {
-        printf("Não conseguiu atacar para a posição (%d,%d)\n", posTmpX, posTmpY);
+        printf("Não conseguiu atacar a posição (%d,%d)\n", x, y);
         empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
       }
     }
     else if(op == CLT) { // Coletar
-		if(coleta(posTmpX, posTmpY, m)) {
+		if(coleta(x, y, m)) {
       // indica ao robô que ele coletou um item
 			empilha(&m->pil, (OPERANDO){BOOL, true});
-      if (arena[posTmpX][posTmpY].coletavel == NENHUM)
+      if (arena[x][y].coletavel == NENHUM)
         // retirar o desenho do cristal se não há mais nenhum cristal na célula
-        removeItem(posTmpX,posTmpY);
-      printf("Coletou da posição (%d,%d)\n", posTmpX, posTmpY);
+        removeItem(x,y);
+      printf("Coletou da posição (%d,%d)\n", x, y);
 		}
       else
       {
-        printf("Não conseguiu coletar da posição (%d,%d)\n", posTmpX, posTmpY);
+        printf("Não conseguiu coletar da posição (%d,%d)\n", x, y);
         // indica para o robô que ele não pode coletar um item (porque não tinha nada na célula)
         empilha(&m->pil, (OPERANDO){BOOL, false});
       }
@@ -200,10 +200,10 @@ void Sistema(int op, int dir, Maquina *m) {
       // Se o robo tiver cristais
       if(m->crist) {
         // Se tiver uma base a celula que ele quer depositar
-        if(arena[posTmpX][posTmpY].base){
-          printf("Depositou na posição (%d,%d)\n", posTmpX, posTmpY);
+        if(arena[x][y].base){
+          printf("Depositou na posição (%d,%d)\n", x, y);
           // O time da base que foi depositado um cristal ganha um ponto
-          pontosTotais[arena[posTmpX][posTmpY].base -1]++;
+          pontosTotais[arena[x][y].base -1]++;
           cristaisRestantes--;
           // Caso nao tenha sobrado nenhum cristal mais no jogo
           if(cristaisRestantes == 0)
@@ -211,8 +211,8 @@ void Sistema(int op, int dir, Maquina *m) {
         }
         // Se nao for base
         else {
-          printf("Depositou na posição (%d,%d)\n", posTmpX, posTmpY);
-           arena[posTmpX][posTmpY].nCristais++;
+          printf("Depositou na posição (%d,%d)\n", x, y);
+           arena[x][y].nCristais++;
         }
         // Remove um cristal do robo
         m->crist--;
@@ -221,7 +221,7 @@ void Sistema(int op, int dir, Maquina *m) {
       // Caso ele nao tenha cristais
       else
       {
-        printf("Não depositou na posição (%d,%d)\n", posTmpX, posTmpY);
+        printf("Não depositou na posição (%d,%d)\n", x, y);
         empilha(&m->pil, (OPERANDO){BOOL, false}); //Empliha, no robo, false
       }
 
@@ -371,24 +371,24 @@ void Atualiza (){
 //                                       Coleta                                        //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-int coleta(int posTmpX, int posTmpY, Maquina *m){
-  // Caso existam coletáveis na célula em (posTmpX, posTmpY):
-  if(arena[posTmpX][posTmpY].coletavel != NENHUM){
-    Coletavel c = arena[posTmpX][posTmpY].coletavel;
+int coleta(int x, int y, Maquina *m){
+  // Caso existam coletáveis na célula em (x, y):
+  if(arena[x][y].coletavel != NENHUM){
+    Coletavel c = arena[x][y].coletavel;
     switch (c)
     {
       case CRISTAL:
         // diminui o número de cristais na célula
-        arena[posTmpX][posTmpY].nCristais--;
+        arena[x][y].nCristais--;
         // se foi pego o último cristal
-        if (arena[posTmpX][posTmpY].nCristais == 0)
+        if (arena[x][y].nCristais == 0)
           // não há mais nenhum coletável
-          arena[posTmpX][posTmpY].coletavel = NENHUM;
+          arena[x][y].coletavel = NENHUM;
         // o robô está carregando mais um executável
         m->crist++;
         break;
       case ARMA:
-        arena[posTmpX][posTmpY].coletavel = NENHUM;
+        arena[x][y].coletavel = NENHUM;
         // o dano do robô aumenta para 30 (um ataque dele tira 30 pontos de saúde da vítima)
         m->dano = 30;
         break;
@@ -410,19 +410,17 @@ int coleta(int posTmpX, int posTmpY, Maquina *m){
 //                                       Ataque                                        //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-int ataque(int posTmpX, int posTmpY, Maquina *m){
+int ataque(int x, int y, Maquina *m){
   // Caso tenha robo para atacar na posicao desejada:
-  if(arena[posTmpX][posTmpY].vazia){
+  if(arena[x][y].vazia != 0){
     // Procura o robo nessa posicao
-    int temRobo = 0;
     int time = 0;
     int qual = 0;
     for(int i = 0; i < TotTimes; i++){
       for(int j = 0; i < TotRobTime; j++){
-        if((robos[time][qual])->posx == posTmpX && robos[time][qual]->posy == posTmpY) {
+        if((robos[i][j])->posx == x && robos[i][j]->posy == y) {
           time = i;
           qual = j;
-		      temRobo = 1;
           break;
         }
       }
@@ -432,7 +430,7 @@ int ataque(int posTmpX, int posTmpY, Maquina *m){
     // Caso acabe a vida desse robo, ele será destruido
     if(robos[time][qual]->vida <= 0){
       // remove o robô de seu exército
-      RemoveExercito(posTmpX, posTmpY, time, qual);
+      destroiRobo(x, y, time, qual);
     }
     // Retorna sucesso
     return 1;
@@ -449,10 +447,10 @@ int ataque(int posTmpX, int posTmpY, Maquina *m){
 //                                        Move                                         //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-int move(int posTmpX, int posTmpY, Maquina *m){
+int move(int x, int y, Maquina *m){
 
   // Tem alguem ai? - Verifica se ja tem um robo na celula desejada
-  if(arena[posTmpX][posTmpY].vazia != 0){
+  if(arena[x][y].vazia != 0){
     // Recusa a solicitação
     return 0;
   }
@@ -465,14 +463,14 @@ int move(int posTmpX, int posTmpY, Maquina *m){
     // Marca a celula que o robo está deixando para vazia
     arena[ox][oy].vazia = 0;
     // Marca a celula que o robo esta indo para nao vazia, indicando o seu time
-    arena[posTmpX][posTmpY].vazia =  timeAtual + 1;
+    arena[x][y].vazia =  timeAtual + 1;
     // Muda estado do robo
     // Muda sua posicao
-    moveRobo(roboAtual + (timeAtual)*5, posTmpX, posTmpY);
+    moveRobo(roboAtual + (timeAtual)*5, x, y);
 
-    m->posx = posTmpX;
-    m->posy = posTmpY;
-    m->energia = arena[posTmpX][posTmpY].terreno;
+    m->posx = x;
+    m->posy = y;
+    m->energia = arena[x][y].terreno;
     // se na célula pela qual o robô passou havia algum item que não foi coletado
     if (arena[ox][oy].coletavel != NENHUM)
     {
@@ -488,7 +486,7 @@ int move(int posTmpX, int posTmpY, Maquina *m){
       desenhaBase(ox,oy,arena[ox][oy].base);
     }
     // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
-    //TempoDeCadaRobo[timeAtual][roboAtual] += arena[posTmpX][posTmpY].terreno;
+    //TempoDeCadaRobo[timeAtual][roboAtual] += arena[x][y].terreno;
 
     // printar a posição do robo. Util para debug
     /*for(int i = 0; i < 15; i++){
@@ -509,21 +507,19 @@ int move(int posTmpX, int posTmpY, Maquina *m){
 //                                      Cria Robo                                      //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-static void InsereExercito (int time, int posX, int posY, int qual) {
+static void inicializaRobo (int index, int time, int posX, int posY) {
   // Cria o robo com a função cria_maquina
   //Implementar para a proxima fase
-  if(time == 1 && qual == 0){
-    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, time);
+  if(time == 1 && index == 0){
+    robos[time-1][index] = cria_maquina(geraProg(), posX, posY, time);
   }
   else {
-    robos[time-1][qual] = cria_maquina(geraProg(), posX, posY, time);
+    robos[time-1][index] = cria_maquina(geraProg(), posX, posY, time);
   }
   // Marca como "ativo" esse robo no vetor de robos ativos
-  RobosAtivos[time-1][qual] = 1;
+  RobosAtivos[time-1][index] = 1;
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
   //TempoDeCadaRobo[time-1][qual] = 0;
-
-  /* Daqui é preciso chamar a função para desenhar o exército (talvez criar no controle.c)*/
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -531,7 +527,7 @@ static void InsereExercito (int time, int posX, int posY, int qual) {
 //                                    Destroi Robo                                     //
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
-void RemoveExercito(int posX, int posY, int time, int qual) {
+void destroiRobo(int posX, int posY, int time, int qual) {
 
   //Caso não foi informado de qual time o robo pertence
   if(time == -1){
@@ -548,6 +544,7 @@ void RemoveExercito(int posX, int posY, int time, int qual) {
       }
     }
   }
+
 
   // "Destroi" o robo no vetor
   robos[time][qual]->posx = -1;
@@ -582,35 +579,15 @@ void RemoveExercito(int posX, int posY, int time, int qual) {
 //                                                                                     //
 /*-------------------------------------------------------------------------------------*/
 int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
-
   // Inicialização dos vetores de cristais e dos pontos de cada time
-  int cristaisRestantes [cristais];
+  int cristaisRestantes = cristais;
   int pontosTotais [times];
 
-  fimDoJogo = 0; // O jogo nao terminou
-  arena[tamanho][tamanho];
-
-
-
-  // alocar memória para arena
-  /*for (int i = 0; i < tamanho; i++)
-  {
-    for (int j = 0; j < tamanho; j++)
-      arena[i][j] = malloc ((sizeof(Celula));
-  }*/
-  //printf("tamanho de Celula: %d", sizeof(Celula));
+  fimDoJogo = 0; // O jogo não terminou
+  //arena[tamanho][tamanho];
 
    timeAtual = 0;
 	 roboAtual = 0;
-  // Gera a Base do terreno da arena, ou seja, a arena toda fica com o terreno do tipo 1
-  /*for(int i = 0; i < 20; i++){
-    for(int j = 0; j < 20; j++){
-      arena[i][j].terreno = 0;
-      arena[i][j].vazia = 0;
-      arena[i][j].nCristais = 0;
-      arena[i][j].base = 0;
-    }
-  }*/
 
 
   time_t t;
@@ -659,35 +636,6 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
    desenhaBase(x,y,i);
  }
 
-  // Gera as posições das bases aleatoriamente
-  for(int i = 1; i <= times; i++){
-    int localX = rand() % 20;
-    int localY = rand() % 20;
-    // Caso tenha base ou cristais no local sorteado,
-    // decrementa o i para refazer esse loop
-    if(arena[localX][localY].base || arena[localX][localY].nCristais){
-      i--;
-    }
-    // Caso não tenha nem base nem cristais
-    else{
-      arena[localX][localY].base = i;
-    }
-  }
-
-  // Bota os cristais aleatoriamente no mapa
-  /*for(int i = 1; i < cristais; i++){
-    int localX = rand() % 20;
-    int localY = rand() % 20;
-    // Caso ja tenha uma base no local sorteado, decrementa o i para refazer esse loop
-    if(arena[localX][localY].base){
-      i--;
-    }
-    // Caso nao tenha base no local
-    else{
-      arena[localX][localY].nCristais++;
-    }
-  }*/
-
 
   // Distribuir cristais pela arena, de modo a não colocar um cristal onde já tem um robô ou
   // uma base e os desenha
@@ -731,7 +679,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
   }
 
   // Bota os robos aleatoriamente no mapa
-  int index = 0;
+  int index = 0
   for(int j = 1; j <= times; j++){
     for(int i = 0; i < robosT; i++){
       // os robos do primeiro time começam sempre na metade superior da arena, onde está sua base
@@ -747,24 +695,12 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
         // marca a arena como ocupada (vazia = 0, sennao representa qual time esta ai)
         arena[localX][localY].vazia = times;
         // desenha o robô i do exército j
-        desenhaRobo(j-1, index++, localX, localY);
+        desenhaRobo(index++, j-1, localX, localY);
         // coloca o robô i no time j
-        InsereExercito(j, localX, localY, i);
-
-        // Para testar ações e interações entre robos e a arena. Robô e item coletavel em
-        // pontos fixos (1,4) e (1,5)
-        /*arena[1][4].vazia = 1;
-        desenhaRobo(j-1, index++, 1, 4);
-        InsereExercito(j, 1, 4, i);
-
-        arena[1][5].coletavel = CRISTAL;
-        arena[1][5].nCristais++;
-        desenhaCristal(1,1,5);*/
+        inicializaRobo(i, j, localX, localY);
       }
     }
   }
-  // Espera 1 segundo para a visualizacao
-  waitFor(2);
   // "Inicializa o relogio"
   begin = clock();
 
