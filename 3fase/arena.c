@@ -10,9 +10,9 @@
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
 	static int TotTimes = 2;      // Total de times na partida
-	static int TotRobTime = 5;    // Total de robos por partida
+	static int TotRobTime = 1;    // Total de robos por partida
 	static Celula arena[15][15];  // A arena em sí (o campo de batalha)
-	Maquina *robos[2][5];   // Vetor que contem os robos ([times][robos])
+	Maquina *robos[2][1];   // Vetor que contem os robos ([times][robos])
 
 // Variáveis da arena
 	static int cristaisRestantes;   // Cristais restantes na arena
@@ -25,7 +25,7 @@
 
 	// Variaveis de controle
 	static int pontosTotais [2];    // Pontos totais de cada time,
-	static int RobosAtivos[2][5];   // Vetor que guarda se o robo esta ativo ou nao
+	static int RobosAtivos[2][1];   // Vetor que guarda se o robo esta ativo ou nao
 	static int fimDoJogo = 0;       // Guarda a informacao se o jogo ja acabou
 
 	// Variavel de tempo
@@ -80,8 +80,7 @@ void Sistema(int op, int dir, Maquina *m) {
   // Ajusta o movimento da matriz hexagonal para a matriz quadrada
   int movX = 0; // Celula na direcao X a avançar
   int movY = 0; // Celula na direcao Y a avançar
-  printf("Energia do robô: %d\n", m->energia);
-  printf("op: %d\n", op);
+  printf("Sistema recebeu o op: %d\n", op);
   // Movimentar o robô de acordo com o argumento dado em Dir
   if(dir == EAST){
     //printf("%s\n", "Direita");
@@ -511,9 +510,11 @@ static void inicializaRobo (int index, int time, int posX, int posY) {
   // Cria o robo com a função cria_maquina
   //Implementar para a proxima fase
   if(time == 1 && index == 0){
+    printf("primeiro if do inicializaRobo\n");
     robos[time-1][index] = cria_maquina(geraProg(), posX, posY, time);
   }
   else {
+    printf("else do inicializaRobo\n");
     robos[time-1][index] = cria_maquina(geraProg(), posX, posY, time);
   }
   // Marca como "ativo" esse robo no vetor de robos ativos
@@ -580,7 +581,7 @@ void destroiRobo(int posX, int posY, int time, int qual) {
 /*-------------------------------------------------------------------------------------*/
 int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
   // Inicialização dos vetores de cristais e dos pontos de cada time
-  int cristaisRestantes = cristais;
+  cristaisRestantes = cristais;
   int pontosTotais [times];
 
   fimDoJogo = 0; // O jogo não terminou
@@ -679,7 +680,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
   }
 
   // Bota os robos aleatoriamente no mapa
-  int index = 0
+  int index = 0;
   for(int j = 1; j <= times; j++){
     for(int i = 0; i < robosT; i++){
       // os robos do primeiro time começam sempre na metade superior da arena, onde está sua base
@@ -701,6 +702,19 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
       }
     }
   }
+
+  // colocar dois robos lado a lado para testar o ataque
+  /*arena[5][5].vazia = 1;
+
+  desenhaRobo(0, 0, 5, 5);
+
+  inicializaRobo(0, 1, 5, 5);
+
+  arena[5][6].vazia = 1;
+  // desenha o robô i do exército j
+  desenhaRobo(1, 1, 5, 6);
+  // coloca o robô i no time j
+  inicializaRobo(1, 2, 5, 6);*/
   // "Inicializa o relogio"
   begin = clock();
 

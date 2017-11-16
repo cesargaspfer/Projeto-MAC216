@@ -3,7 +3,15 @@
   Mudei os nomes da direção
 16/11/2017:
 TESTES:
-move ( )
+move ( Ok até segunda ordem)
+Programa utilizado para testar:
+{MOV, ACAO, {EAST}},
+{MOV, ACAO, {NORTHEAST}},
+{MOV, ACAO, {WEST}},
+{MOV, ACAO, {SOUTHWEST}},
+{MOV, ACAO, {CURRENT}},
+{PRN, NONE, {0}},
+{END, NONE, {0}}
 ataque ( )
 informação ( )
 coleta ( )
