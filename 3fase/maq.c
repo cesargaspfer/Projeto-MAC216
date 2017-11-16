@@ -78,15 +78,7 @@ INSTR *geraProg () {
     {END, NONE, {0}}
   };*/
   static INSTR progr[] = {
-    {INF, ACAO, {EAST}},
-    {ATR, NONE,{2}},
-    {PRN, NONE, {0}},
-    {MOV, ACAO, {EAST}},
-    {CLT, ACAO, {CURRENT}},
-    {MOV, ACAO, {WEST}},
-    {ATR, NONE,{2}},
-    {PRN, NONE, {0}},
-
+    {ATK, ACAO, {EAST}},
     {END, NONE, {0}}
   };
   //time_t t;

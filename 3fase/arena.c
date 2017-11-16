@@ -9,8 +9,8 @@
 
 // Variaveis do jogo em si (Condicoes iniciais do jogo)
 
-	static int TotTimes = 1;      // Total de times na partida
-	static int TotRobTime = 1;    // Total de robos por partida
+	static int TotTimes = 2;      // Total de times na partida
+	static int TotRobTime = 5;    // Total de robos por partida
 	static Celula arena[15][15];  // A arena em sí (o campo de batalha)
 	Maquina *robos[2][5];   // Vetor que contem os robos ([times][robos])
 

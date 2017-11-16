@@ -35,6 +35,8 @@ void desenhaArma(int x, int y);
 // remover o desenho de um item na célula x,y
 void removeItem(int x, int y);
 
+void desenhaRobo (int exercito, int index, int i, int j);
+
 // inicializa o apres
 void inicializaGraf();
 

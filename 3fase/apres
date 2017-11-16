@@ -186,7 +186,7 @@ for line in fileinput.input():
     elif r[0] == 'rob':
         #coloca a imagem do robo no robs
         robs.append(Robo(r[1]))
-        atu()
+        #atu()
     #Para desenhar uma célula da arena
     elif r[0] == 'd_cel':
         i = int(r[1])
@@ -197,33 +197,33 @@ for line in fileinput.input():
             arena.append([])
         arena[i].append(cell(i,j,t))
         arena[i][j].draw()
-        atu()
+        #atu()
     #para colocar um cristal em uma célula i,j
     elif r[0] == 'cristal':
       n = int(r[1])
       i = int(r[2])
       j = int(r[3])
       arena[i][j].cristal(n, i, j)
-      atu()
+      #atu()
     #para colocar uma base em uma célula i,j:
     elif r[0] == 'base':
       img = r[1]
       i = int(r[2])
       j = int(r[3])
       arena[i][j].base(i,j,img)
-      atu()
+      #atu()
     elif r[0] == 'gun':
       i = int(r[1])
       j = int(r[2])
       arena[i][j].arma(i,j)
-      atu()
+      #atu()
     elif r[0] == 'remitem':
       i = int(r[1])
       j = int(r[2])
       sounds[0].play()
       pg.time.wait(1000)
       arena[i][j].draw()
-      atu()
+      #atu()
     else:
       #se não for nem rob nem fim
       # linha de movimentação:
