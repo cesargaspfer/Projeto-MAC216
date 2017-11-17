@@ -1,18 +1,18 @@
-RelatÛrio da Terceira Fase
+Relat√≥rio da Terceira Fase
 17/11/2017
-CÈsar Gasparini Fernandes, 10297630
+C√©sar Gasparini Fernandes, 10297630
 Daniel Silva Nunes, 10297612
 Artur M. R. dos Santos, 10297734
 
 1. Resumo
 	Nesta fase do projeto, focamos principalmente em implementar graficamente a arena e ampliar os recursos da arena.
-	Em suma, implementamos o vetor de robÙs na arena,  adicionamos uma arma, implementamos a parte gr·fica ao jogo e "limpamos" o cÛdigo feito atÈ ent„o e testamos todos os recursos.
-2. ImplementaÁ„o
+	Em suma, implementamos o vetor de rob√¥s na arena,  adicionamos uma arma, implementamos a parte gr√°fica ao jogo e "limpamos" o c√≥digo feito at√© ent√£o e testamos todos os recursos.
+2. Implementa√ß√£o
 2.1. Arena e Sistema
-	A priori, "rodamos" a arena para ser compatÌvel com o apres, disponibilizado no enunciado, e com isso, mudamos o algoritmo que transforma a direÁ„o de uma matriz hexagonal em uma quadrada e os respectivos nomes das direÁıes, que, agora, se chamam: NORTHEAST,  EAST,  SOUTHEAST,  SOUTHWEST,  WEST,  NORTHWEST e  CURRENT. 
-	Com essa mudanÁa, por questıes tÈcnicas, tivemos que transpor a matriz que representa a arena ao fazer a convers„o, entretanto isso n„o afeta nem um pouco o cÛdigo e muito menos o jogador, sendo apenas um detalhe de implementaÁ„o na convers„o. 
-	Fizemos uma reuni„o para discutir alguns tÛpicos do projeto, e uma das pautas era sobre o gerador da arena, antes implementado por seÁıes de tipo de terreno aleatÛrias e as posiÁıes dos robÙs eram totalmente aleatÛrias, e entramos em um consenso, decidimos ent„o que, para melhorar a experiÍncia do jogador, o terreno da arena deve ser gerado totalmente aleatÛrio, cÈlula por cÈlula, sendo menos prov·vel que o jogador fica em desvantagem. Decidimos tambÈm que a posiÁ„o do robÙ deve continuar sendo aleatÛria, entretanto perto de sua base, a qual ficar· distante da base inimiga. Chegamos ‡ essas conclusıes por meio de c·lculos estatÌsticos e testes empÌricos.
-	Outra implementaÁ„o importante nesta fase foi a energia. Embora sua implementaÁ„o n„o seja intuitiva, ela funciona da seguinte maneira: quando o robÙ se locomove ou ataca, ele "ganha energia", n„o podendo mais executar por um n˙mero determinado de rodadas. Ou seja, a energia È an·loga a uma penalidade. A quantidade de energia que ele ganha, quando ataca, È trÍs, equivalendo a trÍs rodadas sem poder executar. A quantidade de energia que ele ganha, quando se move, È determinada pelo tipo de terreno que ele foi, segundo o que segue abaixo:
+	A priori, "rodamos" a arena para ser compat√≠vel com o apres, disponibilizado no enunciado, e com isso, mudamos o algoritmo que transforma a dire√ß√£o de uma matriz hexagonal em uma quadrada e os respectivos nomes das dire√ß√µes, que, agora, se chamam: NORTHEAST,  EAST,  SOUTHEAST,  SOUTHWEST,  WEST,  NORTHWEST e  CURRENT. 
+	Com essa mudan√ßa, por quest√µes t√©cnicas, tivemos que transpor a matriz que representa a arena ao fazer a convers√£o, entretanto isso n√£o afeta nem um pouco o c√≥digo e muito menos o jogador, sendo apenas um detalhe de implementa√ß√£o na convers√£o. 
+	Fizemos uma reuni√£o para discutir alguns t√≥picos do projeto, e uma das pautas era sobre o gerador da arena, antes implementado por se√ß√µes de tipo de terreno aleat√≥rias e as posi√ß√µes dos rob√¥s eram totalmente aleat√≥rias, e entramos em um consenso, decidimos ent√£o que, para melhorar a experi√™ncia do jogador, o terreno da arena deve ser gerado totalmente aleat√≥rio, c√©lula por c√©lula, sendo menos prov√°vel que o jogador fica em desvantagem. Decidimos tamb√©m que a posi√ß√£o do rob√¥ deve continuar sendo aleat√≥ria, entretanto perto de sua base, a qual ficar√° distante da base inimiga. Chegamos √† essas conclus√µes por meio de c√°lculos estat√≠sticos e testes emp√≠ricos.
+	Outra implementa√ß√£o importante nesta fase foi a energia. Embora sua implementa√ß√£o n√£o seja intuitiva, ela funciona da seguinte maneira: quando o rob√¥ se locomove ou ataca, ele "ganha energia", n√£o podendo mais executar por um n√∫mero determinado de rodadas. Ou seja, a energia √© an√°loga a uma penalidade. A quantidade de energia que ele ganha, quando ataca, √© tr√™s, equivalendo a tr√™s rodadas sem poder executar. A quantidade de energia que ele ganha, quando se move, √© determinada pelo tipo de terreno que ele foi, segundo o que segue abaixo:
 
 
 		Terreno ,    Cor,        Energia,  Rodadas Sem Executar
@@ -21,24 +21,24 @@ Artur M. R. dos Santos, 10297734
 		 PEDRA ,     cinza,       3,              3
 		 GELO,        branco,    4,              4
 		 AGUA,       azul ,        5,              5
-	Adicionamos um recurso extra ao jogo, uma arma. A arma È tratada, assim como o cristal, como um colet·vel, entretanto, quando coletada, n„o pode ser depositada e n„o marca pontos ao time. Apenas duas armas s„o colocadas na arena, com posiÁıes aleatÛrias. Ao coleta-la, o robÙ aumento o seu dano de 10 para 30, porÈm, se o mesmo robÙ coletar duas armas, ele ter· seu dano igual a 30.
-	Nota: A Sa˙de inicial do robÙ È igual a 100. Se o robÙ deu 10 de dano a um robÙ, significa que ele abaixou em 10 a sa˙de deste. Quando a sa˙de de um robÙ chega a 0, ou menos, ele morre, ou seja, some da arena e n„o executa mais.
-	Agora, h·, no jogo, 10 robÙs sendo executado, dois de cada time. Para facilitar os testes, fizemos o "geraProg()", uma funÁ„o que gera um vetor de instruÁıes para o robÙ executar, entretanto, para facilitar a correÁ„o desse projeto, todos os robÙs executam as instruÁıes presentes no arquivo "tprog.c", gerado pelo montador.
-	Para melhorar a experiÍncia do jogador, outro recurso implementado, foi a pausa de um segundo a cada chamada de sistema que o robÙ faz.
-	Para um robÙ obter informaÁ„o sobre a cÈlula atual ou vizinha, ele deve solicitar ao sistema, o qual, se for possÌvel, a empilhar· em sua pilha de dados, sem penalidades.
-	O jogo tem, no m·ximo, 500 rodadas. Caso o jogo n„o termine atÈ  esta ˙ltima rodada, o sistema acabar· o jogo, contando quantos pontos cada time marcou e anunciando o(s) vencedor(es).
+	Adicionamos um recurso extra ao jogo, uma arma. A arma √© tratada, assim como o cristal, como um colet√°vel, entretanto, quando coletada, n√£o pode ser depositada e n√£o marca pontos ao time. Apenas duas armas s√£o colocadas na arena, com posi√ß√µes aleat√≥rias. Ao coleta-la, o rob√¥ aumento o seu dano de 10 para 30, por√©m, se o mesmo rob√¥ coletar duas armas, ele ter√° seu dano igual a 30.
+	Nota: A Sa√∫de inicial do rob√¥ √© igual a 100. Se o rob√¥ deu 10 de dano a um rob√¥, significa que ele abaixou em 10 a sa√∫de deste. Quando a sa√∫de de um rob√¥ chega a 0, ou menos, ele morre, ou seja, some da arena e n√£o executa mais.
+	Agora, h√°, no jogo, 10 rob√¥s sendo executado, dois de cada time. Para facilitar os testes, fizemos o "geraProg()", uma fun√ß√£o que gera um vetor de instru√ß√µes para o rob√¥ executar, entretanto, para facilitar a corre√ß√£o desse projeto, todos os rob√¥s executam as instru√ß√µes presentes no arquivo "tprog.c", gerado pelo montador.
+	Para melhorar a experi√™ncia do jogador, outro recurso implementado, foi a pausa de um segundo a cada chamada de sistema que o rob√¥ faz.
+	Para um rob√¥ obter informa√ß√£o sobre a c√©lula atual ou vizinha, ele deve solicitar ao sistema, o qual, se for poss√≠vel, a empilhar√° em sua pilha de dados, sem penalidades.
+	O jogo tem, no m√°ximo, 500 rodadas. Caso o jogo n√£o termine at√©  esta √∫ltima rodada, o sistema acabar√° o jogo, contando quantos pontos cada time marcou e anunciando o(s) vencedor(es).
 	Importante: um time recebe ponto apenas quando deposita um cristal em sua base, sendo que cada cristal depositado equivale a um ponto! 
-	Como agora podemos ver os robÙs, retestamos todos os recursos oferecidos pelo jogo e houveram melhoras em alguns trechos de cÛdigo, relatado melhor na seÁ„o (Testes) 
-
+	Como agora podemos ver os rob√¥s, retestamos todos os recursos oferecidos pelo jogo e houveram melhoras em alguns trechos de c√≥digo, relatado melhor na se√ß√£o (Testes) 
+	N√£o foi poss√≠vel, por causa do tempo, modularizar o arena.c.
 3. Testes
 	Foram feitos diversos testes, testamos todos os comandos e recursos do jogo.
-	ObservaÁ„o: As instruÁıes que usamos para testar o jogo est· disponÌveis na pasta "teste".
-	Para testar, primeiro deixamos a arena com um sÛ robÙ e o fizemos executar as instruÁıes presentes em "mov.txt", verificamos que todas as direÁıes em todos os possÌveis casos estavam certos, logo, pudemos concluir que a transformaÁ„o da direÁ„o da matriz hexagonal para a quadrada estava certa e que a instruÁ„o de movimento estava certa tambÈm.
-	Para testar o ataque, botamos dois robÙs na arena e manipulamos suas posiÁıes, colocando-os lado a lado e mandamos ambos coletarem um cristal e depois um atacar o outro atÈ a morte. O resultado foi o esperado, ambos coletaram um cristal e um deles matou o outro e o que morreu "derrubou" um cristal. Ent„o botamos todos os robÙs para se atacarem, a fim de avaliarmos se n„o apresentava erro de segmentaÁ„o, acabou apresentando um erro, mas consertamos e refizemos todos os testes de novo, dando todos certo. A instruÁ„o utilizada foi "ataca.txt".
-	A fim de testar a coleta de cristais, botamos um robÙ e um cristal na arena e manipulamos as posiÁıes de ambos, o resultado foi esperado, o robÙ coletou o cristal e tocou o efeito sonoro.
-	Ao testarmos, o deposita, botamos um robÙ um cristal e uma arma na arena e manipulamos suas posiÁıes, executamos a instruÁ„o "deposita.txt" e o resultado foi o esperado: o robÙ coletou a arma e o cristal, mas sÛ depositou o cristal.
-	A fim de testar a arma, colocamos dois robÙs, um deles "n„o fazia nada", e uma arma na matriz, novamente manipulando suas posiÁıes. O robÙ que "fazia algo", executava as instruÁıes presentes em "arma.txt" e o resultado foi novamente o esperado: o robÙ pegou a arma e matou o outro em menos ataques do que normalmente mataria (no caso, matou em 4 ataques, sem arma mataria em 10 ataques).
-	A instruÁ„o PRN j· havia sido testada, mas testamos de novo em "prn.txt".
-	Para testar o fim, mudamos o numero de cristais que precisaria ser depositado na base para vencer, botamos um robÙ, um cristal e uma base em locais manipulados e executamos a instruÁ„o "fim.txt". O robÙ coletou o cristal e depositou em sua base, acabando o jogo.
-	Todos os efeitos sonoros foram testados tambÈm, entretanto, n„o com uma instruÁ„o especifica, mas junto com todos os testes j· citados.
-	Esses foram os principais testes realizados, houveram algumas repetiÁıes, como teste das bordas da arena (utilizando as instruÁıes "bordas.txt"), e alguns menos significantes, os quais foram omitidos deste relatÛrio.
+	Observa√ß√£o: As instru√ß√µes que usamos para testar o jogo est√° dispon√≠veis na pasta "teste".
+	Para testar, primeiro deixamos a arena com um s√≥ rob√¥ e o fizemos executar as instru√ß√µes presentes em "mov.txt", verificamos que todas as dire√ß√µes em todos os poss√≠veis casos estavam certos, logo, pudemos concluir que a transforma√ß√£o da dire√ß√£o da matriz hexagonal para a quadrada estava certa e que a instru√ß√£o de movimento estava certa tamb√©m.
+	Para testar o ataque, botamos dois rob√¥s na arena e manipulamos suas posi√ß√µes, colocando-os lado a lado e mandamos ambos coletarem um cristal e depois um atacar o outro at√© a morte. O resultado foi o esperado, ambos coletaram um cristal e um deles matou o outro e o que morreu "derrubou" um cristal. Ent√£o botamos todos os rob√¥s para se atacarem, a fim de avaliarmos se n√£o apresentava erro de segmenta√ß√£o, acabou apresentando um erro, mas consertamos e refizemos todos os testes de novo, dando todos certo. A instru√ß√£o utilizada foi "ataca.txt".
+	A fim de testar a coleta de cristais, botamos um rob√¥ e um cristal na arena e manipulamos as posi√ß√µes de ambos, o resultado foi esperado, o rob√¥ coletou o cristal e tocou o efeito sonoro.
+	Ao testarmos, o deposita, botamos um rob√¥ um cristal e uma arma na arena e manipulamos suas posi√ß√µes, executamos a instru√ß√£o "deposita.txt" e o resultado foi o esperado: o rob√¥ coletou a arma e o cristal, mas s√≥ depositou o cristal.
+	A fim de testar a arma, colocamos dois rob√¥s, um deles "n√£o fazia nada", e uma arma na matriz, novamente manipulando suas posi√ß√µes. O rob√¥ que "fazia algo", executava as instru√ß√µes presentes em "arma.txt" e o resultado foi novamente o esperado: o rob√¥ pegou a arma e matou o outro em menos ataques do que normalmente mataria (no caso, matou em 4 ataques, sem arma mataria em 10 ataques).
+	A instru√ß√£o PRN j√° havia sido testada, mas testamos de novo em "prn.txt".
+	Para testar o fim, mudamos o numero de cristais que precisaria ser depositado na base para vencer, botamos um rob√¥, um cristal e uma base em locais manipulados e executamos a instru√ß√£o "fim.txt". O rob√¥ coletou o cristal e depositou em sua base, acabando o jogo.
+	Todos os efeitos sonoros foram testados tamb√©m, entretanto, n√£o com uma instru√ß√£o especifica, mas junto com todos os testes j√° citados.
+	Esses foram os principais testes realizados, houveram algumas repeti√ß√µes, como teste das bordas da arena (utilizando as instru√ß√µes "bordas.txt"), e alguns menos significantes, os quais foram omitidos deste relat√≥rio.
