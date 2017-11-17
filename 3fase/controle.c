@@ -88,6 +88,12 @@ void removeItem(int x, int y)
   fflush(display);
 }
 
+void mostraAtaque()
+{
+  fprintf(display, "atk\n");
+  fflush(display);
+}
+
 // mostra na arena o robô em index
 void mostra(int index) {
   // display: ri oi oj di dj (o: origem) (d: destino) (i,j): coordenadas

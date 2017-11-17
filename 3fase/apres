@@ -249,7 +249,9 @@ for line in fileinput.input():
         notification('Fim de jogo!','Time vencedor: ' + vencedor)
       else:
         notification('Fim de jogo!', 'Empate')
-
+    elif r[0] == 'atk':
+      #toca som de ataque
+      sounds[1].play()
     else:
       #se não for nem rob nem fim
       # linha de movimentação:
@@ -265,12 +267,13 @@ for line in fileinput.input():
     # tempo de espera para atualização, apenas para testes
     #pg.time.wait(1000)
     atu()
-    print r
+"""
 running = True
 while running:
   for event in pg.event.get():
     if event.type == pg.QUIT:
       running = False
+"""
 
 
 #pg.quit()

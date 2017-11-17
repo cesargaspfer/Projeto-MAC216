@@ -37,18 +37,9 @@
 // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
 // int TempoDeCadaRobo[2][5];
 
-/*
-// Funcao apenas para esta faze, a qual atribui a mauina a matriz robos
-void assignRobo(Maquina *m){
-  robos[0][0] = *m;
-
-}
-*/
 // Funcao main, a qual inicializa as variaveis e o jogo
 // Implementa, mas não para esta fase
 int main () {
-
-
   // Cria a arena, com os argumentos:
   //	-Tamanho da arena,
   //	-Total de times,
@@ -56,9 +47,9 @@ int main () {
   // 	-Total de robos por time
   CriaArena(15, TotTimes, 20, TotRobTime, 2);
 
-
-
-  // Chama o atualiza
+  // espera a música terminar
+  waitFor(6);
+  // Começa jogo!!
   Atualiza();
 }
 /*-------------------------------------------------------------------------------------*/
@@ -421,7 +412,6 @@ int ataque(int x, int y, Maquina *m){
       if (time != -1 && qual != -1)
         break;
       for(int j = 0; i < TotRobTime; j++){
-        printf("ataque olhando o robô em robos[%d][%d]  TotTimes: %d TotRobTime: %d\n", i, j, TotTimes, TotRobTime);
         if(robos[i][j]->posx == x && robos[i][j]->posy == y) {
           time = i;
           qual = j;
@@ -430,6 +420,8 @@ int ataque(int x, int y, Maquina *m){
           break;
       }
     }
+    //toca som de ataque
+    mostraAtaque();
     // Retira pontos de vida do robo atacado em função do dano associado ao robô atacante
     robos[time][qual]->vida -= m->dano;
     printf("Saúde do robô atacado: %d\n", robos[time][qual]->vida);
