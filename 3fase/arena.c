@@ -412,15 +412,17 @@ int ataque(int x, int y, Maquina *m){
   // Caso tenha robo para atacar na posicao desejada:
   if(arena[x][y].vazia != 0){
     // Procura o robo nessa posicao
-    int time = 0;
-    int qual = 0;
+    int time = -1;
+    int qual = -1;
     for(int i = 0; i < TotTimes; i++){
       for(int j = 0; i < TotRobTime; j++){
+        printf("ataque olhando o robô em robos[%d][%d]  TotTimes: %d TotRobTime: %d\n", i, j, TotTimes, TotRobTime);
         if(robos[i][j]->posx == x && robos[i][j]->posy == y) {
           time = i;
           qual = j;
-          break;
         }
+        if (time != -1 && qual != -1)
+          break;
       }
     }
     // Retira pontos de vida do robo atacado em função do dano associado ao robô atacante
