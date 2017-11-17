@@ -1,10 +1,12 @@
-#programa para testar movimentações dos robôs
+#programa para testar coleta de itens da arena
 #execução: colocar esse arquivo na pasta principal, executar com python montador < testes/move > tprog.c
 # fazer um make
-MOV EAST
-MOV NORTHEAST
-MOV WEST
-MOV SOUTHWEST
-MOV CURRENT
+CLT EAST
+CLT NORTHEAST
+CLT WEST
+CLT SOUTHWEST
+PRN
+PRN
+PRN
 PRN
 END

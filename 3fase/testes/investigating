@@ -1,0 +1,6 @@
+#O robô anda para a célula a leste, pergunta seus atributos e imprime
+
+MOV EAST
+INF CURRENT
+PRN
+END

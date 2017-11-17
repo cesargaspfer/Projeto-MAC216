@@ -1,18 +1,13 @@
 #include <stdio.h>
 #include "maq.h"
 INSTR prog[] = {
-{MOV, ACAO, {NORTH}},
-{PRN, NONE, {0}},
-{ATK, ACAO, {NORTH}},
-{PRN, NONE, {0}},
-{INF, NONE, {0}},
-{ATR, NUM, {1}},
-{PRN, NONE, {0}},
-{CLT, ACAO, {SOUTH}},
-{PRN, NONE, {0}},
-{DEP, ACAO, {SOUTHEAST}},
-{PRN, NONE, {0}},
-{END, NONE, {0}},
+{{MOV,, NONE, {ACAO,, {EAST}},}},
+{{MOV,, NONE, {ACAO,, {NORTHEAST}},}},
+{{MOV,, NONE, {ACAO,, {WEST}},}},
+{{MOV,, NONE, {ACAO,, {SOUTHWEST}},}},
+{{MOV,, NONE, {ACAO,, {CURRENT}},}},
+{{PRN,, NONE, {NONE,, {0}},}},
+{{END,, NONE, {NONE,, {0}}}},
 };
 
 int main(int ac, char **av) {

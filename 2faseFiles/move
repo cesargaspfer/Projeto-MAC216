@@ -1,0 +1,10 @@
+#programa para testar a movimentação dos robôs (todos os robôs dos times executarão esse código)
+#para rodar: python montador < move > tprog.c (colocar na pasta principal)
+#fazer um make
+{MOV, ACAO, {EAST}},
+{MOV, ACAO, {NORTHEAST}},
+{MOV, ACAO, {WEST}},
+{MOV, ACAO, {SOUTHWEST}},
+{MOV, ACAO, {CURRENT}},
+{PRN, NONE, {0}},
+{END, NONE, {0}}

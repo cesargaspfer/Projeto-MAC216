@@ -149,19 +149,6 @@ def load_sound(sound_filename):
   sound = pg.mixer.Sound(sound_filename)
   return sound
 
-def notification(title, message, icon):
-  w,h = scr.get_size()
-  rect = pg.draw.rect(scr, (180,180,180), (w/4,2*h/5,w/2,h/5), 0)
-  # escrever o texto
-  pg.font.init()
-  font = pg.font.SysFont('Purisa', 30)
-  titlesurface = font.render(title, True, (50, 50, 50))
-  scr.blit(titlesurface, (w/4+120,2*h/5 + 15))
-  font2 = pg.font.SysFont('URW Gothic L', 30)
-  msgsurface = font2.render(message, True, (50, 50, 50))
-  scr.blit(msgsurface, (w/4+50,2*h/5 + 65))
-  atu()
-
 
 #inicializar lista de sons
 '''
@@ -243,12 +230,6 @@ for line in fileinput.input():
       pg.time.wait(1000)
       arena[i][j].draw()
       #atu()
-    elif r[0] == 'fim':
-      vencedor = r[1]
-      if vencedor != '-1':
-        notification('Fim de jogo!','Time vencedor: ' + vencedor)
-      else:
-        notification('Fim de jogo!', 'Empate')
     elif r[0] == 'atk':
       #toca som de ataque
       sounds[1].play()
@@ -267,13 +248,11 @@ for line in fileinput.input():
     # tempo de espera para atualização, apenas para testes
     #pg.time.wait(1000)
     atu()
-"""
 running = True
 while running:
   for event in pg.event.get():
     if event.type == pg.QUIT:
       running = False
-"""
 
 
 #pg.quit()

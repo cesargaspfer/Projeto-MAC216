@@ -73,8 +73,3 @@ while l:
     l = stdin.readline()
     ip += 1 #avançar a instrução
 print '};'
-#Funcao Main
-print('');
-''' Implementa, mas nao para esta fase
-print('INSTR[] getProg() { return prog; }')
-'''

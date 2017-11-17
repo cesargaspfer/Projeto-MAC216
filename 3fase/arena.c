@@ -46,7 +46,6 @@ int main () {
   // 	-Total de cristais,
   // 	-Total de robos por time
   CriaArena(15, TotTimes, 20, TotRobTime, 2);
-
   // espera a música terminar
   waitFor(6);
   // Começa jogo!!
@@ -239,7 +238,8 @@ void Fim () {
   // Caso nao foram coletados todos os cristais, eh avisado
   // que o jogo nao foi ate o fim (ou seja, foi interrompido)
   if(cristaisRestantes != 0){
-	printf("Esse jogo foi longe demais...\n");
+	  printf("Esse jogo foi longe demais...\n");
+    notificaFim(-1);
   }
 
   // Procura o ganhador (quem fez mais pontos)
@@ -270,7 +270,6 @@ void Fim () {
   else {
     notificaFim(-1);
   }
-  notificaFim(-1);
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -318,14 +317,14 @@ void Atualiza (){
   int RodadaAtual = 0; // Qual rodada estamos
   // Enquanto estiver abaixo da rodada 500:
   while(RodadaAtual < 500) {
+    // Se acabou o jogo, pare com os 3 lacos
+    if(fimDoJogo){
+      Fim();
+    }
 	// A cada robo dentro do time
   	for(int i = 0; i < TotRobTime; i++){
   		// A cada time
   		for(int j = 0; j < TotTimes; j++){
-  			// Se acabou o jogo, pare com os 3 lacos
-  			if(fimDoJogo){
-  				break;
-  			}
   			// Muda o Time atual que está executando
   			timeAtual = j;
         // Muda qual robo dentro do time está executando
@@ -342,11 +341,7 @@ void Atualiza (){
           else
   				  exec_maquina(robos[timeAtual][roboAtual], 50);
   			}
-
-
-
       }
-
   	}
     // "Proxima rodada"
     RodadaAtual++;
