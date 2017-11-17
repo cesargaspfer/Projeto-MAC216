@@ -4,29 +4,12 @@
 FILE *display;
 Robot rb[10];
 
-/*void anda(int ri) {
-  Robot r = rb[ri];
-
-  if (r.pi == 14) r.vi = -1;
-  if (r.pi == 0)  r.vi =  1;
-
-  if (r.pj == 14) r.vj = -1;
-  if (r.pj == 0)  r.vj =  1;
-
-  r.i = r.pi + r.vi;
-  r.j = r.pj + r.vj;
-  rb[ri] = r;
-  mostra(ri);
-}*/
-
 // termina de escrever o txt da arena e começa a mostrá-la e receber comandos
 // pelo protocolo estabelecido na comunicação entre controle.c e apres
 void inicializaGraf()
 {
-  //int t; 						/* tempo */
   // pipe direto para o programa apres
   display = popen("python apres", "w");
-
 }
 
 // substitui (oi,oj) por (di,dj). Ou seja, as antigas coordenadas de destino

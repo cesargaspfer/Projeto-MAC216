@@ -12,7 +12,11 @@ Programa utilizado para testar:
 {MOV, ACAO, {CURRENT}},
 {PRN, NONE, {0}},
 {END, NONE, {0}}
-ataque ( )
+ataque ( Ok até segunda ordem )
+Utilizei esse programa para testar:
+{ATK, ACAO, {EAST}},
+{PRN, NONE, {0}},
+{END, NONE, {0}}
 informação ( )
 coleta ( )
 deposita ( )

@@ -65,15 +65,9 @@ Maquina *cria_maquina(INSTR *p)
 
 INSTR *geraProg () {
   static INSTR progr[] = {
-      /*{ATK, ACAO, {EAST}},
-      {END, NONE, {0}}*/
-      {MOV, ACAO, {EAST}},
-      {MOV, ACAO, {NORTHEAST}},
-      {MOV, ACAO, {WEST}},
-      {MOV, ACAO, {SOUTHWEST}},
-      {ATK, ACAO, {EAST}},
-      {PRN, NONE, {0}},
-      {END, NONE, {0}}
+    {ATK, ACAO, {EAST}},
+    {PRN, NONE, {0}},
+    {END, NONE, {0}}
   };
   //time_t t;
   //srand((unsigned) time(&t));

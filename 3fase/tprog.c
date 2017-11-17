@@ -2,7 +2,7 @@
 #include "maq.h"
 INSTR prog[] = {
 	{DEP, ACAO, {SOUTHEAST}},
-	//{PRN, NONE, {0}},
+	{PRN, NONE, {0}},
 	{END, NONE, {0}}
 };
 
