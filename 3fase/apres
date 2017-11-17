@@ -169,6 +169,9 @@ def notification(title, message, icon):
 '''
 sounds = []
 sounds.append(load_sound('collect.wav'))
+sounds.append(load_sound('atk.wav'))
+sounds.append(load_sound('battle.wav'))
+sounds.append(load_sound('end.wav'))
 # Construção da matriz que representa a arena
 arena = []
 """
@@ -187,6 +190,9 @@ for i in range(W):
 # lista dos robôs definidos
 robs = []
 basecount = -1
+
+#tocar som no começo do jogo
+sounds[2].play()
 # Leitura dos comandos pela entrada padrão ou de um arquivo
 for line in fileinput.input():
     r = line.split()
@@ -259,6 +265,7 @@ for line in fileinput.input():
     # tempo de espera para atualização, apenas para testes
     #pg.time.wait(1000)
     atu()
+    print r
 running = True
 while running:
   for event in pg.event.get():

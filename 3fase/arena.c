@@ -251,7 +251,7 @@ void Fim () {
 	printf("Esse jogo foi longe demais...\n");
   }
 
-  // Procura o ganhado (quem fez mais pontos)
+  // Procura o ganhador (quem fez mais pontos)
   int ganhador = 0;
   // calcular o tamanho do array pontosTotais
   int len = sizeof(pontosTotais) / sizeof(pontosTotais[0]);
@@ -279,6 +279,7 @@ void Fim () {
   else {
     notificaFim(-1);
   }
+  notificaFim(-1);
 }
 
 /*-------------------------------------------------------------------------------------*/

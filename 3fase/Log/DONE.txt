@@ -17,6 +17,6 @@ Utilizei esse programa para testar:
 {ATK, ACAO, {EAST}},
 {PRN, NONE, {0}},
 {END, NONE, {0}}
-informação ( )
-coleta ( )
+informação (x)
+coleta (x)
 deposita ( )

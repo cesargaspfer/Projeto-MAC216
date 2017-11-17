@@ -1,0 +1,8 @@
+#programa para testar a movimentação dos robôs
+{MOV, ACAO, {EAST}},
+{MOV, ACAO, {NORTHEAST}},
+{MOV, ACAO, {WEST}},
+{MOV, ACAO, {SOUTHWEST}},
+{MOV, ACAO, {CURRENT}},
+{PRN, NONE, {0}},
+{END, NONE, {0}}
