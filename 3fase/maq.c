@@ -65,7 +65,7 @@ Maquina *cria_maquina(INSTR *p)
 
 INSTR *geraProg () {
   static INSTR progr[] = {
-      {ATK, ACAO, {EAST}},
+      //{ATK, ACAO, {EAST}},
       {END, NONE, {0}}
       /*{ATK, ACAO, {EAST}},
       {ATK, ACAO, {EAST}},

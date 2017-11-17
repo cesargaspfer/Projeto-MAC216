@@ -37,6 +37,8 @@ void removeItem(int x, int y);
 
 void desenhaRobo (int index, int exercito, int i, int j);
 
+void notificaFim(int vencedor);
+
 // inicializa o apres
 void inicializaGraf();
 

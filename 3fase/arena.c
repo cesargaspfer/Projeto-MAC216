@@ -207,7 +207,6 @@ void Sistema(int op, int dir, Maquina *m) {
           // Caso nao tenha sobrado nenhum cristal mais no jogo
           if(cristaisRestantes == 0)
           {
-            printf("Os cristais acabaram\n");
             Fim();
           }
         }
@@ -266,20 +265,19 @@ void Fim () {
   int empate = 0;
   for(int i = 1; i < len; i++) {
   	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
-  		printf("Empate!\n");
+  		notificaFim(++ganhador);
   	}
   	else if(empate == 1  && ganhador != i){
-  		printf("Time %d; ", (i+1));
+        notificaFim(-1);
   	}
   }
   // Caso nao houve empate, avisa o ganhador
   if(empate != 0) {
-	printf("Time ganhador: Time %d\n Parabéns!\n", ++ganhador);
+     notificaFim(++ganhador);
   }
   // Da parabens a todos e diz quanto tempo levou essa partida
   else {
-	printf("\nParabéns à todos!\n");
-	printf("Tempo total de jogo: %f\n", currentTime);
+    notificaFim(-1);
   }
 }
 
@@ -362,7 +360,6 @@ void Atualiza (){
     RodadaAtual++;
   	// Caso seja a ultima rodada, acaba com o jogo
   	if(RodadaAtual == 500){
-      printf("Última rodada\n");
   		Fim();
   	}
   }

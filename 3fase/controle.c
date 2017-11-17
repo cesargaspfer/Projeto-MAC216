@@ -21,6 +21,12 @@ void atualiza(int index) {
   rb[index] = r;
 }
 
+void notificaFim(int vencedor)
+{
+  fprintf(display, "fim %d\n", vencedor);
+  fflush(display);
+}
+
 /***********************
 * A função desenha célula recebe os argumentos px, py e terreno (inteiro) de
 * uma célula e envia essas informações para o programa apres
