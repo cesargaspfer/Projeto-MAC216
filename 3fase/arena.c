@@ -169,15 +169,18 @@ void Sistema(int op, int dir, Maquina *m) {
         // retirar o desenho do cristal se não há mais nenhum cristal na célula
         removeItem(x,y);
         if (arena[x][y].vazia) {
-          int time = 0;
-          int qual = 0;
+          int time = -1;
+          int qual = -1;
           for(int i = 0; i < TotTimes; i++){
+            if (time != -1 && qual != -1)
+              break;
             for(int j = 0; i < TotRobTime; j++){
               if((robos[i][j])->posx == x && robos[i][j]->posy == y) {
                 time = i;
                 qual = j;
-                break;
               }
+              if (time != -1 && qual != -1)
+                break;
             }
           }
           moveRobo(qual + TotRobTime*time, x, y);
@@ -215,6 +218,7 @@ void Sistema(int op, int dir, Maquina *m) {
         }
         // Remove um cristal do robo
         m->crist--;
+        desenhaCristal(1, x, y);
 		    empilha(&m->pil, (OPERANDO){BOOL, true}); //Empliha, no robo, true
       }
       // Caso ele nao tenha cristais
@@ -415,6 +419,8 @@ int ataque(int x, int y, Maquina *m){
     int time = -1;
     int qual = -1;
     for(int i = 0; i < TotTimes; i++){
+      if (time != -1 && qual != -1)
+        break;
       for(int j = 0; i < TotRobTime; j++){
         printf("ataque olhando o robô em robos[%d][%d]  TotTimes: %d TotRobTime: %d\n", i, j, TotTimes, TotRobTime);
         if(robos[i][j]->posx == x && robos[i][j]->posy == y) {
