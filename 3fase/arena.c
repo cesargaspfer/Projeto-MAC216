@@ -34,11 +34,8 @@
   clock_t end; // "relogio" do fim
   double currentTime = 0.0; // tempo total de jogo
 
-// Caso queiramos mudar a contagem de tempo para chamadas de sistema:
-// int TempoDeCadaRobo[2][5];
 
 // Funcao main, a qual inicializa as variaveis e o jogo
-// Implementa, mas não para esta fase
 int main () {
   // Cria a arena, com os argumentos:
   //	-Tamanho da arena,
@@ -59,11 +56,11 @@ int main () {
 
 /*************************************************
 * As op's vão ser implementadas da seguinte maneira,
-* MOV = valor 0 (movimenta)
-* ATK = valor 1 (ataca)
-* INF = valor 2 (informação);
-* CLT = valor 3 (coleta)
-* DEP = valor 4 (deposita)
+* MOV = movimenta
+* ATK = ataca
+* INF = informação
+* CLT = coleta
+* DEP = deposita
 *
 *************************************************/
 // Recebe a operacao (acao) que ira executar, a direcao e de qual maquina esta solicitando
@@ -220,9 +217,6 @@ void Sistema(int op, int dir, Maquina *m) {
     }
   }
   waitFor(1);
-  // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
-  //TempoDeCadaRobo[timeAtual][roboAtual]++;
-  //Atualiza();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -278,41 +272,6 @@ void Fim () {
 /*-------------------------------------------------------------------------------------*/
 void Atualiza (){
 
-  // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
-  /*
-  // Verifica se o jogo não foi muito longe
-  if(RodadaAtual < 500) {
-
-
-  	// Verifica se o robo não chamou mais do que 5 vezes o sistema nessa rodada
-  	if(TempoDeCadaRobo[timeAtual][roboAtual] > RodadaAtual*5){
-  		// Se chamou, passa a vez
-  		timeAtual++;
-  		if(timeAtual == TotTimes -1) {
-  			timeAtual = 0;
-  			roboAtual++;
-  			// Caso tenha acabado a rodada:
-  			if(roboAtual == TotRobTime -1) {
-  				roboAtual = 0;
-  				RodadaAtual++;
-  			}
-  		}
-  	}
-
-    // Verifica se o robo morreu
-    if(RobosAtivos[timeAtual][roboAtual]) {
-      Atualiza();
-    }
-    // Caso ainda esteja vivo
-    else{
-      exec_maquina(robos[timeAtual][roboAtual].m, 50);
-    }
-  }
-  else {
-	   Fim();
-  }
-  */
-
   int RodadaAtual = 0; // Qual rodada estamos
   // Enquanto estiver abaixo da rodada 500:
   while(RodadaAtual < 500) {
@@ -332,8 +291,6 @@ void Atualiza (){
 
   			if(RobosAtivos[timeAtual][roboAtual] == 1) {
   				// Executa 50 instrucoes
-          // cria ponteiro apontando para a maquina atual
-          //Maquina* mp = &robos[timeAtual][roboAtual];
           if(robos[timeAtual][roboAtual]->energia){
             robos[timeAtual][roboAtual]->energia--;
           }
@@ -478,12 +435,6 @@ int move(int x, int y, Maquina *m){
       // desenha a base novamente
       desenhaBase(ox,oy,arena[ox][oy].base);
     }
-    // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
-    //TempoDeCadaRobo[timeAtual][roboAtual] += arena[x][y].terreno;
-
-
-    // Espera 1 segundo para a visualizacao
-    //waitFor(1);
     // Retorna sucesso
     return 1;
   }
@@ -501,8 +452,6 @@ static void inicializaRobo (int index, int time, int posX, int posY) {
   robos[time][index] = cria_maquina(prog, posX, posY, time);
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time][index] = 1;
-  // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
-  //TempoDeCadaRobo[time-1][qual] = 0;
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -556,9 +505,6 @@ void destroiRobo(int posX, int posY, int time, int qual) {
   }
   robos[time][qual]->crist = 0;
 
-  // Destroi a Maquina pela funcao destroi_maquina
-
-  //destroi_maquina(&robos[time][qual]);
   // Marca como "inativo" esse robo no vetor de robos ativos
   RobosAtivos[time][qual] = 0;
 }
@@ -578,7 +524,6 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
 
 
   fimDoJogo = 0; // O jogo não terminou
-  //arena[tamanho][tamanho];
 
    timeAtual = 0;
 	 roboAtual = 0;
@@ -633,7 +578,6 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
 
   // Distribuir cristais pela arena, de modo a não colocar um cristal onde já tem um robô ou
   // uma base e os desenha
-
   for (int i = 0; i < cristais; i++)
   {
 
@@ -665,6 +609,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
     }
   }
 
+  /*
   // printar a arena. Util para debug
   for(int i = 0; i < 15; i++){
     for(int j = 0; j < 15; j++){
@@ -672,6 +617,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
     }
     printf("\n");
   }
+  */
 
   // Bota os robos aleatoriamente no mapa
   int index = 0;
@@ -697,19 +643,6 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
       }
     }
   }
-
-  // colocar dois robos lado a lado para testar o ataque
-  /*arena[5][5].vazia = 1;
-
-  desenhaRobo(0, 0, 5, 5);
-
-  inicializaRobo(0, 1, 5, 5);
-
-  arena[5][6].vazia = 1;
-  // desenha o robô i do exército j
-  desenhaRobo(1, 1, 5, 6);
-  // coloca o robô i no time j
-  inicializaRobo(1, 2, 5, 6);*/
   // "Inicializa o relogio"
   begin = clock();
 
@@ -738,7 +671,8 @@ int Minimo (int a, int b){
   else return b;
 }
 
+// Funcao que espera um certo tempo
 void waitFor (unsigned int secs) {
-    unsigned int retTime = time(0) + secs;   // Get finishing time.
-    while (time(0) < retTime);               // Loop until it arrives.
+    unsigned int retTime = time(0) + secs;
+    while (time(0) < retTime);
 }
