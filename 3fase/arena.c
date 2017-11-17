@@ -127,7 +127,7 @@ void Sistema(int op, int dir, Maquina *m) {
   //Fora do mapa?
   if(x < 0 || y < 0 || x > 14 || y > 14) {
     empilha(&m->pil, (OPERANDO){BOOL, false}); //Empilha, no robo, false
-    printf("Direção inválida\n");
+    printf("Direção inválida: %d %d\n", x, y);
   }
   else{
     if(op == INF) { // Se pedir infos
@@ -165,9 +165,24 @@ void Sistema(int op, int dir, Maquina *m) {
 		if(coleta(x, y, m)) {
       // indica ao robô que ele coletou um item
 			empilha(&m->pil, (OPERANDO){BOOL, true});
-      if (arena[x][y].coletavel == NENHUM)
+      if (arena[x][y].coletavel == NENHUM){
         // retirar o desenho do cristal se não há mais nenhum cristal na célula
         removeItem(x,y);
+        if (arena[x][y].vazia) {
+          int time = 0;
+          int qual = 0;
+          for(int i = 0; i < TotTimes; i++){
+            for(int j = 0; i < TotRobTime; j++){
+              if((robos[i][j])->posx == x && robos[i][j]->posy == y) {
+                time = i;
+                qual = j;
+                break;
+              }
+            }
+          }
+          moveRobo(qual + TotRobTime*time, x, y);
+        }
+      }
       printf("Coletou da posição (%d,%d)\n", x, y);
 		}
       else
@@ -519,8 +534,11 @@ void destroiRobo(int posX, int posY, int time, int qual) {
       }
     }
   }
-
-
+  int terreno = arena[robos[time][qual]->posx][robos[time][qual]->posy].terreno;
+  desenhaCelula(robos[time][qual]->posx, robos[time][qual]->posy, terreno);
+  if(arena[robos[time][qual]->posx][robos[time][qual]->posy].nCristais){
+    desenhaCristal(1, robos[time][qual]->posx, robos[time][qual]->posy);
+  }
   // "Destroi" o robo no vetor
   robos[time][qual]->posx = -1;
   robos[time][qual]->posy = -1;
@@ -539,13 +557,17 @@ void destroiRobo(int posX, int posY, int time, int qual) {
          if (cairY < 0)  cairY = 0;
     else if (cairY > 19) cairY = 19;
     arena[posX][posY].nCristais++;
+    arena[posX][posY].coletavel = CRISTAL;
+    // desenha 1 cristal na célula (x,y)
+    desenhaCristal(1, posX, posY);
   }
   robos[time][qual]->crist = 0;
 
   // Destroi a Maquina pela funcao destroi_maquina
-  destroi_maquina(&robos[time][qual]);
+
+  //destroi_maquina(&robos[time][qual]);
   // Marca como "inativo" esse robo no vetor de robos ativos
-  RobosAtivos[time-1][qual] = 0;
+  RobosAtivos[time][qual] = 0;
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -621,6 +643,7 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
 
   for (int i = 0; i < cristais; i++)
   {
+
       int x = rand()%14;
       int y = rand()%14;
       if (arena[x][y].vazia != 0 || arena[x][y].base != 0)

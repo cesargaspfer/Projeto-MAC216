@@ -65,9 +65,27 @@ Maquina *cria_maquina(INSTR *p)
 
 INSTR *geraProg () {
   static INSTR progr[] = {
+<<<<<<< HEAD
     {ATK, ACAO, {EAST}},
     {PRN, NONE, {0}},
     {END, NONE, {0}}
+=======
+      {CLT, ACAO, {EAST}},
+      {CLT, ACAO, {WEST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {EAST}},
+      {ATK, ACAO, {WEST}},
+      {CLT, ACAO, {EAST}},
+      {END, NONE, {0}}
+>>>>>>> aeee6461111c337c135dca1e2832e499445886f4
   };
   //time_t t;
   //srand((unsigned) time(&t));
@@ -99,7 +117,7 @@ Maquina *cria_maquina(INSTR *p, int x, int y, int exercito) {
   m->exercito = exercito;
   m->vida = 100;
   m->crist = 0;
-  m->energia = 100;
+  m->energia = 0;
   m->dano = 10;
   return m;
 }
