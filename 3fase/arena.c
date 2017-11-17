@@ -412,6 +412,7 @@ int coleta(int x, int y, Maquina *m){
 int ataque(int x, int y, Maquina *m){
   // Caso tenha robo para atacar na posicao desejada:
   if(arena[x][y].vazia != 0){
+    m->energia += 3;
     // Procura o robo nessa posicao
     int time = -1;
     int qual = -1;
@@ -510,7 +511,7 @@ static void inicializaRobo (int index, int time, int posX, int posY) {
 
   printf("inicializou robô %d no time %d na posição (%d , %d)\n", index, time, posX, posY);
   // Cria o robo com a função cria_maquina
-  robos[time][index] = cria_maquina(geraProg(), posX, posY, time);
+  robos[time][index] = cria_maquina(prog, posX, posY, time);
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time][index] = 1;
   // Caso queiramos mudar a contagem de tempo para chamadas de sistema:
