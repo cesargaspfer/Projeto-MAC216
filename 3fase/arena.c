@@ -228,11 +228,12 @@ void Fim () {
   // "Para o relogio"
   end = clock();
   currentTime = (double) (end - begin)/ CLOCKS_PER_SEC;
-
+  printf("\n\n", );
   // Caso nao foram coletados todos os cristais, eh avisado
   // que o jogo nao foi ate o fim (ou seja, foi interrompido)
   if(cristaisRestantes != 0){
 	  printf("Esse jogo foi longe demais...\n");
+    notificaFim(-1);
   }
 
   // Procura o ganhador (quem fez mais pontos)
@@ -240,29 +241,34 @@ void Fim () {
   // calcular o tamanho do array pontosTotais
   int len = sizeof(pontosTotais) / sizeof(pontosTotais[0]);
 
-  for(int i = 1; i < len; i++) {
+  for(int i = 1; i < TotTimes; i++) {
   	if(pontosTotais[i-1] < pontosTotais[i]) {
   		ganhador = i;
   	}
   }
   // Verifica se houve empate, se houve, avisa que empatou e quem ganhou
   int empate = 0;
-  for(int i = 1; i < len; i++) {
+  for(int i = 0; i < len; i++) {
   	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
-  		// imprime alguma coisa
+      printf("Empate!\n");
+      notificaFim(++ganhador);
   	}
   	else if(empate == 1  && ganhador != i){
-        // imprime outra coisa
+        printf("Time %d; ", (i+1));
+        notificaFim(-1);
   	}
   }
   // Caso nao houve empate, avisa o ganhador
-  if(empate != 0) {
-     // dizer quem ganhou
+  if(empate == 0) {
+    printf("Time ganhador: Time %d\n Parabéns!\n", ++ganhador);
+     notificaFim(++ganhador);
   }
   // Da parabens a todos e diz quanto tempo levou essa partida
   else {
-    // imprimir alguma coisa
+    printf("\nParabéns à todos!\n");
+    notificaFim(-1);
   }
+  printf("Tempo total de jogo: %f\n", currentTime);
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -277,7 +283,7 @@ void Atualiza (){
   while(RodadaAtual < 500) {
     // Se acabou o jogo, pare com os 3 lacos
     if(fimDoJogo){
-      Fim();
+      break;
     }
 	// A cada robo dentro do time
   	for(int i = 0; i < TotRobTime; i++){
