@@ -416,7 +416,7 @@ int ataque(int x, int y, Maquina *m){
     int qual = 0;
     for(int i = 0; i < TotTimes; i++){
       for(int j = 0; i < TotRobTime; j++){
-        if((robos[i][j])->posx == x && robos[i][j]->posy == y) {
+        if(robos[i][j]->posx == x && robos[i][j]->posy == y) {
           time = i;
           qual = j;
           break;
@@ -699,7 +699,8 @@ int CriaArena(int tamanho, int times, int cristais, int robosT, int armas){
         // desenha o robô "index" do exército j
         desenhaRobo(index, j-1, localX, localY);
         // coloca o robô i no time j
-        inicializaRobo(index++, j-1, localX, localY);
+        inicializaRobo(i, j-1, localX, localY);
+        index++;
       }
     }
   }
