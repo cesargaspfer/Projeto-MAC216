@@ -239,7 +239,6 @@ void Fim () {
   // que o jogo nao foi ate o fim (ou seja, foi interrompido)
   if(cristaisRestantes != 0){
 	  printf("Esse jogo foi longe demais...\n");
-    notificaFim(-1);
   }
 
   // Procura o ganhador (quem fez mais pontos)
@@ -256,19 +255,19 @@ void Fim () {
   int empate = 0;
   for(int i = 1; i < len; i++) {
   	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
-  		notificaFim(++ganhador);
+  		// imprime alguma coisa
   	}
   	else if(empate == 1  && ganhador != i){
-        notificaFim(-1);
+        // imprime outra coisa
   	}
   }
   // Caso nao houve empate, avisa o ganhador
   if(empate != 0) {
-     notificaFim(++ganhador);
+     // dizer quem ganhou
   }
   // Da parabens a todos e diz quanto tempo levou essa partida
   else {
-    notificaFim(-1);
+    // imprimir alguma coisa
   }
 }
 
