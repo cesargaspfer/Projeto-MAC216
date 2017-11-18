@@ -228,12 +228,12 @@ void Fim () {
   // "Para o relogio"
   end = clock();
   currentTime = (double) (end - begin)/ CLOCKS_PER_SEC;
-  printf("\n\n", );
+  printf("\n\n");
   // Caso nao foram coletados todos os cristais, eh avisado
   // que o jogo nao foi ate o fim (ou seja, foi interrompido)
   if(cristaisRestantes != 0){
 	  printf("Esse jogo foi longe demais...\n");
-    notificaFim(-1);
+    //notificaFim(-1);
   }
 
   // Procura o ganhador (quem fez mais pontos)
@@ -251,22 +251,22 @@ void Fim () {
   for(int i = 0; i < len; i++) {
   	if(pontosTotais[i] == pontosTotais[ganhador] && empate == 0 && ganhador != i) {
       printf("Empate!\n");
-      notificaFim(++ganhador);
+      //notificaFim(++ganhador);
   	}
   	else if(empate == 1  && ganhador != i){
         printf("Time %d; ", (i+1));
-        notificaFim(-1);
+        //notificaFim(-1);
   	}
   }
   // Caso nao houve empate, avisa o ganhador
   if(empate == 0) {
     printf("Time ganhador: Time %d\n Parabéns!\n", ++ganhador);
-     notificaFim(++ganhador);
+     //notificaFim(++ganhador);
   }
   // Da parabens a todos e diz quanto tempo levou essa partida
   else {
     printf("\nParabéns à todos!\n");
-    notificaFim(-1);
+    //notificaFim(-1);
   }
   printf("Tempo total de jogo: %f\n", currentTime);
 }
@@ -338,7 +338,11 @@ int coleta(int x, int y, Maquina *m){
       case ARMA:
         arena[x][y].coletavel = NENHUM;
         // o dano do robô aumenta para 30 (um ataque dele tira 30 pontos de saúde da vítima)
-        m->dano = 30;
+        // se ele já tinha uma arma, o dano aumenta para 60!
+        if (m->dano == 30)
+          m->dano = 60;
+        else
+          m->dano = 30;
         break;
       default:
         break;

@@ -55,48 +55,6 @@ static void Fatal(char *msg, int cod) {
   Erro(msg);
   exit(cod);
 }
-/*
-Maquina *cria_maquina(INSTR *p)
-{
-
-}
-*/
-
-
-INSTR *geraProg () {
-  static INSTR progr[] = {
-      //{ATK, ACAO, {EAST}},
-      {END, NONE, {0}}
-      /*{ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {EAST}},
-      {ATK, ACAO, {WEST}},
-      {CLT, ACAO, {EAST}},
-      {END, NONE, {0}}*/
-  };
-  //time_t t;
-  //srand((unsigned) time(&t));
-  /*
-  int direcao = rand() % 6;
-  progr[0].o.Valor.d = direcao;
-  progr[1].o.Valor.n = direcao;
-  //srand((unsigned) time(&t));
-  /*
-  for(int i = 0; i < 10; i++){
-    int direcao = rand() % 6;
-    progr[i].o.Valor.d = direcao;
-  }
-  */
-  return progr;
-}
-
-
 
 
 Maquina *cria_maquina(INSTR *p, int x, int y, int exercito) {
@@ -141,9 +99,6 @@ void exec_maquina(Maquina *m, int nInstrucoes) {
 	    OPERANDO arg = prg[ip].o;
 
 	D(printf("%3d: %-4.4s %d\n     ", ip, CODES[opc], arg));
-  /*
-  MOV, ATK, INF estão prontos. Olhar funcionamento.
-  */
 	switch (opc) {
 	  OPERANDO tmp;
 	case PUSH:
