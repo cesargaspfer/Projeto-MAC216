@@ -1,3 +1,6 @@
+#programa que testa se o robô se mantém dentro da arena
+#execução: colocar esse arquivo na pasta principal, executar com python montador < Testes/bordas.txt > tprog.c
+# fazer um make
 MOV EAST
 MOV EAST
 MOV EAST
@@ -99,4 +102,3 @@ MOV SOUTHWEST
 MOV SOUTHEAST
 
 END
-

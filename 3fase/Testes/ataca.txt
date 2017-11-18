@@ -1,14 +1,10 @@
-CLT EAST
-CLT WEST
+#programa para testar ataques dos robôs
+#execução: colocar esse arquivo na pasta principal, executar com python montador < Testes/ataque.txt > tprog.c
+# fazer um make
 ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
-ATK EAST
+ATK NORTHEAST
+ATK NORTHWEST
+ATK WEST
+ATK SOUTHWEST
+ATK SOUTHEAST
 END
