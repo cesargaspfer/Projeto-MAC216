@@ -259,7 +259,7 @@ void Fim () {
   	}
   }
   // Caso nao houve empate, avisa o ganhador
-  if(empate == 0) {
+  if(empate != 0) {
     printf("Time ganhador: Time %d\n Parabéns!\n", ++ganhador);
      //notificaFim(++ganhador);
   }
