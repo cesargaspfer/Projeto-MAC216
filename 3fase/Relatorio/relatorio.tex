@@ -136,7 +136,45 @@ De forma geral, implementamos o vetor de robôs na arena,  adicionamos uma arma 
  
  \paragraph{}
  As imagens foram redimensionadas. Cada imagem foi obtida no seguinte endereço:
-Bandeira vermelha: \url{https://commons.wikimedia.org/wiki/File:Red_flag_waving.svg}e a bandeira verde: \url{https://commons.wikimedia.org/wiki/File:Dark_green_flag_waving.png}
+Bandeira vermelha: \url{https://commons.wikimedia.org/wiki/File:Red_flag_waving.svg}e a bandeira verde: \url{https://commons.wikimedia.org/wiki/File:Dark_green_flag_waving.png}.  \paragraph{}
+As duas armas colocadas em posições aleatórias da arena são representadas pelo mesmo arquivo de imagem.
+  
+ \begin{figure}[h]
+ \begin{center}
+ \includegraphics[scale=0.8]{lg.png}
+ \caption{Laser Gun}
+ \label{fig:gun}
+ \end{center} 
+ \end{figure}
+ 
+ \paragraph{}
+ Até o momento, temos três arquivos de áudio que são executados ao longo do jogo: uma música de introdução, um som que indica que um item foi coletado e um som que indica que um robô atacou outro. Os três sons estão nos arquivos ‘battle.wav’, ‘collect.wav’ e ‘atk.wav’, respectivamente. 
+Os arquivos utilizados foram pagos por um dos integrantes do grupo e estão disponíveis para compra em \url{https://www.assetstore.unity3d.com/en/#!/content/17256}
 
+\paragraph{}
+Por ora, o término de uma partida não é representado significativamente na interface gráfica. O indicador de que um jogo terminou são mensagens no terminal. Estamos estudando uma maneira de emitir na interface do jogo uma notificação de que o jogo acabou, apontando os resultados da partida.
+
+\paragraph{}
+Portanto, a interface gráfica construída segue o princípio de se enviar os códigos (instruções) do protocolo entre o programa controle.c e apres a partir de um ‘pipe interno’ gerenciado pela função fprintf, como sugerido pelo professor. Essa parte do projeto apresentou bons desempenhos nos testes, sendo crucial para a execução dos mesmos. Os testes descritos a seguir foram úteis também para testar a interface gráfica por si só.
+
+
+\section{Testes}
+$\: \:$Foram feitos diversos testes. Todos os comandos e recursos do jogo foram testado. \textbf{\textit{Observação:} As instruções que usamos para testar o jogo estão disponíveis na pasta "Testes". Os testes lá utilizados são aplicados para múltiplos robôs no jogo.}
+\paragraph{}
+Para testar a movimentação dos robôs, primeiro deixamos a arena com um só robô que executou as instruções presentes em "mov.txt". Verificamos que todas as direções em todos os possíveis casos estavam certas. Logo, pudemos concluir que a transformação da direção da matriz hexagonal para a quadrada e que a instrução de movimento estavam certas.
+\paragraph{}
+Para testar o ataque, botamos dois robôs na arena e manipulamos suas posições, colocando-os lado a lado e mandando ambos coletarem um cristal e depois um atacar o outro até a morte. O resultado foi o esperado. Ambos coletaram um cristal e um deles matou o outro e o que morreu "derrubou" um cristal. Então botamos todos os robôs para se atacarem, a fim de avaliarmos eventuais erros de segmentação. Nos deparamos com alguns erros, mas consertamos e refizemos todos os testes de novo, obtendo êxito. A instrução utilizada foi "ataca.txt".
+\paragraph{}
+A fim de testar a coleta de cristais, colocamos um robô e um cristal na arena e manipulamos as posições de ambos. O resultado foi o esperado: o robô coletou o cristal e tocou um efeito sonoro. O arquivo com as instruções se chama "coleta.txt".
+\paragraph{}
+Ao testarmos o deposita, botamos um robô, um cristal e uma arma na arena e manipulamos suas posições. Executamos a instrução "deposita.txt" e o resultado foi o esperado: o robô coletou a arma e o cristal, mas só depositou o cristal.
+\paragraph{}
+A fim de testar a arma, colocamos dois robôs, um deles "não fazia nada". Colocamos também uma arma na arena, novamente manipulando suas posições. O robô que "fazia algo" executava as instruções presentes em "arma.txt" e o resultado foi novamente o esperado: o robô pegou a arma e matou o outro em menos ataques do que normalmente mataria (no caso, matou em 4 ataques, sem arma mataria em 10 ataques). 4 ataques com uma arma = 4 x 30 (120) pontos de vida perdidos pelo robô que sofreu o ataque.
+\paragraph{}
+Para testar o fim do jogo, mudamos o numero de cristais que precisaria ser depositado na base para que um dos times vencesse. Colocamos um robô, um cristal e uma base em locais manipulados e executamos a instrução "coleta.txt". O robô coletou o cristal e depositou em sua base, acabando o jogo.
+\paragraph{}
+Todos os efeitos sonoros foram testados também, entretanto, não com uma instrução especifica, mas junto com todos os testes já citados.
+\paragraph{}
+Esses foram os principais testes realizados, houveram algumas repetições, como teste das bordas da arena (utilizando as instruções "bordas.txt"), e alguns menos significantes, os quais foram omitidos deste relatório.
  
 \end{document}
