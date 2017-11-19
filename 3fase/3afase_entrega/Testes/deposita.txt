@@ -1,0 +1,15 @@
+#programa para testar coleta e depósito de itens da arena
+#execução: colocar esse arquivo na pasta principal, executar com python montador < Testes/deposita.txt > tprog.c
+# fazer um make
+CLT EAST
+CLT NORTHEAST
+CLT WEST
+CLT SOUTHWEST
+END
+CLT EAST
+DEP EAST
+
+CLT WEST
+DEP WEST
+
+END

@@ -2,5 +2,16 @@
 #include "maq.h"
 INSTR prog[] = {
 {CLT, ACAO, {EAST}},
+{CLT, ACAO, {NORTHEAST}},
+{CLT, ACAO, {NORTHWEST}},
+{CLT, ACAO, {WEST}},
+{CLT, ACAO, {SOUTHWEST}},
+{CLT, ACAO, {SOUTHEAST}},
+{ATK, ACAO, {EAST}},
+{ATK, ACAO, {NORTHEAST}},
+{ATK, ACAO, {NORTHWEST}},
+{ATK, ACAO, {WEST}},
+{ATK, ACAO, {SOUTHWEST}},
+{ATK, ACAO, {SOUTHEAST}},
 {END, NONE, {0}},
 };
