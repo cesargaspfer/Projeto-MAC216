@@ -1,0 +1,8 @@
+#programa para testar coleta de itens da arena
+#execução: colocar esse arquivo na pasta principal, executar com python montador < Testes/coleta.txt > tprog.c
+# fazer um make
+CLT EAST
+CLT NORTHEAST
+CLT WEST
+CLT SOUTHWEST
+END
