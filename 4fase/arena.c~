@@ -459,7 +459,7 @@ static void inicializaRobo (int index, int time, int posX, int posY) {
 
   printf("inicializou robô %d no time %d na posição (%d , %d)\n", index, time, posX, posY);
   // Cria o robo com a função cria_maquina
-  robos[time][index] = cria_maquina(prog[index + (time*5)], posX, posY, time);
+  robos[time][index] = cria_maquina(prog[index + (time*5), posX, posY, time);
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time][index] = 1;
 }
