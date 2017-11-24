@@ -36,15 +36,15 @@
 
 // Funcao main, a qual inicializa as variaveis e o jogo
 int main () {
-printf("!OI!");
-  for(int i = 0; i < 2; i++)
-    pontosTotais[i] = 0;
+  
 
+  // Inicializacao das variaveis
+  pontosTotais[0] = 0;
+  pontosTotais[1] = 0;
   fimDoJogo = 0;
   currentTime = 0;
   cristaisRestantes = 20;
-
-  printf("!OI!");
+	
   // Cria a arena, com os argumentos:
   //	-Tamanho da arena,
   //	-Total de times,
