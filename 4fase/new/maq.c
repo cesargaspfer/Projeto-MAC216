@@ -101,8 +101,8 @@ void exec_maquina(Maquina *m, int n) {
 
 	switch (opc) {
 	  OPERANDO tmp;
-	  OPERANDO op1;
-	  OPERANDO op2;
+	  OPERANDO a;
+	  OPERANDO b;
 	  OPERANDO res;
 
 	case PUSH:
@@ -117,46 +117,85 @@ void exec_maquina(Maquina *m, int n) {
 	  empilha(pil, tmp);
 	  break;
 	case ADD:
-	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op1.val.n  + op2.val.n;
-		empilha(pil, res);
-	  }
-	  break;
+    // Desempilhar e somar os dois objetos no topo da pilha e
+    // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+    // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+    // retirados
+    a = desempilha(pil);
+    b = desempilha(pil);
+    if (a.t == NUM && b.t == NUM)
+    {
+      res = (OPERANDO){NUM,a.Valor.n + b.Valor.n};
+      empilha(pil, res);
+    }
+    else
+    {
+      empilha(pil, b);
+      empilha(pil, a);
+      Erro("Erro: ADD só definido para o tipo NUM");
+    }
+    break;
 	case SUB:
-	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op2.val.n  - op1.val.n;
-		empilha(pil, res);
-	  }
-
-	  break;
+    // Desempilhar e subtrair os dois objetos no topo da pilha e
+    // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+    // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+    // retirados
+    a = desempilha(pil);
+    b = desempilha(pil);
+    if (a.t == NUM && b.t == NUM)
+    {
+      res = (OPERANDO){NUM,b.Valor.n - a.Valor.n};
+      empilha(pil, res);
+    }
+    else
+    {
+      empilha(pil, b);
+      empilha(pil, a);
+      Erro("Erro: SUB só definido para o tipo NUM");
+    }
+    break;
 	case MUL:
-	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op1.val.n  * op2.val.n;
-		empilha(pil, res);
-	  }
-	  break;
+    // Desempilhar e multiplicar os dois objetos no topo da pilha e
+    // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+    // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+    // retirados
+      a = desempilha(pil);
+      b = desempilha(pil);
+      if (a.t == NUM && b.t == NUM)
+      {
+        empilha(pil, (OPERANDO){NUM,a.Valor.n * b.Valor.n});
+      }
+      else
+      {
+        empilha(pil, b);
+        empilha(pil, a);
+        Erro("Erro: MUL só definido para o tipo NUM");
+      }
+      break;
 	case DIV:
-	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op1.val.n  / op2.val.n;
-		empilha(pil, res);
-	  }
-	  break;
+  // Desempilhar e dividir os dois objetos no topo da pilha e
+  // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+  // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+  // retirados
+    a = desempilha(pil);
+    b = desempilha(pil);
+    if (a.t == NUM && b.t == NUM)
+    {
+      if (b.Valor.v == 0)
+      {
+        empilha(pil, b);
+        empilha(pil, a);
+        Erro("Erro: Divisão por zero.");
+      }
+      empilha(pil, (OPERANDO){NUM,a.Valor.n / b.Valor.n});
+    }
+    else
+    {
+      empilha(pil, b);
+      empilha(pil, a);
+      Erro("Erro: DIV só definido para o tipo NUM");
+    }
+    break;
 	case JMP:
 	  ip = arg.val.n;
 	  continue;
@@ -174,9 +213,9 @@ void exec_maquina(Maquina *m, int n) {
 	  }
 	  break;
 	case CALL:
-	  op1.t = NUM;
-	  op1.val.n = ip;
-	  empilha(exec, op1);
+	  a.t = NUM;
+	  a.val.n = ip;
+	  empilha(exec, a);
 	  ip = arg.val.n;
 	  continue;
 	case RET:
@@ -238,7 +277,20 @@ void exec_maquina(Maquina *m, int n) {
 	  return;
 
 	case PRN:
-	  printf("%d\n", desempilha(pil).val.n);
+  // desempilha e imprime o topo
+  a = desempilha(pil);
+  if (a.t == CELL)
+    printf("Terreno: %d\n Vazio: %d\n Cristais: %d\n Base :%d\n", a.Valor.c.terreno, a.Valor.c.vazia, a.Valor.c.nCristais, a.Valor.c.base);
+  else if (a.t == BOOL)
+  {
+    int b = a.Valor.b;
+    if (b == 0)
+      printf("false\n");
+    else
+      printf("true\n");
+  } else
+    printf("%d\n", a.Valor.n);
+  empilha(pil, a);
 	  break;
 
 	case ENTRY:

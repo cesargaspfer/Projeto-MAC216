@@ -75,14 +75,14 @@ typedef enum {
 ***************************************/
 typedef struct {
    Tipo t;
-  union Valor {
+  union {
  	  int n;
  	  int ac;
  	  int v;
     Celula c;
     Boolean b;
     Dir d;
-  } Valor;
+  } val;
  } OPERANDO;
 /* Instrução
 Toda instrução possui um Opcode, um Tipo de variável e um conjunto de valores
