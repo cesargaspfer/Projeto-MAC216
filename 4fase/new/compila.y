@@ -20,7 +20,7 @@ void AddInstr(OpCode op, int val) {
 }
 %}
 
-/*  Declaracoes */
+/* O que é interpretado pode ser tanto número como letra/simbolo */
 %union {
   double val;
   /* symrec *cod; */
@@ -28,7 +28,7 @@ void AddInstr(OpCode op, int val) {
 }
 
 /* %type  Expr */
-
+/* Simbolos terminais/ definições (#define) */
 %token <val>  NUMt
 %token <cod> ID
 %token ADDt SUBt MULt DIVt ASGN OPEN CLOSE RETt EOL
@@ -99,19 +99,50 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 ;
 
 Cond: IF OPEN  Expr {
+	         /*  printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
+			   printf("Encontrou uma expressão\n");*/
+	           printf("O valor do ip dentro da expressão do IF: %d\n", ip);
   	  	 	   salva_end(ip);
-			   AddInstr(JIF,  0);
+  	  	 	   printf("Salva o endereço do ip: %d\n", ip);
+			   AddInstr(JIF, 0);
+			   printf("Faz o JIF\n");
+			   /*printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);*/
  		 }
 		 CLOSE  Bloco {
+		   printf("Encontrou um bloco\n");
+		   /*printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
+		   printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);
+		   printf("O valor do ip: %d\n", ip);*/
+		   // salva_end(ip);
 		   prog[pega_end()].op.val.n = ip;
+		   // ip = ip + prog[pega_atu()].op.val.n;
+           printf("Atribui prog... a ip\n");
+           /*printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
+		   printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);*/
+		   printf("O valor do ip: %d\n", ip);
 		 };
 
-Cond: ELSE OPEN Expr {
-        
-     }
-     CLOSE Bloco {
 
-     };
+
+Cond: Cond ELSE Bloco {
+	       /* printf("Encontrou um else\n");
+	        printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
+			printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);
+			printf("\n");
+			printf("O valor do ip: %d\n", ip);*/
+			/* ip = prog[pega_atu()].op.val.n; */
+			salva_end(ip);
+			/*printf("prog[ip].op.val.n: %d\n", prog[ip].op.val.n);
+			printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
+			printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);*/
+			prog[pega_atu()].op.val.n = prog[pega_end()].op.val.n;
+			prog[pega_end()].op.val.n = ip;
+			/*printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);
+			printf("\n");
+			printf("Atribui progend... a ip");
+			printf("O valor do ip: %d\n", ip);*/
+		 };
+
 
 Loop: WHILE OPEN  {salva_end(ip);}
 	  		Expr  { salva_end(ip); AddInstr(JIF,0); }
