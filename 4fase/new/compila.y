@@ -6,7 +6,7 @@
 #include "symrec.h"
 #include "acertos.h"
 #include "instr.h"
-  
+
 int yylex();
 void yyerror(char const *);
 int compila(FILE *, INSTR *);
@@ -33,7 +33,7 @@ void AddInstr(OpCode op, int val) {
 %token <cod> ID
 %token ADDt SUBt MULt DIVt ASGN OPEN CLOSE RETt EOL
 %token EQt NEt LTt LEt GTt GEt ABRE FECHA SEP
-%token IF WHILE FUNC PRINT
+%token IF ELSE WHILE FUNC PRINT
 
 %right ASGN
 %left ADDt SUBt
@@ -83,7 +83,7 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 	/* 		 AddInstr(PUSH, s->val); */
 	/* 		 AddInstr(ATR, $3); */
  	/* 	 } */
-	| Chamada 
+	| Chamada
     | Expr ADDt Expr { AddInstr(ADD,  0);}
 	| Expr SUBt Expr { AddInstr(SUB,  0);}
 	| Expr MULt Expr { AddInstr(MUL,  0);}
@@ -106,17 +106,24 @@ Cond: IF OPEN  Expr {
 		   prog[pega_end()].op.val.n = ip;
 		 };
 
+Cond: ELSE OPEN Expr {
+        
+     }
+     CLOSE Bloco {
+
+     };
+
 Loop: WHILE OPEN  {salva_end(ip);}
 	  		Expr  { salva_end(ip); AddInstr(JIF,0); }
 	  		CLOSE Bloco {
 			  int ip2 = pega_end();
 			  AddInstr(JMP, pega_end());
 			  prog[ip2].op.val.n = ip;
-			}; 
+			};
 
 Bloco: ABRE Comandos FECHA ;
 
-Comandos: Comando 
+Comandos: Comando
     | Comandos Comando
 	;
 
@@ -144,7 +151,7 @@ Func: FUNC ID
 	  }
 	  ;
 
-Args: 
+Args:
 	| ID {
 	  	 putsym($1);
 	  }
@@ -167,7 +174,7 @@ Chamada: ID OPEN
 		   }
 		   AddInstr(ENTRY, lastval());
 		   /* Cópia dos parâmetros */
-		   while (parmcnt > 0) 
+		   while (parmcnt > 0)
 			 AddInstr( STO, --parmcnt);
 		   AddInstr(CALL, s->val);
 		 }
