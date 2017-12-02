@@ -34,7 +34,13 @@ char *CODES[] = {
   "ATR",
   "SIS",
   "ENTRY",
-  "LEAVE"
+  "LEAVE",
+  "MOV", // Opcodes adicionados daqui para baixo
+  "ATK",
+  "INF",
+  "CLT",
+  "DEP",
+  "ATR"
 };
 #else
 #  define D(X)
@@ -55,7 +61,7 @@ Maquina *cria_maquina(INSTR *p) {
   m->ip = 0;
   m->prog = p;
   m->pil.topo = 0;
-  m->ib = 0;
+  m->ib = 0;/*
   m->posx = x;
   m->posy = y;
   m->exercito = exercito;
@@ -63,6 +69,7 @@ Maquina *cria_maquina(INSTR *p) {
   m->crist = 0;
   m->energia = 0;
   m->dano = 10;
+  */
   return m;
 }
 
@@ -237,10 +244,9 @@ void exec_maquina(Maquina *m, int n) {
 	  pil->topo = 0;
 	  return;
 
-	case PRN:
-	  printf("%d\n", desempilha(pil).val.n);
-	  break;
-
+    case PRN:
+      printf("%d\n", desempilha(pil).val.n);
+      break;
 	case ENTRY:
 	  new_frame(m, arg.val.n);
 	  break;
@@ -248,6 +254,26 @@ void exec_maquina(Maquina *m, int n) {
 	case LEAVE:
 	  del_frame(m);
 	  break;
+
+    case MOV:
+      empilha(pil,  arg);
+      //return
+      break;
+    case ATK:
+        empilha(pil,  arg);
+      break;
+    case INF:
+      empilha(pil,  arg);
+      break;
+    case CLT:
+      empilha(pil,  arg);
+      break;
+    case DEP:
+      empilha(pil,  arg);
+      break;
+  	case ATR:
+      empilha(pil,  arg);
+      break;
 	}
 
 	D(imprime(pil,5));

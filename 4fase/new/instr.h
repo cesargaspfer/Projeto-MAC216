@@ -27,7 +27,12 @@ typedef enum {
   ATR,
   SIS,							/* chamada de sistema */
   ENTRY,
-  LEAVE
+  LEAVE,
+  MOV,
+  ATK,
+  DEP,
+  INF,
+  CLT
 } OpCode;
 
 /* Tipos dos operandos */
@@ -38,6 +43,15 @@ typedef enum {
   CELULA
 } Tipo;
 
+typedef enum {
+  NORTHEAST,
+  EAST,
+  SOUTHEAST,
+  SOUTHWEST,
+  WEST,
+  NORTHWEST,
+  CURRENT
+}Dir;
 /* Tipo de terreno */
 typedef enum {
   ESTRADA,

@@ -34,7 +34,9 @@ void AddInstr(OpCode op, int val) {
 %token ADDt SUBt MULt DIVt ASGN OPEN CLOSE RETt EOL
 %token EQt NEt LTt LEt GTt GEt ABRE FECHA SEP
 %token IF ELSE WHILE FUNC PRINT
-
+%token INFORMACAO
+%token MOVA ATAQUE COLETE DEPOSITE
+%token <val> DIRECAO
 %right ASGN
 %left ADDt SUBt
 %left MULt DIVt
@@ -77,6 +79,41 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 			 if (s==0) s = putsym($1); /* não definida */
 			 AddInstr(STO, s->val);
  		 }
+   | ID ASGN  MOVA OPEN DIRECAO CLOSE   {
+          symrec *s = getsym($1);
+          if (s==0) s = putsym($1); /* não definida */
+          AddInstr(MOV, $5);
+             AddInstr(STO, s->val);
+
+       }
+  | ID ASGN  ATAQUE OPEN DIRECAO CLOSE   {
+          symrec *s = getsym($1);
+          if (s==0) s = putsym($1); /* não definida */
+          AddInstr(ATK, $5);
+             AddInstr(STO, s->val);
+
+       }
+  | ID ASGN  COLETE OPEN DIRECAO CLOSE   {
+          symrec *s = getsym($1);
+          if (s==0) s = putsym($1); /* não definida */
+          AddInstr(CLT, $5);
+             AddInstr(STO, s->val);
+
+       }
+  | ID ASGN  DEPOSITE OPEN DIRECAO CLOSE   {
+            symrec *s = getsym($1);
+            if (s==0) s = putsym($1); /* não definida */
+            AddInstr(DEP, $5);
+            AddInstr(STO, s->val);
+
+       }
+
+   | ID ASGN INFORMACAO OPEN DIRECAO CLOSE {
+ 	         symrec *s = getsym($1);
+ 			 if (s==0) s = putsym($1); /* não definida */
+       AddInstr(INF, $5);
+ 			 AddInstr(STO, s->val);
+  		 }
 	/* | ID PONTO NUMt  {  % v.4 */
 	/*          symrec *s = getsym($1); */
 	/* 		 if (s==0) s = putsym($1); /\* não definida *\/ */

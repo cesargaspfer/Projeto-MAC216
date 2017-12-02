@@ -6,10 +6,29 @@ E [Ee][+-]?{D}+
 %{
 #include <math.h>
 #include "compila.tab.h"
+#include "maq.h"
 %}
 
 
 %%
+mova  { return MOVA; }
+ataque  { return ATAQUE; }
+colete  { return COLETE; }
+deposite  { return DEPOSITE; }
+informacao  { return INFORMACAO; }
+
+northeast { yylval.val = NORTHEAST; return DIRECAO;}
+east { yylval.val = EAST; return DIRECAO;}
+southeast { yylval.val = SOUTHEAST; return DIRECAO;}
+southwest { yylval.val = SOUTHWEST; return DIRECAO;}
+west { yylval.val = WEST; return DIRECAO;}
+northwest { yylval.val = NORTHWEST; return DIRECAO;}
+current { yylval.val = CURRENT; return DIRECAO;}
+
+
+
+
+
 {D}*[.]?{D}+{E}?	{ yylval.val = atof(yytext); return NUMt; }
 
 ret(urn)?  { return RETt; }
@@ -20,7 +39,7 @@ func|def { return FUNC; }
 print   { return PRINT; }
 
 
-{L}{H}* { 
+{L}{H}* {
   strncpy(yylval.cod, yytext, 30);
   return ID;
 }
