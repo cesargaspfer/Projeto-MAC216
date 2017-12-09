@@ -14,6 +14,8 @@ static int ip  = 0;					/* ponteiro de instruções */
 static int mem = 6;					/* ponteiro da memória */
 static INSTR *prog;
 static int parmcnt = 0;		/* contador de parâmetros */
+static int ipcheck = 0;
+static int ipcheca = 0;
 
 void AddInstr(OpCode op, int val) {
   prog[ip++] = (INSTR) {op,  {NUM, {val}}};
@@ -33,8 +35,10 @@ void AddInstr(OpCode op, int val) {
 %token <cod> ID
 %token ADDt SUBt MULt DIVt ASGN OPEN CLOSE RETt EOL
 %token EQt NEt LTt LEt GTt GEt ABRE FECHA SEP
-%token IF ELSE WHILE FUNC PRINT
-
+%token IF IFELSE WHILE FUNC PRINT
+%token INFORMACAO
+%token MOVA ATAQUE COLETE DEPOSITE
+%token <val> DIRECAO
 %right ASGN
 %left ADDt SUBt
 %left MULt DIVt
@@ -77,6 +81,41 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 			 if (s==0) s = putsym($1); /* não definida */
 			 AddInstr(STO, s->val);
  		 }
+   | ID ASGN  MOVA OPEN DIRECAO CLOSE   {
+          symrec *s = getsym($1);
+          if (s==0) s = putsym($1); /* não definida */
+          AddInstr(MOV, $5);
+             AddInstr(STO, s->val);
+
+       }
+  | ID ASGN  ATAQUE OPEN DIRECAO CLOSE   {
+          symrec *s = getsym($1);
+          if (s==0) s = putsym($1); /* não definida */
+          AddInstr(ATK, $5);
+             AddInstr(STO, s->val);
+
+       }
+  | ID ASGN  COLETE OPEN DIRECAO CLOSE   {
+          symrec *s = getsym($1);
+          if (s==0) s = putsym($1); /* não definida */
+          AddInstr(CLT, $5);
+             AddInstr(STO, s->val);
+
+       }
+  | ID ASGN  DEPOSITE OPEN DIRECAO CLOSE   {
+            symrec *s = getsym($1);
+            if (s==0) s = putsym($1); /* não definida */
+            AddInstr(DEP, $5);
+            AddInstr(STO, s->val);
+
+       }
+
+   | ID ASGN INFORMACAO OPEN DIRECAO CLOSE {
+ 	         symrec *s = getsym($1);
+ 			 if (s==0) s = putsym($1); /* não definida */
+       AddInstr(INF, $5);
+ 			 AddInstr(STO, s->val);
+  		 }
 	/* | ID PONTO NUMt  {  % v.4 */
 	/*          symrec *s = getsym($1); */
 	/* 		 if (s==0) s = putsym($1); /\* não definida *\/ */
@@ -99,48 +138,32 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 ;
 
 Cond: IF OPEN  Expr {
-	         /*  printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
-			   printf("Encontrou uma expressão\n");*/
-	           printf("O valor do ip dentro da expressão do IF: %d\n", ip);
+	         
   	  	 	   salva_end(ip);
-  	  	 	   printf("Salva o endereço do ip: %d\n", ip);
 			   AddInstr(JIF, 0);
-			   printf("Faz o JIF\n");
-			   /*printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);*/
+			   salva_end(ip);
+  	  	 	   AddInstr(JIT, 0);
+			   ipcheck = ip;
+			   
+			   
  		 }
 		 CLOSE  Bloco {
-		   printf("Encontrou um bloco\n");
-		   /*printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
-		   printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);
-		   printf("O valor do ip: %d\n", ip);*/
+		   
 		   // salva_end(ip);
-		   prog[pega_end()].op.val.n = ip;
+		   ipcheca = pega_end();
+		   ipcheck = pega_end();
+		   prog[ipcheck].op.val.n = ip;
 		   // ip = ip + prog[pega_atu()].op.val.n;
-           printf("Atribui prog... a ip\n");
-           /*printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
-		   printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);*/
-		   printf("O valor do ip: %d\n", ip);
+           // salva_end(ip);
+           // AddInstr(JMP, 0);
 		 };
 
 
-
-Cond: Cond ELSE Bloco {
-	       /* printf("Encontrou um else\n");
-	        printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
-			printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);
-			printf("\n");
-			printf("O valor do ip: %d\n", ip);*/
-			/* ip = prog[pega_atu()].op.val.n; */
-			salva_end(ip);
-			/*printf("prog[ip].op.val.n: %d\n", prog[ip].op.val.n);
-			printf("prog[pega_atu()].op.val.n: %d\n", prog[pega_atu()].op.val.n);
-			printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);*/
-			prog[pega_atu()].op.val.n = prog[pega_end()].op.val.n;
-			prog[pega_end()].op.val.n = ip;
-			/*printf("prog[pega_end()].op.val.n: %d\n", prog[pega_end()].op.val.n);
-			printf("\n");
-			printf("Atribui progend... a ip");
-			printf("O valor do ip: %d\n", ip);*/
+Cond: Cond IFELSE Bloco {
+	       prog[ipcheca].op.val.n = ip;
+	       // ipcheca = ip;
+	       // if (prog[ipcheck].op.val.n != 0) AddInstr(JMP, ip);
+	       
 		 };
 
 
