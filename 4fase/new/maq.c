@@ -155,8 +155,9 @@ void exec_maquina(Maquina *m, int n) {
 	  }
 	  break;
 	case DIV:
+    op2 = desempilha(pil);
 	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
+
 
 	  if (op1.t == NUM && op2.t == NUM) {
 		res.t = NUM;

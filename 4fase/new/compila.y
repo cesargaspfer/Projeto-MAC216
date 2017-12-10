@@ -33,12 +33,13 @@ void AddInstr(OpCode op, int val) {
 /* Simbolos terminais/ definições (#define) */
 %token <val>  NUMt
 %token <cod> ID
-%token ADDt SUBt MULt DIVt ASGN OPEN CLOSE RETt EOL
+%token ADDt SUBt MULt  ASGN OPEN CLOSE RETt EOL
 %token EQt NEt LTt LEt GTt GEt ABRE FECHA SEP
 %token IF IFELSE WHILE FUNC PRINT
-%token INFORMACAO
+%token INFORMACAO PONTO
 %token MOVA ATAQUE COLETE DEPOSITE
 %token <val> DIRECAO
+%token <val> ATRIBUTO
 %right ASGN
 %left ADDt SUBt
 %left MULt DIVt
@@ -81,47 +82,28 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 			 if (s==0) s = putsym($1); /* não definida */
 			 AddInstr(STO, s->val);
  		 }
-   | ID ASGN  MOVA OPEN DIRECAO CLOSE   {
-          symrec *s = getsym($1);
-          if (s==0) s = putsym($1); /* não definida */
-          AddInstr(MOV, $5);
-             AddInstr(STO, s->val);
-
+   | MOVA OPEN DIRECAO CLOSE   {
+          AddInstr(MOV, $3);
        }
-  | ID ASGN  ATAQUE OPEN DIRECAO CLOSE   {
-          symrec *s = getsym($1);
-          if (s==0) s = putsym($1); /* não definida */
-          AddInstr(ATK, $5);
-             AddInstr(STO, s->val);
-
+  | ATAQUE OPEN DIRECAO CLOSE   {
+          AddInstr(ATK, $3);
        }
-  | ID ASGN  COLETE OPEN DIRECAO CLOSE   {
-          symrec *s = getsym($1);
-          if (s==0) s = putsym($1); /* não definida */
-          AddInstr(CLT, $5);
-             AddInstr(STO, s->val);
-
+  | COLETE OPEN DIRECAO CLOSE   {
+          AddInstr(CLT, $3);
        }
-  | ID ASGN  DEPOSITE OPEN DIRECAO CLOSE   {
-            symrec *s = getsym($1);
-            if (s==0) s = putsym($1); /* não definida */
-            AddInstr(DEP, $5);
-            AddInstr(STO, s->val);
-
+  | DEPOSITE OPEN DIRECAO CLOSE   {
+            AddInstr(DEP, $3);
        }
 
-   | ID ASGN INFORMACAO OPEN DIRECAO CLOSE {
- 	         symrec *s = getsym($1);
- 			 if (s==0) s = putsym($1); /* não definida */
-       AddInstr(INF, $5);
- 			 AddInstr(STO, s->val);
+   | INFORMACAO OPEN DIRECAO CLOSE {
+       AddInstr(INF, $3);
   		 }
-	/* | ID PONTO NUMt  {  % v.4 */
-	/*          symrec *s = getsym($1); */
-	/* 		 if (s==0) s = putsym($1); /\* não definida *\/ */
-	/* 		 AddInstr(PUSH, s->val); */
-	/* 		 AddInstr(ATR, $3); */
- 	/* 	 } */
+	 | ID PONTO ATRIBUTO  {
+	          symrec *s = getsym($1);
+	 		 if (s==0) s = putsym($1);
+	 		 AddInstr(PUSH, s->val);
+	 		 AddInstr(ATR, $3);
+ 	 	 }
 	| Chamada
     | Expr ADDt Expr { AddInstr(ADD,  0);}
 	| Expr SUBt Expr { AddInstr(SUB,  0);}
@@ -136,19 +118,18 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 	| Expr EQt Expr  { AddInstr(EQ,   0);}
 	| Expr NEt Expr  { AddInstr(NE,   0);}
 ;
-
 Cond: IF OPEN  Expr {
-	         
+
   	  	 	   salva_end(ip);
 			   AddInstr(JIF, 0);
 			   salva_end(ip);
   	  	 	   AddInstr(JIT, 0);
 			   ipcheck = ip;
-			   
-			   
+
+
  		 }
 		 CLOSE  Bloco {
-		   
+
 		   // salva_end(ip);
 		   ipcheca = pega_end();
 		   ipcheck = pega_end();
@@ -163,7 +144,7 @@ Cond: Cond IFELSE Bloco {
 	       prog[ipcheca].op.val.n = ip;
 	       // ipcheca = ip;
 	       // if (prog[ipcheck].op.val.n != 0) AddInstr(JMP, ip);
-	       
+
 		 };
 
 
@@ -180,7 +161,6 @@ Bloco: ABRE Comandos FECHA ;
 Comandos: Comando
     | Comandos Comando
 	;
-
 Func: FUNC ID
 	  {
 		salva_end(ip);
@@ -204,7 +184,6 @@ Func: FUNC ID
 		deltab();
 	  }
 	  ;
-
 Args:
 	| ID {
 	  	 putsym($1);

@@ -50,34 +50,36 @@ extern int yydebug;
     ADDt = 260,
     SUBt = 261,
     MULt = 262,
-    DIVt = 263,
-    ASGN = 264,
-    OPEN = 265,
-    CLOSE = 266,
-    RETt = 267,
-    EOL = 268,
-    EQt = 269,
-    NEt = 270,
-    LTt = 271,
-    LEt = 272,
-    GTt = 273,
-    GEt = 274,
-    ABRE = 275,
-    FECHA = 276,
-    SEP = 277,
-    IF = 278,
-    IFELSE = 279,
-    WHILE = 280,
-    FUNC = 281,
-    PRINT = 282,
-    INFORMACAO = 283,
+    ASGN = 263,
+    OPEN = 264,
+    CLOSE = 265,
+    RETt = 266,
+    EOL = 267,
+    EQt = 268,
+    NEt = 269,
+    LTt = 270,
+    LEt = 271,
+    GTt = 272,
+    GEt = 273,
+    ABRE = 274,
+    FECHA = 275,
+    SEP = 276,
+    IF = 277,
+    IFELSE = 278,
+    WHILE = 279,
+    FUNC = 280,
+    PRINT = 281,
+    INFORMACAO = 282,
+    PONTO = 283,
     MOVA = 284,
     ATAQUE = 285,
     COLETE = 286,
     DEPOSITE = 287,
     DIRECAO = 288,
-    NEG = 289,
-    PWR = 290
+    ATRIBUTO = 289,
+    DIVt = 290,
+    NEG = 291,
+    PWR = 292
   };
 #endif
 
@@ -92,7 +94,7 @@ union YYSTYPE
   /* symrec *cod; */
   char cod[30];
 
-#line 96 "compila.tab.h" /* yacc.c:1909  */
+#line 98 "compila.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

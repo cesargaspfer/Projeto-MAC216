@@ -27,6 +27,11 @@ current { yylval.val = CURRENT; return DIRECAO;}
 
 
 
+"." { return PONTO; }
+terreno { yylval.val = 0; return ATRIBUTO;}
+vazia { yylval.val = 1; return ATRIBUTO;}
+nCristais { yylval.val = 2; return ATRIBUTO;}
+base { yylval.val = 3; return ATRIBUTO;}
 
 
 {D}*[.]?{D}+{E}?	{ yylval.val = atof(yytext); return NUMt; }
@@ -44,6 +49,8 @@ print    { return PRINT; }
   strncpy(yylval.cod, yytext, 30);
   return ID;
 }
+
+
 
 [ \t\n]+	/* pula espacos em branco */
 
@@ -67,7 +74,7 @@ print    { return PRINT; }
 ">"		{ return GTt; }
 ">="	{ return GEt; }
 
-.	{  fprintf(stderr, "Entrada ignorada\n-->%s\n", yytext); }
+. { fprintf(stderr, "Entrada ignorada\n-->%s\n", yytext); }
 
 %%
 
