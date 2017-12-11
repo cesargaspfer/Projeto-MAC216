@@ -10,7 +10,7 @@ typedef struct {
   Pilha pil;
   Pilha exec;
   OPERANDO Mem[MAXMEM];
-  INSTR *prog;
+  INSTR prog[2000];
   int ip;
   int bp[MAXFRM];
   int ib;
