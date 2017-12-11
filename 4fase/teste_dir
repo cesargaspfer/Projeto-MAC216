@@ -1,0 +1,16 @@
+x = 34;
+y = 45;
+z = x+y;
+oi = mova(northeast);
+print(oi);
+oi = mova(east);
+print(oi);
+oi = ataque(southeast);
+print(oi);
+oi = deposite(southwest);
+print(oi);
+oi = colete(northwest);
+print(oi);
+oi = informacao(current);
+print(oi);
+print z+(y/100);

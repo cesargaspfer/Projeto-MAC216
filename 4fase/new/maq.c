@@ -34,7 +34,13 @@ char *CODES[] = {
   "ATR",
   "SIS",
   "ENTRY",
-  "LEAVE"
+  "LEAVE",
+  "MOV", // Opcodes adicionados daqui para baixo
+  "ATK",
+  "INF",
+  "CLT",
+  "DEP",
+  "ATR"
 };
 #else
 #  define D(X)
@@ -55,7 +61,7 @@ Maquina *cria_maquina(INSTR *p) {
   m->ip = 0;
   m->prog = p;
   m->pil.topo = 0;
-  m->ib = 0;
+  m->ib = 0;/*
   m->posx = x;
   m->posy = y;
   m->exercito = exercito;
@@ -63,6 +69,7 @@ Maquina *cria_maquina(INSTR *p) {
   m->crist = 0;
   m->energia = 0;
   m->dano = 10;
+  */
   return m;
 }
 
@@ -173,6 +180,7 @@ void exec_maquina(Maquina *m, int n) {
       }
       break;
 	case DIV:
+<<<<<<< HEAD
   // Desempilhar e dividir os dois objetos no topo da pilha e
   // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
   // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
@@ -196,6 +204,18 @@ void exec_maquina(Maquina *m, int n) {
       Erro("Erro: DIV só definido para o tipo NUM");
     }
     break;
+=======
+    op2 = desempilha(pil);
+	  op1 = desempilha(pil);
+
+
+	  if (op1.t == NUM && op2.t == NUM) {
+		res.t = NUM;
+		res.val.n = op1.val.n  / op2.val.n;
+		empilha(pil, res);
+	  }
+	  break;
+>>>>>>> fbc43cc8f091fa4f7710ff10df1728072552078f
 	case JMP:
 	  ip = arg.val.n;
 	  continue;
@@ -276,6 +296,7 @@ void exec_maquina(Maquina *m, int n) {
 	  pil->topo = 0;
 	  return;
 
+<<<<<<< HEAD
 	case PRN:
   // desempilha e imprime o topo
   a = desempilha(pil);
@@ -293,6 +314,11 @@ void exec_maquina(Maquina *m, int n) {
   empilha(pil, a);
 	  break;
 
+=======
+    case PRN:
+      printf("%d\n", desempilha(pil).val.n);
+      break;
+>>>>>>> fbc43cc8f091fa4f7710ff10df1728072552078f
 	case ENTRY:
 	  new_frame(m, arg.val.n);
 	  break;
@@ -300,6 +326,26 @@ void exec_maquina(Maquina *m, int n) {
 	case LEAVE:
 	  del_frame(m);
 	  break;
+
+    case MOV:
+      empilha(pil,  arg);
+      //return
+      break;
+    case ATK:
+        empilha(pil,  arg);
+      break;
+    case INF:
+      empilha(pil,  arg);
+      break;
+    case CLT:
+      empilha(pil,  arg);
+      break;
+    case DEP:
+      empilha(pil,  arg);
+      break;
+  	case ATR:
+      empilha(pil,  arg);
+      break;
 	}
 
 	D(imprime(pil,5));

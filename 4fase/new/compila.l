@@ -6,24 +6,51 @@ E [Ee][+-]?{D}+
 %{
 #include <math.h>
 #include "compila.tab.h"
+#include "maq.h"
 %}
 
 
 %%
+mova  { return MOVA; }
+ataque  { return ATAQUE; }
+colete  { return COLETE; }
+deposite  { return DEPOSITE; }
+informacao  { return INFORMACAO; }
+
+northeast { yylval.val = NORTHEAST; return DIRECAO;}
+east { yylval.val = EAST; return DIRECAO;}
+southeast { yylval.val = SOUTHEAST; return DIRECAO;}
+southwest { yylval.val = SOUTHWEST; return DIRECAO;}
+west { yylval.val = WEST; return DIRECAO;}
+northwest { yylval.val = NORTHWEST; return DIRECAO;}
+current { yylval.val = CURRENT; return DIRECAO;}
+
+
+
+"." { return PONTO; }
+terreno { yylval.val = 0; return ATRIBUTO;}
+vazia { yylval.val = 1; return ATRIBUTO;}
+nCristais { yylval.val = 2; return ATRIBUTO;}
+base { yylval.val = 3; return ATRIBUTO;}
+
+
 {D}*[.]?{D}+{E}?	{ yylval.val = atof(yytext); return NUMt; }
 
 ret(urn)?  { return RETt; }
 
-if      { return IF; }
-while	{ return WHILE; }
+if       { return IF; }
+else     { return IFELSE; }
+while	 { return WHILE; }
 func|def { return FUNC; }
-print   { return PRINT; }
+print    { return PRINT; }
 
 
-{L}{H}* { 
+{L}{H}* {
   strncpy(yylval.cod, yytext, 30);
   return ID;
 }
+
+
 
 [ \t\n]+	/* pula espacos em branco */
 
@@ -47,7 +74,7 @@ print   { return PRINT; }
 ">"		{ return GTt; }
 ">="	{ return GEt; }
 
-.	{  fprintf(stderr, "Entrada ignorada\n-->%s\n", yytext); }
+. { fprintf(stderr, "Entrada ignorada\n-->%s\n", yytext); }
 
 %%
 
