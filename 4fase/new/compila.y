@@ -122,18 +122,19 @@ Cond: IF OPEN  Expr {
 
   	  	 	   salva_end(ip);
 			   AddInstr(JIF, 0);
-			   salva_end(ip);
-  	  	 	   AddInstr(JIT, 0);
-			   ipcheck = ip;
+			   // salva_end(ip);
+  	  	 	   // AddInstr(JIT, 0);
+			   // ipcheck = ip;
 
 
  		 }
 		 CLOSE  Bloco {
 
 		   // salva_end(ip);
-		   ipcheca = pega_end();
-		   ipcheck = pega_end();
-		   prog[ipcheck].op.val.n = ip;
+		   // ipcheca = pega_end();
+		   prog[pega_end()].op.val.n = ip;
+		   salva_end(ip);
+		   AddInstr(JIT, 0);
 		   // ip = ip + prog[pega_atu()].op.val.n;
            // salva_end(ip);
            // AddInstr(JMP, 0);
@@ -141,7 +142,7 @@ Cond: IF OPEN  Expr {
 
 
 Cond: Cond IFELSE Bloco {
-	       prog[ipcheca].op.val.n = ip;
+	       prog[pega_end()].op.val.n = ip;
 	       // ipcheca = ip;
 	       // if (prog[ipcheck].op.val.n != 0) AddInstr(JMP, ip);
 
