@@ -1,0 +1,2 @@
+x = mova(east);
+x = mova(west);

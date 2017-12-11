@@ -7,6 +7,7 @@ E [Ee][+-]?{D}+
 #include <math.h>
 #include "compila.tab.h"
 #include "maq.h"
+#include "instr.h"
 %}
 
 

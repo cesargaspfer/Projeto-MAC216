@@ -1,3 +1,7 @@
+#ifndef INSTR_H
+#define INSTR_H
+#include "util.h"
+#include "arena.h"
 /* Códigos das instruções */
 typedef enum {
   PUSH,
@@ -25,7 +29,6 @@ typedef enum {
   END,
   PRN,
   ATR,
-  SIS,							/* chamada de sistema */
   ENTRY,
   LEAVE,
   MOV,
@@ -34,13 +37,14 @@ typedef enum {
   INF,
   CLT
 } OpCode;
-
 /* Tipos dos operandos */
 typedef enum {
   NUM,
   ACAO,
   VAR,
-  CELULA
+  CELL,
+  BOOL,
+  NONE
 } Tipo;
 
 typedef enum {
@@ -52,27 +56,6 @@ typedef enum {
   NORTHWEST,
   CURRENT
 }Dir;
-/* Tipo de terreno */
-typedef enum {
-  ESTRADA,
-  MONTANHA,
-  RIO,
-  BASE
-} Terreno;
-
-
-/* Célula */
-typedef struct {
-  Terreno terreno;
-  short int cristais;
-  short int ocupado;
-} Celula;
-
-/* Alternativamente, Celula pode ser implementada como um vetor de ints
-   ou short ints, isso torna a implementação de ATR mais fácil */
-
-/* No caso da ação, o tipo do operando é um inteiro indicando a direção,
-   mas fique livre para fazer de forma diferente */
 
 /* Operando */
 typedef struct {
@@ -80,9 +63,10 @@ typedef struct {
   union {
 	int n;
 	int ac;
-	double v;
-	Celula cel;
-  } val;
+  double v;
+	Celula c;
+  Boolean b;
+  } Valor;
 } OPERANDO;
 
 /* Instrução */
@@ -90,3 +74,4 @@ typedef struct {
   OpCode instr;
   OPERANDO op;
 } INSTR;
+#endif /* INSTR_H*/

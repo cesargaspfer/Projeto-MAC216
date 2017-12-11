@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "maq.h"
+#include "instr.h"
+#include "compila.tab.h"
+#include<time.h>
 
 /* #define DEBUG */
 
@@ -32,7 +35,6 @@ char *CODES[] = {
   "END",
   "PRN",
   "ATR",
-  "SIS",
   "ENTRY",
   "LEAVE",
   "MOV", // Opcodes adicionados daqui para baixo
@@ -54,22 +56,29 @@ static void Fatal(char *msg, int cod) {
   Erro(msg);
   exit(cod);
 }
-
-Maquina *cria_maquina(INSTR *p) {
+Maquina *cria_maquina(char *nome, int posx, int posy, int exercito) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
-  m->prog = p;
+
+  INSTR p1[2000];
+  //Compilacao do programa
+  FILE *p = fopen(nome,"r");
+
+  int res = compilador(p, p1);
+
+  m->prog = p1;
+
+
   m->pil.topo = 0;
-  m->ib = 0;/*
-  m->posx = x;
-  m->posy = y;
+  m->ib = 0;
+  m->posx = posx;
+  m->posy = posy;
   m->exercito = exercito;
   m->vida = 100;
   m->crist = 0;
   m->energia = 0;
   m->dano = 10;
-  */
   return m;
 }
 
@@ -104,17 +113,17 @@ void exec_maquina(Maquina *m, int n) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
 
-	D(printf("%3d: %-5.5s %d\n", ip, CODES[opc], arg.val.n));
+	D(printf("%3d: %-5.5s %d\n", ip, CODES[opc], arg.Valor.n));
 
 	switch (opc) {
 	  OPERANDO tmp;
-	  OPERANDO op1;
-	  OPERANDO op2;
+	  OPERANDO a;
+	  OPERANDO b;
 	  OPERANDO res;
 
 	case PUSH:
 	  empilha(pil, arg);
-	  // printf("{PUSH, %d}\n", arg.val.n);
+	  // printf("{PUSH, %d}\n", arg.Valor.n);
 	  break;
 	case POP:
 	  desempilha(pil);
@@ -126,165 +135,232 @@ void exec_maquina(Maquina *m, int n) {
 	  empilha(pil, tmp);
 	  break;
 	case ADD:
-	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op1.val.n  + op2.val.n;
-		empilha(pil, res);
-	  }
-	  break;
+    // Desempilhar e somar os dois objetos no topo da pilha e
+    // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+    // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+    // retirados
+    a = desempilha(pil);
+    b = desempilha(pil);
+    if (a.t == NUM && b.t == NUM)
+    {
+      res = (OPERANDO){NUM,a.Valor.n + b.Valor.n};
+      empilha(pil, res);
+    }
+    else
+    {
+      empilha(pil, b);
+      empilha(pil, a);
+      Erro("Erro: ADD só definido para o tipo NUM");
+    }
+    break;
 	case SUB:
-	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op2.val.n  - op1.val.n;
-		empilha(pil, res);
-	  }
-
-	  break;
+    // Desempilhar e subtrair os dois objetos no topo da pilha e
+    // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+    // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+    // retirados
+    a = desempilha(pil);
+    b = desempilha(pil);
+    if (a.t == NUM && b.t == NUM)
+    {
+      res = (OPERANDO){NUM,b.Valor.n - a.Valor.n};
+      empilha(pil, res);
+    }
+    else
+    {
+      empilha(pil, b);
+      empilha(pil, a);
+      Erro("Erro: SUB só definido para o tipo NUM");
+    }
+    break;
 	case MUL:
-	  op1 = desempilha(pil);
-	  op2 = desempilha(pil);
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op1.val.n  * op2.val.n;
-		empilha(pil, res);
-	  }
-	  break;
+    // Desempilhar e multiplicar os dois objetos no topo da pilha e
+    // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+    // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+    // retirados
+      a = desempilha(pil);
+      b = desempilha(pil);
+      if (a.t == NUM && b.t == NUM)
+      {
+        empilha(pil, (OPERANDO){NUM,a.Valor.n * b.Valor.n});
+      }
+      else
+      {
+        empilha(pil, b);
+        empilha(pil, a);
+        Erro("Erro: MUL só definido para o tipo NUM");
+      }
+      break;
 	case DIV:
-    op2 = desempilha(pil);
-	  op1 = desempilha(pil);
-
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op1.val.n  / op2.val.n;
-		empilha(pil, res);
-	  }
-	  break;
+  // Desempilhar e dividir os dois objetos no topo da pilha e
+  // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
+  // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
+  // retirados
+    a = desempilha(pil);
+    b = desempilha(pil);
+    if (a.t == NUM && b.t == NUM)
+    {
+      if (b.Valor.v == 0)
+      {
+        empilha(pil, b);
+        empilha(pil, a);
+        Erro("Erro: Divisão por zero.");
+      }
+      empilha(pil, (OPERANDO){NUM,a.Valor.n / b.Valor.n});
+    }
+    else
+    {
+      empilha(pil, b);
+      empilha(pil, a);
+      Erro("Erro: DIV só definido para o tipo NUM");
+    }
+    break;
 	case JMP:
-	  ip = arg.val.n;
+	  ip = arg.Valor.n;
 	  // printf("{JMP, %d}\n", ip);
 	  continue;
 
 	case JIT:
-	  if (desempilha(pil).val.n != 0) {
-		ip = arg.val.n;
+	  if (desempilha(pil).Valor.n != 0) {
+		ip = arg.Valor.n;
 		// printf("{JIT, %d}\n", ip);
 		continue;
 	  }
 	  break;
 	case JIF:
-	  if (desempilha(pil).val.n == 0) {
-		ip = arg.val.n;
-		// printf("{JIF, %d}\n", ip);		
+	  if (desempilha(pil).Valor.n == 0) {
+		ip = arg.Valor.n;
+		// printf("{JIF, %d}\n", ip);
 		continue;
 	  }
 	  break;
 	case CALL:
-	  op1.t = NUM;
-	  op1.val.n = ip;
-	  empilha(exec, op1);
-	  ip = arg.val.n;
+	  a.t = NUM;
+	  a.Valor.n = ip;
+	  empilha(exec, a);
+	  ip = arg.Valor.n;
 	  continue;
+
 	case RET:
-	  ip = desempilha(exec).val.n;
-	  // printf("{RET, %d}\n", ip);
+	  ip = desempilha(exec).Valor.n;
 	  break;
 
 	case EQ:
-	  if (desempilha(pil).val.n == desempilha(pil).val.n) {
+	  if (desempilha(pil).Valor.n == desempilha(pil).Valor.n) {
 		empilha(pil, (OPERANDO) {NUM,{1}});
-	    // printf("{EQ, }\n");
 	  }
 	  else {
-	  	// printf("{EQ, }\n");
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  }
 	  break;
 
 	case GT:
-	  if (desempilha(pil).val.n < desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n < desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case GE:
-	  if (desempilha(pil).val.n <= desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n <= desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case LT:
-	  if (desempilha(pil).val.n > desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n > desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case LE:
-	  if (desempilha(pil).val.n >= desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n >= desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case NE:
-	  if (desempilha(pil).val.n != desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n != desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case STO:
-	  m->Mem[arg.val.n+m->bp[m->ib]] = desempilha(pil);
+	  m->Mem[arg.Valor.n+m->bp[m->ib]] = desempilha(pil);
 	  break;
 
 	case RCL:
-	  empilha(pil,m->Mem[arg.val.n+m->bp[m->ib]]);
+	  empilha(pil,m->Mem[arg.Valor.n+m->bp[m->ib]]);
 	  break;
 
 	case END:
 	  pil->topo = 0;
 	  return;
-
-    case PRN:
-      printf("%d\n", desempilha(pil).val.n);
-      break;
+	case PRN:
+  // desempilha e imprime o topo
+  a = desempilha(pil);
+  if (a.t == CELL)
+    printf("Terreno: %d\n Vazio: %d\n Cristais: %d\n Base :%d\n", a.Valor.c.terreno, a.Valor.c.vazia, a.Valor.c.nCristais, a.Valor.c.base);
+  else if (a.t == BOOL)
+  {
+    int b = a.Valor.b;
+    if (b == 0)
+      printf("false\n");
+    else
+      printf("true\n");
+  } else
+    printf("%d\n", a.Valor.n);
+  empilha(pil, a);
+	  break;
 	case ENTRY:
-	  new_frame(m, arg.val.n);
+	  new_frame(m, arg.Valor.n);
 	  break;
 
 	case LEAVE:
 	  del_frame(m);
 	  break;
 
-    case MOV:
-      empilha(pil,  arg);
-      //return
-      break;
-    case ATK:
-        empilha(pil,  arg);
-      break;
-    case INF:
-      empilha(pil,  arg);
-      break;
-    case CLT:
-      empilha(pil,  arg);
-      break;
-    case DEP:
-      empilha(pil,  arg);
-      break;
-  	case ATR:
-      empilha(pil,  arg);
-      break;
+  case MOV:
+    // DEBUG: Direção correta
+    //printf("Moving to %d\n", arg.Valor.d);
+    Sistema(MOV, arg.Valor.ac, m);
+    ip++;
+    return;
+  case ATK:
+    Sistema(ATK, arg.Valor.ac, m);
+    break;
+  case INF:
+    Sistema(INF, arg.Valor.ac, m);
+    break;
+  case CLT:
+    Sistema(CLT, arg.Valor.ac, m);
+    break;
+  case DEP:
+    Sistema(DEP, arg.Valor.ac, m);
+    break;
+	case ATR:
+    tmp = desempilha(pil);
+     if(tmp.t == CELL){
+      if(arg.Valor.n == 0) {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.terreno}});
+      }
+      else if(arg.Valor.n == 1) {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.vazia}});
+      }
+      else if(arg.Valor.n == 2) {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.nCristais}});
+      }
+      else {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.base}});
+      }
+    }
+    else {
+      empilha(pil, tmp);
+    }
+    break;
 	}
 
 	D(imprime(pil,5));

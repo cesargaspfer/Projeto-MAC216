@@ -1551,6 +1551,7 @@ yyreduce:
     {
 
 		   // salva_end(ip);
+<<<<<<< HEAD
 		   ipcheca = pega_end(); // onde tá o jif
 		   salva_end(ip); // onde tá o jmp
 		   AddInstr(JMP, ip);  // jmp aponta pro bloco do if
@@ -1558,6 +1559,13 @@ yyreduce:
 		   // salva_end(ip);
 		   // salva_end(ip);
 		   // ip = ip + prog[pega_atu()].op.val.n;
+=======
+		   // ipcheca = pega_end();
+		   prog[pega_end()].op.Valor.n = ip;
+		   salva_end(ip);
+		   AddInstr(JIT, 0);
+		   // ip = ip + prog[pega_atu()].op.Valor.n;
+>>>>>>> 856e7cbe71dc66827f09eaab07e9c25982e48b70
            // salva_end(ip);
            // AddInstr(JMP, 0);
 		 }
@@ -1567,7 +1575,13 @@ yyreduce:
   case 35:
 #line 146 "compila.y" /* yacc.c:1646  */
     {
+<<<<<<< HEAD
 	       prog[pega_end()].op.val.n = ip;
+=======
+	       prog[pega_end()].op.Valor.n = ip;
+	       // ipcheca = ip;
+	       // if (prog[ipcheck].op.Valor.n != 0) AddInstr(JMP, ip);
+>>>>>>> 856e7cbe71dc66827f09eaab07e9c25982e48b70
 
 		 }
 #line 1574 "compila.tab.c" /* yacc.c:1646  */
@@ -1590,7 +1604,7 @@ yyreduce:
     {
 			  int ip2 = pega_end();
 			  AddInstr(JMP, pega_end());
-			  prog[ip2].op.val.n = ip;
+			  prog[ip2].op.Valor.n = ip;
 			}
 #line 1596 "compila.tab.c" /* yacc.c:1646  */
     break;
@@ -1624,7 +1638,7 @@ yyreduce:
     {
 		AddInstr(LEAVE, 0);
 		AddInstr(RET, 0);
-		prog[pega_end()].op.val.n = ip;
+		prog[pega_end()].op.Valor.n = ip;
 		deltab();
 	  }
 #line 1631 "compila.tab.c" /* yacc.c:1646  */

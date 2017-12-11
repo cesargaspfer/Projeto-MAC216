@@ -567,7 +567,8 @@ char *yytext;
 #include <math.h>
 #include "compila.tab.h"
 #include "maq.h"
-#line 571 "lex.yy.c"
+#include "instr.h"
+#line 572 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -785,9 +786,9 @@ YY_DECL
 		}
 
 	{
-#line 13 "compila.l"
+#line 14 "compila.l"
 
-#line 791 "lex.yy.c"
+#line 792 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -846,127 +847,127 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "compila.l"
+#line 15 "compila.l"
 { return MOVA; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "compila.l"
+#line 16 "compila.l"
 { return ATAQUE; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 16 "compila.l"
+#line 17 "compila.l"
 { return COLETE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 17 "compila.l"
+#line 18 "compila.l"
 { return DEPOSITE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "compila.l"
+#line 19 "compila.l"
 { return INFORMACAO; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "compila.l"
+#line 21 "compila.l"
 { yylval.val = NORTHEAST; return DIRECAO;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 21 "compila.l"
+#line 22 "compila.l"
 { yylval.val = EAST; return DIRECAO;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 22 "compila.l"
+#line 23 "compila.l"
 { yylval.val = SOUTHEAST; return DIRECAO;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 23 "compila.l"
+#line 24 "compila.l"
 { yylval.val = SOUTHWEST; return DIRECAO;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 24 "compila.l"
+#line 25 "compila.l"
 { yylval.val = WEST; return DIRECAO;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 25 "compila.l"
+#line 26 "compila.l"
 { yylval.val = NORTHWEST; return DIRECAO;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 26 "compila.l"
+#line 27 "compila.l"
 { yylval.val = CURRENT; return DIRECAO;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 30 "compila.l"
+#line 31 "compila.l"
 { return PONTO; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 31 "compila.l"
+#line 32 "compila.l"
 { yylval.val = 0; return ATRIBUTO;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 32 "compila.l"
+#line 33 "compila.l"
 { yylval.val = 1; return ATRIBUTO;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 33 "compila.l"
+#line 34 "compila.l"
 { yylval.val = 2; return ATRIBUTO;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 34 "compila.l"
+#line 35 "compila.l"
 { yylval.val = 3; return ATRIBUTO;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 37 "compila.l"
+#line 38 "compila.l"
 { yylval.val = atof(yytext); return NUMt; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 39 "compila.l"
+#line 40 "compila.l"
 { return RETt; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 41 "compila.l"
+#line 42 "compila.l"
 { return IF; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 42 "compila.l"
+#line 43 "compila.l"
 { return IFELSE; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 43 "compila.l"
+#line 44 "compila.l"
 { return WHILE; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 44 "compila.l"
+#line 45 "compila.l"
 { return FUNC; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 45 "compila.l"
+#line 46 "compila.l"
 { return PRINT; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 48 "compila.l"
+#line 49 "compila.l"
 {
   strncpy(yylval.cod, yytext, 30);
   return ID;
@@ -975,110 +976,110 @@ YY_RULE_SETUP
 case 26:
 /* rule 26 can match eol */
 YY_RULE_SETUP
-#line 55 "compila.l"
+#line 56 "compila.l"
 /* pula espacos em branco */
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 57 "compila.l"
+#line 58 "compila.l"
 /* comentarios simples */
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 59 "compila.l"
+#line 60 "compila.l"
 { return EOL; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 60 "compila.l"
+#line 61 "compila.l"
 { return SEP; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 61 "compila.l"
+#line 62 "compila.l"
 { return ASGN; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 62 "compila.l"
+#line 63 "compila.l"
 { return OPEN; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 63 "compila.l"
+#line 64 "compila.l"
 { return CLOSE; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 64 "compila.l"
+#line 65 "compila.l"
 { return ABRE; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 65 "compila.l"
+#line 66 "compila.l"
 { return FECHA; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 66 "compila.l"
+#line 67 "compila.l"
 { return ADDt; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 67 "compila.l"
+#line 68 "compila.l"
 { return SUBt; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 68 "compila.l"
+#line 69 "compila.l"
 { return MULt; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 69 "compila.l"
+#line 70 "compila.l"
 { return DIVt; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 70 "compila.l"
+#line 71 "compila.l"
 { return EQt; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 71 "compila.l"
+#line 72 "compila.l"
 { return NEt; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 72 "compila.l"
+#line 73 "compila.l"
 { return LTt; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 73 "compila.l"
+#line 74 "compila.l"
 { return LEt; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 74 "compila.l"
+#line 75 "compila.l"
 { return GTt; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 75 "compila.l"
+#line 76 "compila.l"
 { return GEt; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 77 "compila.l"
+#line 78 "compila.l"
 { fprintf(stderr, "Entrada ignorada\n-->%s\n", yytext); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 79 "compila.l"
+#line 80 "compila.l"
 ECHO;
 	YY_BREAK
-#line 1082 "lex.yy.c"
+#line 1083 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2079,7 +2080,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 79 "compila.l"
+#line 80 "compila.l"
 
 
 
