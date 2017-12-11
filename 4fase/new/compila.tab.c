@@ -489,9 +489,9 @@ static const yytype_uint8 yyrline[] =
        0,    54,    54,    55,    58,    59,    60,    61,    62,    63,
       67,    74,    75,    80,    85,    88,    91,    94,    98,   101,
      107,   108,   109,   110,   111,   112,   113,   114,   115,   116,
-     117,   118,   119,   121,   121,   143,   151,   152,   151,   159,
-     161,   162,   165,   176,   164,   187,   188,   191,   197,   202,
-     196,   217,   218,   219,   219
+     117,   118,   119,   121,   121,   144,   152,   153,   152,   160,
+     162,   163,   166,   177,   165,   188,   189,   192,   198,   203,
+     197,   218,   219,   220,   220
 };
 #endif
 
@@ -1537,9 +1537,9 @@ yyreduce:
 
   	  	 	   salva_end(ip);
 			   AddInstr(JIF, 0);
-			   salva_end(ip);
-  	  	 	   AddInstr(JIT, 0);
-			   ipcheck = ip;
+			   // salva_end(ip);
+  	  	 	   // AddInstr(JIT, 0);
+			   // ipcheck = ip;
 
 
  		 }
@@ -1551,51 +1551,52 @@ yyreduce:
     {
 
 		   // salva_end(ip);
-		   ipcheca = pega_end();
-		   ipcheck = pega_end();
-		   prog[ipcheck].op.val.n = ip;
+		   // ipcheca = pega_end();
+		   prog[pega_end()].op.val.n = ip;
+		   salva_end(ip);
+		   AddInstr(JIT, 0);
 		   // ip = ip + prog[pega_atu()].op.val.n;
            // salva_end(ip);
            // AddInstr(JMP, 0);
 		 }
-#line 1562 "compila.tab.c" /* yacc.c:1646  */
+#line 1563 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 143 "compila.y" /* yacc.c:1646  */
+#line 144 "compila.y" /* yacc.c:1646  */
     {
-	       prog[ipcheca].op.val.n = ip;
+	       prog[pega_end()].op.val.n = ip;
 	       // ipcheca = ip;
 	       // if (prog[ipcheck].op.val.n != 0) AddInstr(JMP, ip);
 
 		 }
-#line 1573 "compila.tab.c" /* yacc.c:1646  */
+#line 1574 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 151 "compila.y" /* yacc.c:1646  */
+#line 152 "compila.y" /* yacc.c:1646  */
     {salva_end(ip);}
-#line 1579 "compila.tab.c" /* yacc.c:1646  */
+#line 1580 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 152 "compila.y" /* yacc.c:1646  */
+#line 153 "compila.y" /* yacc.c:1646  */
     { salva_end(ip); AddInstr(JIF,0); }
-#line 1585 "compila.tab.c" /* yacc.c:1646  */
+#line 1586 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 153 "compila.y" /* yacc.c:1646  */
+#line 154 "compila.y" /* yacc.c:1646  */
     {
 			  int ip2 = pega_end();
 			  AddInstr(JMP, pega_end());
 			  prog[ip2].op.val.n = ip;
 			}
-#line 1595 "compila.tab.c" /* yacc.c:1646  */
+#line 1596 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 165 "compila.y" /* yacc.c:1646  */
+#line 166 "compila.y" /* yacc.c:1646  */
     {
 		salva_end(ip);
 		AddInstr(JMP,  0);
@@ -1607,55 +1608,55 @@ yyreduce:
 		}
 		s->val = ip;
 	  }
-#line 1611 "compila.tab.c" /* yacc.c:1646  */
+#line 1612 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 176 "compila.y" /* yacc.c:1646  */
+#line 177 "compila.y" /* yacc.c:1646  */
     {
 		newtab(0);
 	  }
-#line 1619 "compila.tab.c" /* yacc.c:1646  */
+#line 1620 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 180 "compila.y" /* yacc.c:1646  */
+#line 181 "compila.y" /* yacc.c:1646  */
     {
 		AddInstr(LEAVE, 0);
 		AddInstr(RET, 0);
 		prog[pega_end()].op.val.n = ip;
 		deltab();
 	  }
-#line 1630 "compila.tab.c" /* yacc.c:1646  */
+#line 1631 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 188 "compila.y" /* yacc.c:1646  */
+#line 189 "compila.y" /* yacc.c:1646  */
     {
 	  	 putsym((yyvsp[0].cod));
 	  }
-#line 1638 "compila.tab.c" /* yacc.c:1646  */
+#line 1639 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 191 "compila.y" /* yacc.c:1646  */
+#line 192 "compila.y" /* yacc.c:1646  */
     {
 	  	 putsym((yyvsp[0].cod));
 	  }
-#line 1646 "compila.tab.c" /* yacc.c:1646  */
+#line 1647 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 197 "compila.y" /* yacc.c:1646  */
+#line 198 "compila.y" /* yacc.c:1646  */
     {
 			 parmcnt = 0;
 			 /* posição da memória mais avançada */
 		 }
-#line 1655 "compila.tab.c" /* yacc.c:1646  */
+#line 1656 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 202 "compila.y" /* yacc.c:1646  */
+#line 203 "compila.y" /* yacc.c:1646  */
     {
 		   symrec *s = getsym((yyvsp[-3].cod));
 		   if (s == 0) {
@@ -1668,23 +1669,23 @@ yyreduce:
 			 AddInstr( STO, --parmcnt);
 		   AddInstr(CALL, s->val);
 		 }
-#line 1672 "compila.tab.c" /* yacc.c:1646  */
+#line 1673 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 218 "compila.y" /* yacc.c:1646  */
+#line 219 "compila.y" /* yacc.c:1646  */
     { parmcnt++;}
-#line 1678 "compila.tab.c" /* yacc.c:1646  */
+#line 1679 "compila.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 219 "compila.y" /* yacc.c:1646  */
+#line 220 "compila.y" /* yacc.c:1646  */
     { parmcnt++;}
-#line 1684 "compila.tab.c" /* yacc.c:1646  */
+#line 1685 "compila.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1688 "compila.tab.c" /* yacc.c:1646  */
+#line 1689 "compila.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1912,7 +1913,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 222 "compila.y" /* yacc.c:1906  */
+#line 223 "compila.y" /* yacc.c:1906  */
 
 extern FILE *yyin;
 

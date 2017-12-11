@@ -114,9 +114,11 @@ void exec_maquina(Maquina *m, int n) {
 
 	case PUSH:
 	  empilha(pil, arg);
+	  // printf("{PUSH, %d}\n", arg.val.n);
 	  break;
 	case POP:
 	  desempilha(pil);
+	  // printf("{POP, }\n");
 	  break;
 	case DUP:
 	  tmp = desempilha(pil);
@@ -167,17 +169,20 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 	case JMP:
 	  ip = arg.val.n;
+	  // printf("{JMP, %d}\n", ip);
 	  continue;
 
 	case JIT:
 	  if (desempilha(pil).val.n != 0) {
 		ip = arg.val.n;
+		// printf("{JIT, %d}\n", ip);
 		continue;
 	  }
 	  break;
 	case JIF:
 	  if (desempilha(pil).val.n == 0) {
 		ip = arg.val.n;
+		// printf("{JIF, %d}\n", ip);		
 		continue;
 	  }
 	  break;
@@ -189,13 +194,18 @@ void exec_maquina(Maquina *m, int n) {
 	  continue;
 	case RET:
 	  ip = desempilha(exec).val.n;
+	  // printf("{RET, %d}\n", ip);
 	  break;
 
 	case EQ:
-	  if (desempilha(pil).val.n == desempilha(pil).val.n)
+	  if (desempilha(pil).val.n == desempilha(pil).val.n) {
 		empilha(pil, (OPERANDO) {NUM,{1}});
-	  else
+	    // printf("{EQ, }\n");
+	  }
+	  else {
+	  	// printf("{EQ, }\n");
 		empilha(pil, (OPERANDO) {NUM,{0}});
+	  }
 	  break;
 
 	case GT:
