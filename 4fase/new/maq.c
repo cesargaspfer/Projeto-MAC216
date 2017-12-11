@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "maq.h"
+#include "instr.h"
+#include<time.h>
 
 /* #define DEBUG */
 
@@ -32,7 +34,6 @@ char *CODES[] = {
   "END",
   "PRN",
   "ATR",
-  "SIS",
   "ENTRY",
   "LEAVE",
   "MOV", // Opcodes adicionados daqui para baixo
@@ -55,21 +56,20 @@ static void Fatal(char *msg, int cod) {
   exit(cod);
 }
 
-Maquina *cria_maquina(INSTR *p) {
+Maquina *cria_maquina(INSTR *p, int posx, int posy, int exercito) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
   m->prog = p;
   m->pil.topo = 0;
-  m->ib = 0;/*
-  m->posx = x;
-  m->posy = y;
+  m->ib = 0;
+  m->posx = posx;
+  m->posy = posy;
   m->exercito = exercito;
   m->vida = 100;
   m->crist = 0;
   m->energia = 0;
   m->dano = 10;
-  */
   return m;
 }
 
@@ -104,7 +104,7 @@ void exec_maquina(Maquina *m, int n) {
 	OpCode   opc = prg[ip].instr;
 	OPERANDO arg = prg[ip].op;
 
-	D(printf("%3d: %-5.5s %d\n", ip, CODES[opc], arg.val.n));
+	D(printf("%3d: %-5.5s %d\n", ip, CODES[opc], arg.Valor.n));
 
 	switch (opc) {
 	  OPERANDO tmp;
@@ -114,7 +114,7 @@ void exec_maquina(Maquina *m, int n) {
 
 	case PUSH:
 	  empilha(pil, arg);
-	  // printf("{PUSH, %d}\n", arg.val.n);
+	  // printf("{PUSH, %d}\n", arg.Valor.n);
 	  break;
 	case POP:
 	  desempilha(pil);
@@ -182,7 +182,6 @@ void exec_maquina(Maquina *m, int n) {
       }
       break;
 	case DIV:
-<<<<<<< HEAD
   // Desempilhar e dividir os dois objetos no topo da pilha e
   // empilhar o resultado (OPERANDO result) sse eles forem do tipo NUM
   // Caso contrário, imprimir mensagem de erro e reempilhar os argumentos
@@ -206,107 +205,91 @@ void exec_maquina(Maquina *m, int n) {
       Erro("Erro: DIV só definido para o tipo NUM");
     }
     break;
-=======
-    op2 = desempilha(pil);
-	  op1 = desempilha(pil);
-
-
-	  if (op1.t == NUM && op2.t == NUM) {
-		res.t = NUM;
-		res.val.n = op1.val.n  / op2.val.n;
-		empilha(pil, res);
-	  }
-	  break;
->>>>>>> fbc43cc8f091fa4f7710ff10df1728072552078f
 	case JMP:
-	  ip = arg.val.n;
+	  ip = arg.Valor.n;
 	  // printf("{JMP, %d}\n", ip);
 	  continue;
 
 	case JIT:
-	  if (desempilha(pil).val.n != 0) {
-		ip = arg.val.n;
+	  if (desempilha(pil).Valor.n != 0) {
+		ip = arg.Valor.n;
 		// printf("{JIT, %d}\n", ip);
 		continue;
 	  }
 	  break;
 	case JIF:
-	  if (desempilha(pil).val.n == 0) {
-		ip = arg.val.n;
-		// printf("{JIF, %d}\n", ip);		
+	  if (desempilha(pil).Valor.n == 0) {
+		ip = arg.Valor.n;
+		// printf("{JIF, %d}\n", ip);
 		continue;
 	  }
 	  break;
 	case CALL:
 	  a.t = NUM;
-	  a.val.n = ip;
+	  a.Valor.n = ip;
 	  empilha(exec, a);
-	  ip = arg.val.n;
+	  ip = arg.Valor.n;
 	  continue;
+
 	case RET:
-	  ip = desempilha(exec).val.n;
-	  // printf("{RET, %d}\n", ip);
+	  ip = desempilha(exec).Valor.n;
 	  break;
 
 	case EQ:
-	  if (desempilha(pil).val.n == desempilha(pil).val.n) {
+	  if (desempilha(pil).Valor.n == desempilha(pil).Valor.n) {
 		empilha(pil, (OPERANDO) {NUM,{1}});
-	    // printf("{EQ, }\n");
 	  }
 	  else {
-	  	// printf("{EQ, }\n");
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  }
 	  break;
 
 	case GT:
-	  if (desempilha(pil).val.n < desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n < desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case GE:
-	  if (desempilha(pil).val.n <= desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n <= desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case LT:
-	  if (desempilha(pil).val.n > desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n > desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case LE:
-	  if (desempilha(pil).val.n >= desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n >= desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case NE:
-	  if (desempilha(pil).val.n != desempilha(pil).val.n)
+	  if (desempilha(pil).Valor.n != desempilha(pil).Valor.n)
 		empilha(pil, (OPERANDO) {NUM,{1}});
 	  else
 		empilha(pil, (OPERANDO) {NUM,{0}});
 	  break;
 
 	case STO:
-	  m->Mem[arg.val.n+m->bp[m->ib]] = desempilha(pil);
+	  m->Mem[arg.Valor.n+m->bp[m->ib]] = desempilha(pil);
 	  break;
 
 	case RCL:
-	  empilha(pil,m->Mem[arg.val.n+m->bp[m->ib]]);
+	  empilha(pil,m->Mem[arg.Valor.n+m->bp[m->ib]]);
 	  break;
 
 	case END:
 	  pil->topo = 0;
 	  return;
-
-<<<<<<< HEAD
 	case PRN:
   // desempilha e imprime o topo
   a = desempilha(pil);
@@ -323,39 +306,33 @@ void exec_maquina(Maquina *m, int n) {
     printf("%d\n", a.Valor.n);
   empilha(pil, a);
 	  break;
-
-=======
-    case PRN:
-      printf("%d\n", desempilha(pil).val.n);
-      break;
->>>>>>> fbc43cc8f091fa4f7710ff10df1728072552078f
 	case ENTRY:
-	  new_frame(m, arg.val.n);
+	  new_frame(m, arg.Valor.n);
 	  break;
 
 	case LEAVE:
 	  del_frame(m);
 	  break;
 
-    case MOV:
+  case MOV:
+    empilha(pil,  arg);
+    //return
+    break;
+  case ATK:
       empilha(pil,  arg);
-      //return
-      break;
-    case ATK:
-        empilha(pil,  arg);
-      break;
-    case INF:
-      empilha(pil,  arg);
-      break;
-    case CLT:
-      empilha(pil,  arg);
-      break;
-    case DEP:
-      empilha(pil,  arg);
-      break;
-  	case ATR:
-      empilha(pil,  arg);
-      break;
+    break;
+  case INF:
+    empilha(pil,  arg);
+    break;
+  case CLT:
+    empilha(pil,  arg);
+    break;
+  case DEP:
+    empilha(pil,  arg);
+    break;
+	case ATR:
+    empilha(pil,  arg);
+    break;
 	}
 
 	D(imprime(pil,5));
