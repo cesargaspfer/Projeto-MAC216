@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "maq.h"
 #include "instr.h"
+#include "compila.tab.h"
 #include<time.h>
 
 /* #define DEBUG */
@@ -55,12 +56,20 @@ static void Fatal(char *msg, int cod) {
   Erro(msg);
   exit(cod);
 }
-
-Maquina *cria_maquina(INSTR *p, int posx, int posy, int exercito) {
+Maquina *cria_maquina(char *nome, int posx, int posy, int exercito) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
   m->ip = 0;
-  m->prog = p;
+
+  INSTR p1[2000];
+  //Compilacao do programa
+  FILE *p = fopen(nome,"r");
+
+  int res = compilador(p, p1);
+
+  m->prog = p1;
+
+
   m->pil.topo = 0;
   m->ib = 0;
   m->posx = posx;
@@ -315,23 +324,42 @@ void exec_maquina(Maquina *m, int n) {
 	  break;
 
   case MOV:
-    empilha(pil,  arg);
-    //return
-    break;
+    // DEBUG: Direção correta
+    //printf("Moving to %d\n", arg.Valor.d);
+    Sistema(MOV, arg.Valor.ac, m);
+    ip++;
+    return;
   case ATK:
-      empilha(pil,  arg);
+    Sistema(ATK, arg.Valor.ac, m);
     break;
   case INF:
-    empilha(pil,  arg);
+    Sistema(INF, arg.Valor.ac, m);
     break;
   case CLT:
-    empilha(pil,  arg);
+    Sistema(CLT, arg.Valor.ac, m);
     break;
   case DEP:
-    empilha(pil,  arg);
+    Sistema(DEP, arg.Valor.ac, m);
     break;
 	case ATR:
-    empilha(pil,  arg);
+    tmp = desempilha(pil);
+     if(tmp.t == CELL){
+      if(arg.Valor.n == 0) {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.terreno}});
+      }
+      else if(arg.Valor.n == 1) {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.vazia}});
+      }
+      else if(arg.Valor.n == 2) {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.nCristais}});
+      }
+      else {
+        empilha(pil,(OPERANDO) {NUM, {tmp.Valor.c.base}});
+      }
+    }
+    else {
+      empilha(pil, tmp);
+    }
     break;
 	}
 

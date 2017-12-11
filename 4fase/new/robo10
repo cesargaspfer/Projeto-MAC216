@@ -1,0 +1,3 @@
+x = mova(east);
+x = mova(west);
+print 3+9;

@@ -30,7 +30,7 @@ typedef struct {
 } Maquina;
 
 //Maquina *cria_maquina(INSTR *p, int posx, int posy, int exercito);
-Maquina *cria_maquina(INSTR *p, int posx, int posy, int exercito);
+Maquina *cria_maquina(char *nome, int posx, int posy, int exercito);
 void destroi_maquina(Maquina *m);
 
 void exec_maquina(Maquina *m, int n);

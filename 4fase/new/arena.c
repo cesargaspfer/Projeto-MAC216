@@ -33,9 +33,13 @@
   clock_t end; // "relogio" do fim
   double currentTime = 0.0; // tempo total de jogo
 
+  char *nomesArquivo[2][5] = {
+    {"robo00", "robo01", "robo02", "robo03", "robo04"},
+    {"robo10", "robo11", "robo12", "robo13", "robo14"},
+  };
 
 // Funcao main, a qual inicializa as variaveis e o jogo
-/*int main () {
+int main () {
   // Cria a arena, com os argumentos:
   //	-Tamanho da arena,
   //	-Total de times,
@@ -46,7 +50,7 @@
   waitFor(6);
   // Começa jogo!!
   Atualiza();
-}*/
+}
 /*-------------------------------------------------------------------------------------*/
 //                                                                                     //
 //                                       Sistema                                       //
@@ -458,7 +462,7 @@ static void inicializaRobo (int index, int time, int posX, int posY) {
 
   printf("inicializou robô %d no time %d na posição (%d , %d)\n", index, time, posX, posY);
   // Cria o robo com a função cria_maquina
-  robos[time][index] = cria_maquina(prog, posX, posY, time);
+  robos[time][index] = cria_maquina(nomesArquivo[time][index], posX, posY, time);
   // Marca como "ativo" esse robo no vetor de robos ativos
   RobosAtivos[time][index] = 1;
 }
