@@ -120,10 +120,10 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 ;
 Cond: IF OPEN  Expr {
 
+			   
   	  	 	   salva_end(ip);
+  	  	 	   // salva_end(ip);
 			   AddInstr(JIF, 0);
-			   // salva_end(ip);
-  	  	 	   // AddInstr(JIT, 0);
 			   // ipcheck = ip;
 
 
@@ -131,10 +131,12 @@ Cond: IF OPEN  Expr {
 		 CLOSE  Bloco {
 
 		   // salva_end(ip);
-		   // ipcheca = pega_end();
-		   prog[pega_end()].op.val.n = ip;
-		   salva_end(ip);
-		   AddInstr(JIT, 0);
+		   ipcheca = pega_end(); // onde tá o jif
+		   salva_end(ip); // onde tá o jmp
+		   AddInstr(JMP, ip);  // jmp aponta pro bloco do if
+		   prog[ipcheca].op.val.n = ip;
+		   // salva_end(ip);
+		   // salva_end(ip);
 		   // ip = ip + prog[pega_atu()].op.val.n;
            // salva_end(ip);
            // AddInstr(JMP, 0);
@@ -143,8 +145,6 @@ Cond: IF OPEN  Expr {
 
 Cond: Cond IFELSE Bloco {
 	       prog[pega_end()].op.val.n = ip;
-	       // ipcheca = ip;
-	       // if (prog[ipcheck].op.val.n != 0) AddInstr(JMP, ip);
 
 		 };
 
