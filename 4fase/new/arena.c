@@ -124,6 +124,7 @@ void Sistema(int op, int dir, Maquina *m) {
       OPERANDO o;
       o.t = CELL;
       o.Valor.c = arena[x][y];
+      
       empilha(&m->pil, o); // Empilha, no robo, a Celula
     }
     else if(op == MOV) { // Move

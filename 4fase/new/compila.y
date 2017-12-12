@@ -101,7 +101,7 @@ Expr: NUMt {  AddInstr(PUSH, $1);}
 	 | ID PONTO ATRIBUTO  {
 	          symrec *s = getsym($1);
 	 		 if (s==0) s = putsym($1);
-	 		 AddInstr(PUSH, s->val);
+	 		 AddInstr(RCL, s->val);
 	 		 AddInstr(ATR, $3);
  	 	 }
 	| Chamada

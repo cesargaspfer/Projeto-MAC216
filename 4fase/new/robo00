@@ -1,8 +1,11 @@
-
 if(1 == 0){
-x = mova(southwest);
+	print 2;
 }
 else{
-x = mova(east);
+	x = informacao(west);
+	print 999999;
+	print x.terreno;
+	print x.vazia;
+	print x.base;
+	print x.nCristais;
 }
-x = mova(southwest);
