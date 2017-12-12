@@ -303,8 +303,10 @@ void Atualiza (){
           if(robos[timeAtual][roboAtual]->energia){
             robos[timeAtual][roboAtual]->energia--;
           }
-          else
-  				  exec_maquina(robos[timeAtual][roboAtual], 50);
+          else{
+            exec_maquina(robos[timeAtual][roboAtual], 50);
+          }
+
   			}
       }
   	}

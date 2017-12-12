@@ -59,17 +59,14 @@ static void Fatal(char *msg, int cod) {
 Maquina *cria_maquina(char *nome, int posx, int posy, int exercito) {
   Maquina *m = (Maquina*)malloc(sizeof(Maquina));
   if (!m) Fatal("Memória insuficiente",4);
-  m->ip = 0;
 
-  INSTR p1[2000];
+
+
   //Compilacao do programa
   FILE *p = fopen(nome,"r");
-
-  int res = compilador(p, p1);
-
-  m->prog = p1;
-
-
+  int res = compilador(p,m->prog);
+  int clos = fclose(p);
+  m->ip = 0;
   m->pil.topo = 0;
   m->ib = 0;
   m->posx = posx;
