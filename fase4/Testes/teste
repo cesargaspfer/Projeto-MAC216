@@ -1,0 +1,24 @@
+x = 5;
+y = mova(east);
+print y;
+y = ataque(west);
+print y;
+y = colete(west);
+print y;
+y = deposite(west);
+print y;
+y = informacao(west);
+print y;
+
+if(mova(east) == 1) {
+	print 1;
+}
+else {
+	print 0;
+}
+
+print y;
+print y.terreno;
+print y.vazia;
+print y.nCristais;
+print y.base;

@@ -1,0 +1,3 @@
+Para programar os robos, você e seu(sua) amigo(a) devem escolher o time 1 ou o time 2. Quem escolheu o time 1, programara 5 robos, os arquivos de cada um deve se chamar "robo00", "robo01", ..., "robo04". Quem escolheu o time 2, programara 5 robos, os arquivos de cada um deve se chamar "robo10", "robo11", ..., "robo14". Todos os arquivos devem estar na pasta que os arquivos do jogo esta
+Para jogar, voce deve abrir o terminal na pasta do jogo, executar o comando "make" e em seguida "./game".
+Bom divertimento!
